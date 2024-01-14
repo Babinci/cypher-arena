@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freestyle Rap Practice</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #111;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+  .timer-container {
+    text-align: center;
+    background-color: #222;
+    border: 5px solid #333;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px 5px rgba(255, 255, 0, 0.5);
+    position: relative;
+    z-index: 2;
+  }
+  .word, .timer {
+    font-size: 3em;
+    font-weight: bold;
+    color: #ff0;
+  }
+  .title {
+    background-color: #333;
+    padding: 10px 20px;
+    position: absolute;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    z-index: 1;
+  }
+  .title.top {
+    top: -40px;
+  }
+  .title.bottom {
+    bottom: -40px;
+  }
+</style>
+<script>
+  // Function to fetch a new word
+  function fetchWord() {
+  fetch('/words/get_random_word/')  // Updated to the new endpoint for JSON data
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('word').textContent = data.word;
+    })
+    .catch(error => {
+      console.error('Error fetching word:', error);
+    });
+}
+
+  // Function to update the countdown
+  function updateCountdown() {
+    var countdownElement = document.getElementById('countdown');
+    var currentCountdown = parseInt(countdownElement.textContent, 10);
+    
+    if (currentCountdown === 1) {
+      fetchWord(); // Fetch a new word when the countdown hits 1
+      countdownElement.textContent = '10'; // Reset countdown
+    } else {
+      countdownElement.textContent = currentCountdown - 1; // Decrement countdown
+    }
+  }
+
+  // Start the countdown and word fetching when the page has loaded
+  document.addEventListener('DOMContentLoaded', (event) => {
+    fetchWord(); // Initial word fetch
+    setInterval(updateCountdown, 1000
+    ); // Start the countdown interval
+});
+</script>
+</head>
+<body>
+<div class="timer-container">
+  <div id="word" class="word">Word</div>
+  <div id="countdown" class="timer">10</div>
+  <div class="title top">Temat</div>
+  <div class="title bottom">Sekundy</div>
+</div>
+</body>
+</html>
