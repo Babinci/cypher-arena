@@ -1,5 +1,10 @@
 # polish_freestyle_app
 
+
+Soft mode: at https://freestyle-app.onrender.com/words/soft_mode/
+
+
+
 ## Aim
 The aim of this project is to revolutionize Polish freestyle rap battles, drawing inspiration from the Spanish Latin scene. Our focus is on reducing vulgarity and promoting the style and culture of the art of words.
 
