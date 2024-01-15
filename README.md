@@ -14,7 +14,7 @@ The aim of this project is to revolutionize Polish freestyle rap battles, drawin
 - **Create a Base of Free for Profit Instrumentals**: Engaging the community in building a diverse library of instrumentals.
 
 ### Introduction of New Round Types
-- **Free Mode**: Participants can choose the type of beat (e.g., Trap, Drill, Boom-bap, etc.).
+- **Beat Mode**: Participants can choose the type of beat (e.g., Trap, Drill, Boom-bap, etc.).
 - **Hard Mode / Soft Mode**: A new random word introduced every 5/10 seconds.
 - **Kick Back**: A new format one says line and second has to say 3 next lines on the same rhyme
 - **Character Fights**: Thematic battles like Superman vs Batman.

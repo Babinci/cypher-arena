@@ -1,2 +1,3 @@
-# *.sqlite3
+*.sqlite3
+shell_test.py
 # render.yaml
