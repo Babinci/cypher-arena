@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Freestyle Rap Practice</title>
+<title>Freestyle Rap Word Mode</title>
 <style>
   body {
     font-family: 'Arial', sans-serif;
@@ -55,6 +55,7 @@
 <script>
   let wordList = [];  // Array to store preloaded words
   let wordIndex = 0;  // Current index in the word list
+  let countdownDuration; // Variable to store the countdown duration
 
   // Function to fetch a list of new words
   function fetchWords() {
@@ -74,6 +75,9 @@
     if (wordList.length > 0) {
       document.getElementById('word').textContent = wordList[wordIndex];
       wordIndex = (wordIndex + 1) % wordList.length;  // Cycle through the word list
+    } else {
+      // This will only show if the word list is empty
+      document.getElementById('word').textContent = 'Loading...';
     }
   }
 
@@ -84,7 +88,7 @@
     
     if (currentCountdown === 1) {
       displayNextWord(); // Display the next word when countdown hits 1
-      countdownElement.textContent = '10'; // Reset countdown
+      countdownElement.textContent = countdownDuration; // Reset countdown
     } else {
       countdownElement.textContent = currentCountdown - 1; // Decrement countdown
     }
@@ -92,13 +96,16 @@
 
   // Start the countdown and word preloading when the page has loaded
   document.addEventListener('DOMContentLoaded', (event) => {
+    countdownDuration = parseInt(document.body.getAttribute('data-countdown-duration'), 10);
+    document.getElementById('countdown').textContent = countdownDuration; // Set the initial countdown value
     fetchWords(); // Initial word fetch
     setInterval(updateCountdown, 1000); // Start the countdown interval
   });
 </script>
 
+
 </head>
-<body>
+<body data-countdown-duration="{{ countdown_duration }}">
 <div class="timer-container">
   <div id="word" class="word">Word</div>
   <div id="countdown" class="timer">10</div>

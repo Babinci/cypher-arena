@@ -7,16 +7,15 @@ import random
 from django.http import JsonResponse
 # Existing soft_mode view for rendering HTML
 def soft_mode(request):
-    return render(request, 'soft_mode.html')
-
-# def get_random_word(request):
-#     words = Word.objects.filter(occurrence__gt=20).order_by('?')[:10000]  # Fetch 10 random words
-#     word_list = [word.name for word in words]
-#     return JsonResponse({'words': word_list})
+    countdown_duration = 10  
+    return render(request, 'soft_mode.html', {'countdown_duration': countdown_duration})
+def hard_mode(request):
+    countdown_duration = 5  
+    return render(request, 'soft_mode.html', {'countdown_duration': countdown_duration})
 
 def get_random_word(request):
     target_count = 10000
-    subst_target = int(target_count * 0.2)  # 20% of 10,000
+    subst_target = int(target_count * 0.3)  # 20% of 10,000
 
     # Fetch words with speech_part='subst'
     subst_words = Word.objects.filter(occurrence__gt=15, speech_part='subst').order_by('?')[:subst_target]
