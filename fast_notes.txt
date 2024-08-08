@@ -1,0 +1,18 @@
+Frontend:
+
+https://blog.logrocket.com/complete-guide-react-native-web/   <--- z tego article go
+CRA
+cd Frontend
+
+npm start
+
+
+
+backend:
+source venv/bin/activate
+
+python3 manage.py runserver
+
+
+nginx:
+sudo service nginx restart
