@@ -1,12 +1,12 @@
 # polish_freestyle_app
 
 
-Soft mode: at https://freestyle-app.onrender.com/words/soft_mode/
-
-
-
 ## Aim
 The aim of this project is to revolutionize Polish freestyle rap battles, drawing inspiration from the Spanish Latin scene. Our focus is on reducing vulgarity and promoting the style and culture of the art of words.
+
+## Current state
+
+Actually there is word mode and image mode with customisable timer settings, frontend with backend works under one gunicorn process.
 
 ## Goals
 
@@ -28,7 +28,7 @@ The aim of this project is to revolutionize Polish freestyle rap battles, drawin
 - **Tool for Organizing Freestyle Battles**: This includes creating tournaments and managing the judging of elimination stages.
 
 ## Technical Specifications
-- **Frontend**: A technology stack that supports both mobile apps and a website, allowing the same codebase for different platforms.
+- **Frontend**: React Native for Web to support different devices in the future
 - **Backend**: Django REST framework with SQLite as the initial database.
 
 ---
