@@ -6,7 +6,7 @@ The aim of this project is to revolutionize Polish freestyle rap battles, drawin
 
 ## Current state
 
-Actually there is word mode and image mode with customisable timer settings, frontend with backend works under one gunicorn process.
+Actually there is word mode and image mode with customisable timer settings, frontend with backend works under one gunicorn process.   
 
 ## Goals
 
@@ -14,8 +14,8 @@ Actually there is word mode and image mode with customisable timer settings, fro
 - **Create a Base of Free for Profit Instrumentals**: Engaging the community in building a diverse library of instrumentals.
 
 ### Introduction of New Round Types
-- **Beat Mode**: Participants can choose the type of beat (e.g., Trap, Drill, Boom-bap, etc.).
-- **Hard Mode / Soft Mode**: A new random word introduced every 5/10 seconds.
+- **Beat Mode**: Integrating streaming services like Spotify/Soundcloud for instrumentals
+- **Hard Mode / Soft Mode**: A new random word introduced with time intervals
 - **Kick Back**: A new format one says line and second has to say 3 next lines on the same rhyme
 - **Character Fights**: Thematic battles like Superman vs Batman.
 
@@ -25,7 +25,7 @@ Actually there is word mode and image mode with customisable timer settings, fro
 - **Classic Topics**: Maintaining the traditional elements of Polish freestyle.
 
 ## Functional Goals
-- **Tool for Organizing Freestyle Battles**: This includes creating tournaments and managing the judging of elimination stages.
+- **Tool for Organizing Freestyle Battles**: This includes creating tournaments and managing the judging of elimination stage.
 
 ## Technical Specifications
 - **Frontend**: React Native for Web to support different devices in the future
