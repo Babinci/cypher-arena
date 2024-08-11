@@ -1,0 +1,269 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(45deg, #1b1b2f, #3a3a52);
+    color: #FFFFFF;
+    line-height: 1.6;
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+  }
+  
+  a {
+    color: #ffdd57; /* Bright yellow for contrast */
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Container classes */
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Header styles */
+  header {
+    background: linear-gradient(90deg, #ffdd57, #ffdd57);
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 2px solid #ffdd57;
+  }
+  
+  header h1 {
+    color: #121212;
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Navigation styles */
+  nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+  }
+  
+  nav ul li {
+    margin: 0 20px;
+  }
+  
+  nav ul li a {
+    color: #ffdd57;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+  }
+  
+  nav ul li a:hover {
+    color: #fff;
+  }
+  
+  /* Button styles */
+  button {
+    background: #ffdd57;
+    color: #121212;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  button:hover {
+    background: #ffd700;
+    transform: translateY(-2px);
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 10px #ffd700;
+  }
+  
+  /* Form styles */
+  form {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  form input, form select, form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  form input:focus, form select:focus, form textarea:focus {
+    border-color: #ffdd57;
+    outline: none;
+  }
+  
+  /* Card styles */
+  .card {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 25px;
+    margin: 25px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  .card h2 {
+    margin-bottom: 15px;
+    font-size: 2rem;
+    color: #ffdd57;
+  }
+  
+  .card p {
+    margin-bottom: 15px;
+  }
+  
+  /* Utility classes */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-2 {
+    margin-top: 20px;
+  }
+  
+  .mb-2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .fade-in {
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .flex {
+      flex-direction: column;
+    }
+  
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    nav ul li {
+      margin: 10px 0;
+    }
+  
+    header h1 {
+      font-size: 2rem;
+    }
+  }
+
+  .circle {
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: #ffdd57;
+    color: #121212;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* This ensures that absolute positioning is relative to the circle */
+    margin: auto;
+    padding: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+  
+  .circle .word {
+    font-size: 5vw; /* Initial font size adjusted for visibility */
+    max-font-size: 64px; /* Ensures font does not become too large */
+    min-font-size: 16px; /* Ensures font does not become too small */
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: font-size 0.3s ease;
+  }
+  
+  .circle .timer {
+    font-size: 3vw;
+    color: #000;
+    position: absolute;
+    bottom: 10%; /* Adjusted to better fit within the circle */
+    width: 100%;
+    text-align: center;
+  }
+  
+
+  .control-panel {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .control-panel div, .control-panel button, .control-panel input[type="range"] {
+    margin: 10px; /* Ensures consistent spacing around elements */
+    display: block; /* Makes elements take full width of their container */
+  }
+  
+  /* Styling adjustments for inputs and buttons to appear inline */
+  .control-panel button, .control-panel input[type="range"] {
+    width: auto; /* Allow these elements to shrink/grow as needed */
+    margin: 10px auto; /* Center these elements horizontally */
+  }
+
+
+  /* Ensure the text fits well in the circle
+  .circle span {
+    padding: 10px;
+    text-align: center;
+  } */
