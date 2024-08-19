@@ -1,63 +1,92 @@
-name: Deploy and Migrate
+name: Flexible Deploy to Kamatera
 
 on:
-  push:
-    branches:
-      - main  # or your production branch
+  workflow_dispatch:
+    inputs:
+      deploy_confirmation:
+        description: 'Type "yes" to confirm deployment'
+        required: true
+      pull_changes:
+        description: 'Pull latest changes?'
+        required: true
+        default: 'yes'
+      run_migrations:
+        description: 'Run database migrations?'
+        required: true
+        default: 'no'
+      restart_backend:
+        description: 'Restart backend server?'
+        required: true
+        default: 'no'
+      rebuild_frontend:
+        description: 'Rebuild and restart frontend?'
+        required: true
+        default: 'no'
+      restart_nginx:
+        description: 'Restart Nginx?'
+        required: true
+        default: 'no'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: github.event.inputs.deploy_confirmation == 'yes'
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.0
       with:
-        python-version: '3.x'
+        ssh-private-key: ${{ secrets.KAMATERA_SSH_PRIVATE_KEY }}
 
-    - name: Install dependencies
+    - name: Deploy to Kamatera
+      env:
+        HOST: ${{ secrets.KAMATERA_HOST }}
+        USER: ${{ secrets.KAMATERA_USER }}
       run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-
-    - name: Run Django migrations
-      run: |
-        cd backend
-        python manage.py migrate
-
-    - name: Build React Native app
-      run: |
-        cd frontend
-        npm install
-        npm run build
-
-    - name: Deploy to Ubuntu server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
+        ssh -o StrictHostKeyChecking=no $USER@$HOST << EOF
+          # Navigate to your project directory
           cd /path/to/your/project
-          git pull origin main
-          # Update backend
-          cd backend
-          pip install -r requirements.txt
-          python manage.py migrate
-          # Update frontend
-          cd ../frontend
-          npm install
-          npm run build
-          # Restart your services (e.g., gunicorn, nginx)
-          sudo systemctl restart gunicorn
-          sudo systemctl restart nginx
 
-    - name: Sync media files
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        source: "backend/media/"
-        target: "/path/to/your/project/backend/"
+          # Pull the latest changes
+          if [ "${{ github.event.inputs.pull_changes }}" == "yes" ]; then
+            echo "Pulling latest changes..."
+            git pull origin main
+          fi
+
+          # Run Django migrations
+          if [ "${{ github.event.inputs.run_migrations }}" == "yes" ]; then
+            echo "Running migrations..."
+            source /path/to/your/venv/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+          fi
+
+          # Restart the backend server
+          if [ "${{ github.event.inputs.restart_backend }}" == "yes" ]; then
+            echo "Restarting backend..."
+            screen -S backend -X stuff $'\003'
+            screen -S backend -X stuff 'python manage.py runserver 0.0.0.0:8000\n'
+          fi
+
+          # Rebuild and restart frontend
+          if [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ]; then
+            echo "Rebuilding and restarting frontend..."
+            cd frontend
+            npm install
+            npm run build
+            screen -S frontend -X stuff $'\003'
+            screen -S frontend -X stuff 'npm start\n'
+          fi
+
+          # Restart Nginx
+          if [ "${{ github.event.inputs.restart_nginx }}" == "yes" ]; then
+            echo "Restarting Nginx..."
+            sudo systemctl restart nginx
+          fi
+        EOF
+
+    - name: Verify Deployment
+      run: |
+        echo "Deployment steps completed. Verify the changes at your server's IP or domain."

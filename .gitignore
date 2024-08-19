@@ -6,6 +6,7 @@ backend/download_images_save_model.py
 backend/render.yaml
 backend/shell_test.py
 backend/jupyters/
+backend/db_dumpdata/
 backend/venv/
 
 # Python

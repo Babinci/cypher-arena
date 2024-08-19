@@ -16,3 +16,13 @@ python3 manage.py runserver
 
 nginx:
 sudo service nginx restart
+
+
+for github actions:
+ scp -r /home/wojtek/freestyle_app_project/backend/media/images root@194.146.39.250:/root/freestyle_fusion/polish_freestyle_app/backend/media
+
+
+copy_and_replace (nginx conf file):
+scp -f /etc/nginx/sites-enabled/default root@194.146.39.250:/etc/nginx/sites-enabled/default
+
+ ssh
