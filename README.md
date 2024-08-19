@@ -2,7 +2,7 @@
 
 
 ## Aim
-The aim of this project is to revolutionize Polish freestyle rap battles, drawing inspiration from the Spanish Latin scene. Our focus is on reducing vulgarity and promoting the style and culture of the art of words.
+The aim of this project is to revolutionize Polish freestyle rap battles, drawing inspiration from the Spanish Latin scene with focus on reducing vulgarity and promoting the style and culture of the art of words.
 
 ## Current state
 
@@ -30,6 +30,7 @@ There is big (~200 000) database of polish words, which are then grouped by occu
 - **Classic Topics**: Maintaining the traditional elements of Polish freestyle.
 
 ## Functional Goals
+- **Judging system**: Adapted to polish conditions system of judging freestyle, taken from the FMS Series in Spanish/ Latin world,
 - **Tool for Organizing Freestyle Battles**: This includes creating tournaments and managing the judging of elimination stage.
 
 ## Technical Specifications
