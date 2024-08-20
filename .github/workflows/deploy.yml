@@ -26,6 +26,10 @@ on:
         description: 'Restart Nginx?'
         required: true
         default: 'no'
+      install_new_packages:
+        description: 'Install new npm packages?'
+        required: true
+        default: 'no'
 
 jobs:
   deploy:
@@ -67,15 +71,21 @@ jobs:
           if [ "${{ github.event.inputs.restart_backend }}" == "yes" ]; then
             echo "Restarting backend..."
             screen -S backend -X stuff $'\003'
-            screen -S backend -X stuff 'python manage.py runserver 0.0.0.0:8000\n'
+            screen -S frontend -X stuff 'python manage.py runserver 0.0.0.0:8000\n'
           fi
 
-          # Rebuild and restart frontend
-          if [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ]; then
-            echo "Rebuilding and restarting frontend..."
+          # Install new npm packages and rebuild frontend
+          if [ "${{ github.event.inputs.install_new_packages }}" == "yes" ] || [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ]; then
+            echo "Installing new npm packages and rebuilding frontend..."
             cd frontend
+            npm install react-full-screen
             npm install
             npm run build
+          fi
+
+          # Restart frontend
+          if [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ]; then
+            echo "Restarting frontend..."
             screen -S frontend -X stuff $'\003'
             screen -S frontend -X stuff 'npm start\n'
           fi

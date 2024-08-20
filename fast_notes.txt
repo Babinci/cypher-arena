@@ -25,4 +25,4 @@ for github actions:
 copy_and_replace (nginx conf file):
 scp -f /etc/nginx/sites-enabled/default root@194.146.39.250:/etc/nginx/sites-enabled/default
 
- ssh
+ ssh root@194.146.39.250

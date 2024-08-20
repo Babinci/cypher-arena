@@ -10,6 +10,7 @@
     "axios": "^1.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-full-screen": "^1.1.1",
     "react-native-web": "^0.19.10",
     "react-router-dom": "^6.24.0",
     "react-scripts": "5.0.1",

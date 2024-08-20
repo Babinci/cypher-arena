@@ -11,7 +11,7 @@ You can check demo here: http://194.146.39.250/freestyle_app/
 
 **About word mode**: 
 There is big (~200 000) database of polish words, which are then grouped by occurency and linguistic type.
-**About image mode**: There is big open source image library, which is used. There are >2000 unique categories of images, to supply maximum diversity of topics,in about 7GB of data on the production server
+**About image mode**: There is big open source image library, which is used. There are >2000 unique categories of images, to supply maximum diversiWty of topics, in about 7GB of data on the production server
 
 
 ## Goals

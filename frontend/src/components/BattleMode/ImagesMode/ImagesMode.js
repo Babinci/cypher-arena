@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import apiConfig from '../../../config/apiConfig';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
+import {FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 function ImagesMode() {
   const BUFFER_SIZE = 100;  // Max number of images to keep in memory
@@ -12,6 +13,9 @@ function ImagesMode() {
   const [timer, resetImageTimer] = useWordTimer(changeInterval, isActive);
   const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
   const [nextPage, setNextPage] = useState(null);
+
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const fullScreenHandle = useFullScreenHandle();
 
   const fetchImages = useCallback((url, reset = false) => {
     console.log("Fetching images...");
@@ -73,36 +77,81 @@ function ImagesMode() {
     getNextImage();
   };
 
+  const toggleFullScreen = () => {
+    if (isFullScreen) {
+      fullScreenHandle.exit();
+    } else {
+      fullScreenHandle.enter();
+    }
+    setIsFullScreen(!isFullScreen);
+  };
+
   return (
-    <div className="images-mode" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}>
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', maxHeight: '80vh' }}>
-        {images.length > 0 ? (
-          <img src={images[currentImageIndex]?.image_file} alt="Display" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-        ) : (
-          <p>No images loaded</p>
-        )}
-      </div>
-      <div className="control-panel" style={{ width: '100%', overflowY: 'auto', padding: '10px', boxSizing: 'border-box', maxHeight: '20vh' }}>
-        <div className="timer">Image Timer: {timer} seconds</div>
-        <div>Interval: {changeInterval} seconds</div>
-        <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
-        <input
-          type="range"
-          min="10"
-          max="300"
-          value={roundDuration === Infinity ? 300 : roundDuration}
-          onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-          style={{ width: '100%' }}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <button onClick={getNextImage}>Next Image</button>
-          <button onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}>Decrease Interval</button>
-          <button onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}>Increase Interval</button>
-          <button onClick={() => setIsActive(!isActive)}>{isActive ? 'Pause' : 'Resume'}</button>
-          <button onClick={handleResetRound}>Reset Round</button>
+    <FullScreen handle={fullScreenHandle}>
+      <div className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}>
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: isFullScreen ? '100vh' : '80vh', position: 'relative' }}>
+          {images.length > 0 ? (
+            <img src={images[currentImageIndex]?.image_file} alt="Display" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+          ) : (
+            <p>No images loaded</p>
+          )}
+          <button
+            onClick={toggleFullScreen}
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              background: 'rgba(0,0,0,0.5)',
+              color: 'white',
+              border: 'none',
+              padding: '5px 10px',
+              cursor: 'pointer',
+              zIndex: 1000
+            }}
+          >
+            {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+          </button>
+        </div>
+        <div
+          className="control-panel"
+          style={{
+            width: '100%',
+            overflowY: 'auto',
+            padding: '10px',
+            boxSizing: 'border-box',
+            maxHeight: isFullScreen ? 'auto' : '20vh',
+            background: 'rgba(0,0,0,0.5)',
+            color: 'white',
+            position: isFullScreen ? 'fixed' : 'static',
+            bottom: 0,
+            left: 0,
+            transition: 'opacity 0.3s ease-in-out',
+            opacity: isFullScreen ? 0 : 1
+          }}
+          onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+          onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+        >
+          <div className="timer">Image Timer: {timer} seconds</div>
+          <div>Interval: {changeInterval} seconds</div>
+          <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
+          <input
+            type="range"
+            min="10"
+            max="300"
+            value={roundDuration === Infinity ? 300 : roundDuration}
+            onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
+            style={{ width: '100%' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <button onClick={getNextImage}>Next Image</button>
+            <button onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}>Decrease Interval</button>
+            <button onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}>Increase Interval</button>
+            <button onClick={() => setIsActive(!isActive)}>{isActive ? 'Pause' : 'Resume'}</button>
+            <button onClick={handleResetRound}>Reset Round</button>
+          </div>
         </div>
       </div>
-    </div>
+    </FullScreen>
   );
 }
 
