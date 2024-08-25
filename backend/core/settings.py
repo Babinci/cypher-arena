@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     #project apps
     'words',
     'images_mode',
+    'user_management',
     ##external apps
      "corsheaders",
     'rest_framework'
