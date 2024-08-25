@@ -34,7 +34,8 @@ coverage.xml
 .mypy_cache
 .pytest_cache
 .hypothesis
-
+# Django migrations
+**/migrations/
 # Frontend
 frontend/node_modules/
 frontend/.pnp
