@@ -35,6 +35,26 @@ function ImagesMode() {
       .catch(error => console.error('Error fetching images:', error));
   }, []);
 
+  const fetchManyImages = useCallback(async () => {
+    let allImages = [];
+    let url = `${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=100`;
+    
+    for (let i = 0; i < 20; i++) {  // Fetch 20 pages of 100 images each
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        allImages = [...allImages, ...data.results];
+        url = data.next;
+        if (!url) break;  // Stop if there are no more pages
+      } catch (error) {
+        console.error('Error fetching many images:', error);
+        break;
+      }
+    }
+
+    return allImages;
+  }, []);
+
   const getNextImage = useCallback(() => {
     setCurrentImageIndex(prevIndex => {
       let newIndex = prevIndex + 1;
@@ -88,15 +108,42 @@ function ImagesMode() {
     setIsFullScreen(!isFullScreen);
   };
 
+  const displayImage = useCallback(async (imageUrl) => {
+    try {
+      const cache = await caches.open('image-cache');
+      const cachedResponse = await cache.match(imageUrl);
+      
+      if (cachedResponse) {
+        return URL.createObjectURL(await cachedResponse.blob());
+      } else {
+        return imageUrl;
+      }
+    } catch (error) {
+      console.error('Error retrieving cached image:', error);
+      return imageUrl;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (images.length > 0 && currentImageIndex < images.length) {
+      displayImage(images[currentImageIndex].image_file).then(src => {
+        const imgElement = document.getElementById('currentImage');
+        if (imgElement) {
+          imgElement.src = src;
+        }
+      });
+    }
+  }, [currentImageIndex, images, displayImage]);
+
   return (
     <FullScreen handle={fullScreenHandle}>
       <div className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}>
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: isFullScreen ? '100vh' : '80vh', position: 'relative' }}>
           {images.length > 0 ? (
-            <img 
-              src={images[currentImageIndex]?.image_file} 
-              alt="Display" 
-              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+            <img
+              id="currentImage"
+              alt="Display"
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
             />
           ) : (
             <p>No images loaded</p>
@@ -123,6 +170,7 @@ function ImagesMode() {
               console.log(`Preload progress: ${progress * 100}%`);
               if (progress === 1) setImagesPreloaded(true);
             }}
+            fetchManyImages={fetchManyImages}
           />
         </div>
         <div
@@ -155,7 +203,7 @@ function ImagesMode() {
             onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
             style={{ width: '100%' }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
             <button onClick={getNextImage}>Next Image</button>
             <button onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}>Decrease Interval</button>
             <button onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}>Increase Interval</button>
@@ -167,5 +215,6 @@ function ImagesMode() {
     </FullScreen>
   );
 }
+
 
 export default ImagesMode;
