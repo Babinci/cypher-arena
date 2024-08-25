@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import apiConfig from '../../../config/apiConfig';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
 import {FullScreen, useFullScreenHandle } from 'react-full-screen';
+import ImagePreloader from './ImagePreloader';
 
 function ImagesMode() {
   const BUFFER_SIZE = 100;  // Max number of images to keep in memory
@@ -13,8 +14,8 @@ function ImagesMode() {
   const [timer, resetImageTimer] = useWordTimer(changeInterval, isActive);
   const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
   const [nextPage, setNextPage] = useState(null);
-
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [imagesPreloaded, setImagesPreloaded] = useState(false);
   const fullScreenHandle = useFullScreenHandle();
 
   const fetchImages = useCallback((url, reset = false) => {
@@ -29,6 +30,7 @@ function ImagesMode() {
           return newImages.slice(Math.max(newImages.length - BUFFER_SIZE, 0));
         });
         setNextPage(data.next);
+        setImagesPreloaded(false);
       })
       .catch(error => console.error('Error fetching images:', error));
   }, []);
@@ -91,7 +93,11 @@ function ImagesMode() {
       <div className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}>
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: isFullScreen ? '100vh' : '80vh', position: 'relative' }}>
           {images.length > 0 ? (
-            <img src={images[currentImageIndex]?.image_file} alt="Display" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            <img 
+              src={images[currentImageIndex]?.image_file} 
+              alt="Display" 
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
+            />
           ) : (
             <p>No images loaded</p>
           )}
@@ -111,6 +117,13 @@ function ImagesMode() {
           >
             {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
           </button>
+          <ImagePreloader
+            images={images}
+            onProgress={(progress) => {
+              console.log(`Preload progress: ${progress * 100}%`);
+              if (progress === 1) setImagesPreloaded(true);
+            }}
+          />
         </div>
         <div
           className="control-panel"

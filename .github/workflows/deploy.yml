@@ -51,7 +51,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no $USER@$HOST << EOF
           # Navigate to your project directory
-          cd /path/to/your/project
+          cd /root/freestyle_fusion/polish_freestyle_app
 
           # Pull the latest changes
           if [ "${{ github.event.inputs.pull_changes }}" == "yes" ]; then
@@ -62,8 +62,8 @@ jobs:
           # Run Django migrations
           if [ "${{ github.event.inputs.run_migrations }}" == "yes" ]; then
             echo "Running migrations..."
-            source /path/to/your/venv/bin/activate
-            pip install -r requirements.txt
+            source /root/freestyle_fusion/polish_freestyle_app/backend/venv/bin/activate
+            
             python manage.py migrate
           fi
 
