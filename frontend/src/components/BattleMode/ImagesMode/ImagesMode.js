@@ -3,6 +3,7 @@ import apiConfig from '../../../config/apiConfig';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
 import {FullScreen, useFullScreenHandle } from 'react-full-screen';
 import ImagePreloader from './ImagePreloader';
+import { getImage } from './indexedDBUtils';
 
 function ImagesMode() {
   const BUFFER_SIZE = 100;  // Max number of images to keep in memory
@@ -110,18 +111,14 @@ function ImagesMode() {
 
   const displayImage = useCallback(async (imageUrl) => {
     try {
-      const cache = await caches.open('image-cache');
-      const cachedResponse = await cache.match(imageUrl);
-      
-      if (cachedResponse) {
-        return URL.createObjectURL(await cachedResponse.blob());
-      } else {
-        return imageUrl;
+      const cachedImage = await getImage(imageUrl);
+      if (cachedImage) {
+        return URL.createObjectURL(cachedImage);
       }
     } catch (error) {
       console.error('Error retrieving cached image:', error);
-      return imageUrl;
     }
+    return imageUrl;
   }, []);
 
   useEffect(() => {

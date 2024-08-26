@@ -1,32 +1,34 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-
+import { storeImage } from './indexedDBUtils';
 const ImagePreloader = ({ images, onProgress, fetchManyImages }) => {
-    const [isPreloading, setIsPreloading] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [isExpanded, setIsExpanded] = useState(false);
-    const containerRef = useRef(null);
-  
-    const preloadImages = useCallback(async (imageSet) => {
-      setIsPreloading(true);
-      setProgress(0);
-  
-      const cache = await caches.open('image-cache');
-      
-      for (let i = 0; i < imageSet.length; i++) {
-        const image = imageSet[i];
-        try {
-          const response = await fetch(image.image_file);
-          await cache.put(image.image_file, response.clone());
-          
-          setProgress((i + 1) / imageSet.length);
-          onProgress((i + 1) / imageSet.length);
-        } catch (error) {
-          console.error('Error caching image:', error);
-        }
+  const [isPreloading, setIsPreloading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isPreloaded, setIsPreloaded] = useState(false);  // Add this line
+  const containerRef = useRef(null);
+
+  const preloadImages = useCallback(async (imageSet) => {
+    setIsPreloading(true);
+    setProgress(0);
+    setIsPreloaded(false);  // Reset preloaded state when starting
+
+    for (let i = 0; i < imageSet.length; i++) {
+      const image = imageSet[i];
+      try {
+        const response = await fetch(image.image_file);
+        const blob = await response.blob();
+        await storeImage(image.image_file, blob);
+       
+        setProgress((i + 1) / imageSet.length);
+        onProgress((i + 1) / imageSet.length);
+      } catch (error) {
+        console.error('Error caching image:', error);
       }
-  
-      setIsPreloading(false);
-    }, [onProgress]);
+    }
+
+    setIsPreloading(false);
+    setIsPreloaded(true);
+  }, [onProgress]);
   
     const handlePreloadCurrent = useCallback(() => {
       preloadImages(images);
