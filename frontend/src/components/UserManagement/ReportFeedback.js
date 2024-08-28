@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiConfig from '../../config/apiConfig';
 
 function ReportFeedback() {
   const [nickname, setNickname] = useState('');
   const [feedback, setFeedback] = useState('');
   const [message, setMessage] = useState('');
+  const [csrfToken, setCsrfToken] = useState('');
+
+  useEffect(() => {
+    // Function to get CSRF token from cookies
+    const getCsrfToken = () => {
+      const name = 'csrftoken=';
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookieArray = decodedCookie.split(';');
+      for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+        }
+      }
+      return '';
+    };
+
+    setCsrfToken(getCsrfToken());
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,15 +32,18 @@ function ReportFeedback() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
         },
         body: JSON.stringify({ nickname, feedback }),
+        credentials: 'include', // This is important for including cookies in the request
       });
       if (response.ok) {
         setMessage('Feedback submitted successfully!');
         setNickname('');
         setFeedback('');
       } else {
-        setMessage('Failed to submit feedback. Please try again.');
+        const errorData = await response.json();
+        setMessage(`Failed to submit feedback. ${errorData.detail || 'Please try again.'}`);
       }
     } catch (error) {
       setMessage('An error occurred. Please try again later.');
