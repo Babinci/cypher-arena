@@ -1,15 +1,25 @@
 name: Flexible Deploy to Kamatera
-
 on:
+  push:
+    branches:
+      - main  # Or your production branch
   workflow_dispatch:
     inputs:
       deploy_confirmation:
         description: 'Type "yes" to confirm deployment'
         required: true
+      update_git_only:
+        description: 'Only update git without deploying?'
+        required: true
+        default: 'no'
       pull_changes:
         description: 'Pull latest changes?'
         required: true
         default: 'yes'
+      make_migrations:
+        description: 'Make new migrations?'
+        required: true
+        default: 'no'
       run_migrations:
         description: 'Run database migrations?'
         required: true
@@ -21,7 +31,7 @@ on:
       rebuild_frontend:
         description: 'Rebuild and restart frontend?'
         required: true
-        default: 'no'
+        default: 'yes'
       restart_nginx:
         description: 'Restart Nginx?'
         required: true
@@ -30,20 +40,17 @@ on:
         description: 'Install new npm packages?'
         required: true
         default: 'no'
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.inputs.deploy_confirmation == 'yes'
+    if: github.event_name == 'push' || github.event.inputs.deploy_confirmation == 'yes'
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.0
       with:
         ssh-private-key: ${{ secrets.KAMATERA_SSH_PRIVATE_KEY }}
-
     - name: Deploy to Kamatera
       env:
         HOST: ${{ secrets.KAMATERA_HOST }}
@@ -52,51 +59,53 @@ jobs:
         ssh -o StrictHostKeyChecking=no $USER@$HOST << EOF
           # Navigate to your project directory
           cd /root/freestyle_fusion/polish_freestyle_app
-
           # Pull the latest changes
-          if [ "${{ github.event.inputs.pull_changes }}" == "yes" ]; then
+          if [ "${{ github.event.inputs.pull_changes }}" == "yes" ] || [ "${{ github.event_name }}" == "push" ]; then
             echo "Pulling latest changes..."
             git pull origin main
           fi
-
+          # Exit if only updating git
+          if [ "${{ github.event.inputs.update_git_only }}" == "yes" ]; then
+            echo "Git updated. Exiting without further deployment actions."
+            exit 0
+          fi
+          # Activate virtual environment
+          source /root/freestyle_fusion/polish_freestyle_app/backend/venv/bin/activate
+          # Make migrations
+          if [ "${{ github.event.inputs.make_migrations }}" == "yes" ]; then
+            echo "Making migrations..."
+            python manage.py makemigrations
+          fi
           # Run Django migrations
           if [ "${{ github.event.inputs.run_migrations }}" == "yes" ]; then
             echo "Running migrations..."
-            source /root/freestyle_fusion/polish_freestyle_app/backend/venv/bin/activate
-            
             python manage.py migrate
           fi
-
           # Restart the backend server
           if [ "${{ github.event.inputs.restart_backend }}" == "yes" ]; then
             echo "Restarting backend..."
             screen -S backend -X stuff $'\003'
-            screen -S frontend -X stuff 'python manage.py runserver 0.0.0.0:8000\n'
+            screen -S backend -X stuff 'python manage.py runserver 0.0.0.0:8000\n'
           fi
-
           # Install new npm packages and rebuild frontend
-          if [ "${{ github.event.inputs.install_new_packages }}" == "yes" ] || [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ]; then
+          if [ "${{ github.event.inputs.install_new_packages }}" == "yes" ] || [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ] || [ "${{ github.event_name }}" == "push" ]; then
             echo "Installing new npm packages and rebuilding frontend..."
             cd frontend
-            npm install react-full-screen
             npm install
             npm run build
           fi
-
           # Restart frontend
-          if [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ]; then
+          if [ "${{ github.event.inputs.rebuild_frontend }}" == "yes" ] || [ "${{ github.event_name }}" == "push" ]; then
             echo "Restarting frontend..."
             screen -S frontend -X stuff $'\003'
             screen -S frontend -X stuff 'npm start\n'
           fi
-
           # Restart Nginx
           if [ "${{ github.event.inputs.restart_nginx }}" == "yes" ]; then
             echo "Restarting Nginx..."
             sudo systemctl restart nginx
           fi
         EOF
-
     - name: Verify Deployment
       run: |
         echo "Deployment steps completed. Verify the changes at your server's IP or domain."

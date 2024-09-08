@@ -6,7 +6,7 @@ function Home() {
 
   return (
     <div className="home">
-      <h1>Apka prawdziwych freestylowców</h1>
+      <h1>Apka prawdziwych freestylerów</h1>
       <button onClick={() => navigate('/word-mode')}>Word Mode</button>
       <button onClick={() => navigate('/image-mode')}>Obrazki</button>
       <button onClick={() => navigate('/report-feedback')}>Daj Feedback!</button>
