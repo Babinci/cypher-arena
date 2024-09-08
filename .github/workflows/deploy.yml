@@ -45,6 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.inputs.deploy_confirmation == 'yes'
     steps:
+    - name: Debug SSH connection
+      run: ssh -v -o StrictHostKeyChecking=no ${{ secrets.KAMATERA_USER }}@${{ secrets.KAMATERA_HOST }} echo "SSH connection successful"
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set up SSH
