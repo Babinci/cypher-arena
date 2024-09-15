@@ -1,0 +1,19 @@
+name: Simple SSH Connection Test
+on: [workflow_dispatch]
+
+jobs:
+  test_ssh:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Debug SSH connection
+      env:
+        HOST: ${{ secrets.KAMATERA_HOST }}
+        USER: ${{ secrets.KAMATERA_USER }}
+        SSH_PRIVATE_KEY: ${{ secrets.KAMATERA_SSH_PRIVATE_KEY }}
+      run: |
+        echo "Debugging SSH connection..."
+        echo "Host is: $HOST"
+        echo "User is: $USER"
+        
+        # Attempt SSH connection with verbose logging
+        ssh -vvv -o StrictHostKeyChecking=no -i <(echo "$SSH_PRIVATE_KEY") $USER@$HOST "echo 'SSH connection successful'"
