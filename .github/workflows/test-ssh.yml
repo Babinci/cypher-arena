@@ -1,4 +1,4 @@
-name: Simple SSH Connection Test
+name: Fixed SSH Connection Test
 on: [workflow_dispatch]
 
 jobs:
@@ -15,5 +15,13 @@ jobs:
         echo "Host is: $HOST"
         echo "User is: $USER"
         
+        # Set up SSH key
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/kamatera_key
+        chmod 600 ~/.ssh/kamatera_key
+        
         # Attempt SSH connection with verbose logging
-        ssh -vvv -o StrictHostKeyChecking=no -i <(echo "$SSH_PRIVATE_KEY") $USER@$HOST "echo 'SSH connection successful'"
+        ssh -vvv -o StrictHostKeyChecking=no -i ~/.ssh/kamatera_key $USER@$HOST "echo 'SSH connection successful'"
+        
+        # Clean up
+        rm ~/.ssh/kamatera_key
