@@ -49,13 +49,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Setup SSH
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.KAMATERA_SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/kamatera_key
+        chmod 600 ~/.ssh/kamatera_key
+        ssh-keyscan -H ${{ secrets.KAMATERA_HOST }} >> ~/.ssh/known_hosts
+
     - name: Deploy to Kamatera
       env:
         HOST: ${{ secrets.KAMATERA_HOST }}
         USER: ${{ secrets.KAMATERA_USER }}
-        SSH_PRIVATE_KEY: ${{ secrets.KAMATERA_SSH_PRIVATE_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i <(echo "$SSH_PRIVATE_KEY") $USER@$HOST << EOF
+        ssh -i ~/.ssh/kamatera_key $USER@$HOST << EOF
           # Navigate to your project directory
           cd /root/freestyle_fusion/polish_freestyle_app
           # Pull the latest changes
@@ -105,6 +113,10 @@ jobs:
             sudo systemctl restart nginx
           fi
         EOF
+
+    - name: Cleanup
+      if: always()
+      run: rm -f ~/.ssh/kamatera_key
 
     - name: Verify Deployment
       run: echo "Deployment steps completed. Verify the changes at your server's IP or domain."
