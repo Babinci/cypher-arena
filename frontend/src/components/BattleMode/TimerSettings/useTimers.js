@@ -45,3 +45,78 @@ const useRoundTimer = (initialDuration, handleRoundEnd) => {
 };
 
 export { useWordTimer, useRoundTimer };
+
+
+
+
+
+//this will be main timer
+
+const useModularTimer = (initialInterval, initialDuration, onIntervalEnd, onRoundEnd) => {
+  const [interval, setInterval] = useState(initialInterval);
+  const [duration, setDuration] = useState(initialDuration);
+  const [isActive, setIsActive] = useState(true);
+  const [timer, setTimer] = useState(initialInterval);
+  const [roundTimer, setRoundTimer] = useState(initialDuration);
+
+  useEffect(() => {
+    let intervalId;
+    if (isActive) {
+      intervalId = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer > 0) return prevTimer - 1;
+          onIntervalEnd();
+          return interval;
+        });
+
+        setRoundTimer((prevRoundTimer) => {
+          if (prevRoundTimer === Infinity) return prevRoundTimer;
+          if (prevRoundTimer > 0) return prevRoundTimer - 1;
+          if (prevRoundTimer === 0) {
+            setIsActive(false);
+            onRoundEnd();
+          }
+          return prevRoundTimer;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(intervalId);
+  }, [isActive, interval, duration, onIntervalEnd, onRoundEnd]);
+
+  const resetTimer = useCallback(() => {
+    setTimer(interval);
+  }, [interval]);
+
+  const resetRoundTimer = useCallback((newDuration = duration) => {
+    setRoundTimer(newDuration);
+    setDuration(newDuration);
+  }, [duration]);
+
+  const setIntervalDuration = useCallback((newInterval) => {
+    setInterval(newInterval);
+    setTimer(newInterval);
+  }, []);
+
+  const setRoundDuration = useCallback((newDuration) => {
+    setDuration(newDuration);
+    setRoundTimer(newDuration);
+  }, []);
+
+  const toggleActive = useCallback(() => {
+    setIsActive((prevIsActive) => !prevIsActive);
+  }, []);
+
+  return {
+    timer,
+    roundTimer,
+    isActive,
+    resetTimer,
+    resetRoundTimer,
+    setIntervalDuration,
+    setRoundDuration,
+    toggleActive,
+    setIsActive,
+  };
+};
+
+export default useModularTimer;
