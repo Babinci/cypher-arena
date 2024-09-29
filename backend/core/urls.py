@@ -19,6 +19,19 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view as swagger_get_schema_view
+
+schema_view = swagger_get_schema_view(
+    openapi.Info(
+        title="Posts API",
+        default_version="1.0.0",
+        description="API documentation of App",
+    ),
+    public=True,
+    # url='http://localhost:8000/',
+    url="",
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,6 +39,18 @@ urlpatterns = [
     path("user_management/", include("user_management.urls")),
     path("images_mode/", include("images_mode.urls")),
     path("contrasting_mode/", include("contrasting_mode.urls")),
+    path(
+        "",
+        include(
+            [
+                path(
+                    "docs/",
+                    schema_view.with_ui("swagger", cache_timeout=0),
+                    name="swagger-schema",
+                ),
+            ]
+        ),
+    ),
 ]
 
 # urlpatterns = [

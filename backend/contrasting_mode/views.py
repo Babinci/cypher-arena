@@ -14,21 +14,17 @@ class ContrastPairViewSet(viewsets.ModelViewSet):
     serializer_class = ContrastPairSerializer
 
     def list(self, request):
-        queryset = self.get_queryset().prefetch_related("tags")
-
+        queryset = self.get_queryset().prefetch_related("tags").exclude(rating=0)
         # Get the number of items to return, default to all
         count = int(request.query_params.get("count", queryset.count()))
-
         # Check if we should return sorted or random results
         sort = request.query_params.get("sort", "random")
-
         if sort == "random":
             # Get random samples
             pairs = sample(list(queryset), min(count, queryset.count()))
         else:
             # Sort by creation date if not random
             pairs = queryset.order_by("created_at")[:count]
-
         serializer = self.get_serializer(pairs, many=True)
         return Response(serializer.data)
 
