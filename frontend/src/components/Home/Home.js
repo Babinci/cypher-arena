@@ -16,6 +16,7 @@ function Home() {
         <h2>Tryb Freestyle</h2>
         <button onClick={() => navigate('/word-mode')}>Word Mode</button>
         <button onClick={() => navigate('/image-mode')}>Obrazki</button>
+        <button onClick={() => navigate('/contrasting-mode')}>Contrasting Mode</button>
         
         <h2>Tryb Ocenianie Walki</h2>
         <button onClick={() => navigate('/battle-judging')}>Ocenianie Pojedynczej Walki</button>

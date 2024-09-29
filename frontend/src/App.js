@@ -9,7 +9,7 @@ import { BackButton } from './components/Navigation/Buttons';
 import Account from './components/Account/Account';
 import BattleJudging from './components/BattleJudging/BattleJudging';
 import OrganizeBattle from './components/OrganizeBattle/OrganizeBattle';
-
+import ContrastingMode from './components/BattleMode/ContrastingMode/ContrastingMode';
 function App() {
   return (
     <BrowserRouter basename="/freestyle_app">
@@ -23,6 +23,7 @@ function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/battle-judging" element={<BattleJudging />} />
           <Route path="/organize-battle" element={<OrganizeBattle />} />
+          <Route path="/contrasting-mode" element={<ContrastingMode />} />
         </Routes>
       </div>
     </BrowserRouter>
