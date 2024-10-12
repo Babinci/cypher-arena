@@ -78,17 +78,20 @@ function ContrastingMode() {
         console.log('Rating submitted:', data);
         setHighlightedRating(rating);
         setShowRatingMessage(true);
-        
+       
         setPairs(prevPairs => {
           const updatedPairs = [...prevPairs];
           updatedPairs[currentPairIndex] = { ...updatedPairs[currentPairIndex], rating: rating };
           return updatedPairs;
         });
 
+        // Set a timeout to move to the next pair and reset the UI
         setTimeout(() => {
           setHighlightedRating(null);
           setShowRatingMessage(false);
-        }, 2000);
+          getNextPair();  // Move to the next pair
+          resetPairTimer();  // Reset the pair timer
+        }, 300);
       })
       .catch(error => console.error('Error submitting rating:', error));
   };
