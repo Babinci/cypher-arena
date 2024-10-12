@@ -12,15 +12,44 @@ function ContrastingMode() {
   const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
   const [highlightedRating, setHighlightedRating] = useState(null);
   const [showRatingMessage, setShowRatingMessage] = useState(false);
+  const [csrfToken, setCsrfToken] = useState('');
 
-  const fetchPairs = useCallback(() => {
-    fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.getContrastPairs}`)
-      .then(response => response.json())
-      .then(data => {
-        setPairs(data);
-      })
-      .catch(error => console.error('Error fetching pairs:', error));
+  const getCsrfToken = useCallback(() => {
+    const name = 'csrftoken=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return '';
   }, []);
+
+
+  useEffect(() => {
+    setCsrfToken(getCsrfToken());
+  }, [getCsrfToken]);
+
+  const fetchPairs = useCallback(async () => {
+    try {
+      const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.getContrastPairs}`, {
+        headers: {
+          'X-CSRFToken': csrfToken,
+        },
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setPairs(data);
+      } else {
+        console.error('Error fetching pairs:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error fetching pairs:', error);
+    }
+  }, [csrfToken]);
 
   useEffect(() => {
     fetchPairs();
@@ -64,17 +93,21 @@ function ContrastingMode() {
     setIsActive(true);
   };
 
-  const handleRating = (rating) => {
+  const handleRating = async (rating) => {
     const currentPair = pairs[currentPairIndex];
-    fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.rateContrastPair}${currentPair.id}/rate/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ rating }),
-    })
-      .then(response => response.json())
-      .then(data => {
+    try {
+      const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.rateContrastPair}${currentPair.id}/rate/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({ rating }),
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
         console.log('Rating submitted:', data);
         setHighlightedRating(rating);
         setShowRatingMessage(true);
@@ -85,32 +118,43 @@ function ContrastingMode() {
           return updatedPairs;
         });
 
-        // Set a timeout to move to the next pair and reset the UI
         setTimeout(() => {
           setHighlightedRating(null);
           setShowRatingMessage(false);
-          getNextPair();  // Move to the next pair
-          resetPairTimer();  // Reset the pair timer
+          getNextPair();
+          resetPairTimer();
         }, 300);
-      })
-      .catch(error => console.error('Error submitting rating:', error));
+      } else {
+        console.error('Error submitting rating:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error submitting rating:', error);
+    }
   };
 
-  const handleAddTag = (tag) => {
+  const handleAddTag = async (tag) => {
     const currentPair = pairs[currentPairIndex];
-    fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.addTagToContrastPair}${currentPair.id}/add_tag/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ tag }),
-    })
-      .then(response => response.json())
-      .then(data => {
+    try {
+      const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.addTagToContrastPair}${currentPair.id}/add_tag/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({ tag }),
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
         console.log('Tag added:', data);
         // You might want to update the local state here to reflect the new tag
-      })
-      .catch(error => console.error('Error adding tag:', error));
+      } else {
+        console.error('Error adding tag:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error adding tag:', error);
+    }
   };
 
   return (
