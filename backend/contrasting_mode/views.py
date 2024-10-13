@@ -6,6 +6,8 @@ from django.db.models import F
 from random import sample
 from .models import ContrastPair, Tag
 from .serializers import ContrastPairSerializer, TagSerializer
+from django.db.models import Q
+
 
 
 # Create your views here.
@@ -14,7 +16,11 @@ class ContrastPairViewSet(viewsets.ModelViewSet):
     serializer_class = ContrastPairSerializer
 
     def list(self, request):
-        queryset = self.get_queryset().prefetch_related("tags").exclude(rating=1)
+        # queryset = self.get_queryset().prefetch_related("tags").exclude(rating=1)
+
+        queryset = self.get_queryset().prefetch_related("tags").filter(
+            Q(rating__isnull=True) 
+        ).exclude(rating=1)
         # Get the number of items to return, default to all
         count = int(request.query_params.get("count", queryset.count()))
         # Check if we should return sorted or random results

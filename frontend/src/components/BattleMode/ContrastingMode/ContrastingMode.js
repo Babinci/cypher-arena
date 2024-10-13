@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import apiConfig from '../../../config/apiConfig';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
 
@@ -13,6 +13,7 @@ function ContrastingMode() {
   const [highlightedRating, setHighlightedRating] = useState(null);
   const [showRatingMessage, setShowRatingMessage] = useState(false);
   const [csrfToken, setCsrfToken] = useState('');
+  const containerRef = useRef(null);
 
   const getCsrfToken = useCallback(() => {
     const name = 'csrftoken=';
@@ -26,7 +27,6 @@ function ContrastingMode() {
     }
     return '';
   }, []);
-
 
   useEffect(() => {
     setCsrfToken(getCsrfToken());
@@ -61,6 +61,26 @@ function ContrastingMode() {
       resetPairTimer();
     }
   }, [timer, isActive, resetPairTimer]);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      const key = event.key;
+      if (['1', '2', '3', '4', '5'].includes(key)) {
+        handleRating(parseInt(key));
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.focus();
+    }
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [currentPairIndex, pairs]);
 
   function getNextPair() {
     setCurrentPairIndex(prevIndex => {
@@ -105,7 +125,7 @@ function ContrastingMode() {
         body: JSON.stringify({ rating }),
         credentials: 'include',
       });
-      
+     
       if (response.ok) {
         const data = await response.json();
         console.log('Rating submitted:', data);
@@ -117,7 +137,6 @@ function ContrastingMode() {
           updatedPairs[currentPairIndex] = { ...updatedPairs[currentPairIndex], rating: rating };
           return updatedPairs;
         });
-
         setTimeout(() => {
           setHighlightedRating(null);
           setShowRatingMessage(false);
@@ -144,7 +163,7 @@ function ContrastingMode() {
         body: JSON.stringify({ tag }),
         credentials: 'include',
       });
-      
+     
       if (response.ok) {
         const data = await response.json();
         console.log('Tag added:', data);
@@ -158,13 +177,18 @@ function ContrastingMode() {
   };
 
   return (
-    <div className="contrasting-mode" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}>
+    <div 
+      className="contrasting-mode" 
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}
+      ref={containerRef}
+      tabIndex={0}
+    >
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '80vh' }}>
         {pairs.length > 0 && (
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             justifyContent: 'center',
             width: '80%',
             height: '60%',
@@ -202,9 +226,9 @@ function ContrastingMode() {
             ))}
           </div>
           {showRatingMessage && (
-            <div style={{ 
-              color: 'green', 
-              fontSize: '14px', 
+            <div style={{
+              color: 'green',
+              fontSize: '14px',
               marginTop: '5px',
               animation: 'fadeInOut 2s ease-in-out'
             }}>
