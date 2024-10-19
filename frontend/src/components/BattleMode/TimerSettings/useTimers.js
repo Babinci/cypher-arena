@@ -1,3 +1,5 @@
+// useTimers.js
+
 import { useState, useEffect, useCallback } from 'react';
 
 const useWordTimer = (initialInterval, isActive) => {

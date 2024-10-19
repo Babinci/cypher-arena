@@ -9,3 +9,7 @@ class Word(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Temator(models.Model):
+    name = models.CharField(max_length=511, unique=True)

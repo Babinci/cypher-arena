@@ -1,3 +1,5 @@
+// ImagesMode.js
+
 import React, { useState, useEffect, useCallback } from 'react';
 import apiConfig from '../../../config/apiConfig';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';

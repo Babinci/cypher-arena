@@ -1,3 +1,5 @@
+//ContrastingMode.js
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import apiConfig from '../../../config/apiConfig';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
