@@ -1,6 +1,20 @@
 // components/SharedControls/TimerControls.js
 import React from 'react';
 
+// TimerControls: A reusable component that renders the control panel UI
+// Props:
+// - timer: Current countdown timer value for items
+// - roundTimer: Overall round timer value
+// - changeInterval: Time between item changes
+// - roundDuration: Total duration of the round
+// - isActive: Whether the timer is running
+// - handleRoundDurationChange: Function to update round duration
+// - getNextItem: Function to move to next item
+// - handleIntervalChange: Function to update interval
+// - toggleActive: Function to pause/resume
+// - handleResetRound: Function to reset the round
+// - isControlWindow: Whether this is rendered in control window
+// - isFullScreen: Whether the main window is in fullscreen
 export const TimerControls = ({
   timer,
   roundTimer,
@@ -15,11 +29,14 @@ export const TimerControls = ({
   isControlWindow,
   isFullScreen,
 }) => (
+  // Main control panel container
+  // Note: overflow behavior differs between control window and main window
+  // Control window shows full content, main window scrolls
   <div
     className="control-panel"
     style={{
       width: '100%',
-      overflowY: 'auto',
+      overflowY: isControlWindow ? 'visible' : 'auto',
       padding: '10px',
       boxSizing: 'border-box',
       maxHeight: isFullScreen ? 'auto' : '20vh',
@@ -34,22 +51,25 @@ export const TimerControls = ({
     onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
     onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
   >
+    {/* Control window title */}
     {isControlWindow && (
-      <h2 style={{ 
-        textAlign: 'center', 
+      <h2 style={{
+        textAlign: 'center',
         marginBottom: '20px',
         fontSize: '24px'
       }}>
         Control Panel
       </h2>
     )}
-    
+   
+    {/* Timer display section */}
     <div style={{ marginBottom: '20px', textAlign: 'center' }}>
       <div className="timer">Timer: {timer} seconds</div>
       <div>Interval: {changeInterval} seconds</div>
       <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
     </div>
 
+    {/* Round duration slider */}
     <div style={{ marginBottom: '20px' }}>
       <input
         type="range"
@@ -57,7 +77,7 @@ export const TimerControls = ({
         max="300"
         value={roundDuration === Infinity ? 300 : roundDuration}
         onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-        style={{ 
+        style={{
           width: '100%',
           marginBottom: '10px',
           accentColor: '#4CAF50'
@@ -65,13 +85,15 @@ export const TimerControls = ({
       />
     </div>
 
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'space-around', 
+    {/* Control buttons */}
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-around',
       flexWrap: 'wrap',
       gap: '10px'
     }}>
-      <button 
+      {/* Next Item button */}
+      <button
         onClick={getNextItem}
         style={{
           padding: '10px 20px',
@@ -84,7 +106,9 @@ export const TimerControls = ({
       >
         Next Item
       </button>
-      <button 
+      
+      {/* Decrease Interval button */}
+      <button
         onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
         style={{
           padding: '10px 20px',
@@ -97,7 +121,9 @@ export const TimerControls = ({
       >
         Decrease Interval
       </button>
-      <button 
+      
+      {/* Increase Interval button */}
+      <button
         onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
         style={{
           padding: '10px 20px',
@@ -110,7 +136,9 @@ export const TimerControls = ({
       >
         Increase Interval
       </button>
-      <button 
+      
+      {/* Pause/Resume button */}
+      <button
         onClick={toggleActive}
         style={{
           padding: '10px 20px',
@@ -123,7 +151,9 @@ export const TimerControls = ({
       >
         {isActive ? 'Pause' : 'Resume'}
       </button>
-      <button 
+      
+      {/* Reset Round button */}
+      <button
         onClick={handleResetRound}
         style={{
           padding: '10px 20px',

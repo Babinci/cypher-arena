@@ -5,8 +5,10 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 
 function TopicMode() {
+  // Create array of numbers 0-10
   const numbers = [...Array(11).keys()];
-  
+ 
+  // Initialize timer control with configuration
   const {
     timer,
     roundTimer,
@@ -32,15 +34,64 @@ function TopicMode() {
     channelName: 'topic-mode-channel',
   });
 
+  // Render control buttons (fullscreen and control panel)
+  const renderControlButtons = () => (
+    <div
+      style={{
+        position: 'fixed',
+        top: 10,
+        right: 10,
+        zIndex: 1000,
+        transition: 'opacity 0.3s ease-in-out',
+        opacity: isFullScreen ? 0 : 1,
+      }}
+      onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+      onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+    >
+      <button
+        onClick={openControlWindow}
+        style={{
+          marginBottom: '10px',
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        Open Control Panel
+      </button>
+      <button
+        onClick={toggleFullScreen}
+        style={{
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+      </button>
+    </div>
+  );
+
+  // Render number display
   const renderNumberDisplay = () => (
-    <div style={{ 
-      flex: 1, 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      width: '100%', 
-      height: isFullScreen ? '100vh' : '80vh', 
-      position: 'relative' 
+    <div style={{
+      flex: 1,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: isFullScreen ? '100vh' : '80vh',
+      position: 'relative'
     }}>
       <div style={{
         display: 'flex',
@@ -61,12 +112,12 @@ function TopicMode() {
 
   return (
     <FullScreen handle={fullScreenHandle}>
-      <div className={`number-mode ${isFullScreen ? 'fullscreen' : ''}`} style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        width: '100%', 
-        height: '100vh', 
+      <div className={`number-mode ${isFullScreen ? 'fullscreen' : ''}`} style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        height: '100vh',
         overflow: 'hidden',
         backgroundColor: '#1a1a1a',
         color: 'white'
@@ -74,42 +125,10 @@ function TopicMode() {
         {!isControlWindow && (
           <>
             {renderNumberDisplay()}
-            <div style={{ position: 'fixed', top: 10, right: 10, zIndex: 1000 }}>
-              <button 
-                onClick={openControlWindow}
-                style={{
-                  marginBottom: '10px',
-                  display: 'block',
-                  padding: '10px',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  width: '100%'
-                }}
-              >
-                Open Control Panel
-              </button>
-              <button
-                onClick={toggleFullScreen}
-                style={{
-                  display: 'block',
-                  padding: '10px',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  width: '100%'
-                }}
-              >
-                {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
-              </button>
-            </div>
+            {renderControlButtons()}
           </>
         )}
-        
+       
         <TimerControls
           timer={timer}
           roundTimer={roundTimer}

@@ -3,6 +3,11 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
+// Main hook for timer control functionality
+// Handles:
+// - Timer state and controls
+// - Broadcasting between windows
+// - Fullscreen functionality
 export const useTimerControl = (initialConfig) => {
   const {
     defaultInterval = 15,
@@ -13,30 +18,36 @@ export const useTimerControl = (initialConfig) => {
     channelName,
   } = initialConfig;
 
+  // State management
   const [changeInterval, setChangeInterval] = useState(defaultInterval);
   const [roundDuration, setRoundDuration] = useState(defaultRoundDuration);
   const [isActive, setIsActive] = useState(defaultIsActive);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isControlWindow, setIsControlWindow] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  
+ 
+  // Custom timer hooks
   const [timer, resetItemTimer] = useWordTimer(changeInterval, isActive);
-  const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
-  
+  const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false), isActive);
+ 
+  // Refs and handles
   const broadcastChannel = useRef(null);
   const fullScreenHandle = useFullScreenHandle();
 
-  // Initialize broadcast channel
+  // Initialize broadcast channel for window communication
   useEffect(() => {
     broadcastChannel.current = new BroadcastChannel(channelName);
-    
+   
+    // Message handler for cross-window communication
     broadcastChannel.current.onmessage = (event) => {
       const { type, payload } = event.data;
-      
+     
       switch (type) {
         case 'NEXT_ITEM':
-          setCurrentIndex(prevIndex => (prevIndex + 1) % itemCount);
-          if (onNextItem) onNextItem();
+          if (!isControlWindow) {
+            setCurrentIndex(prevIndex => (prevIndex + 1) % itemCount);
+            if (onNextItem) onNextItem();
+          }
           break;
         case 'CHANGE_INTERVAL':
           setChangeInterval(payload);
@@ -69,9 +80,11 @@ export const useTimerControl = (initialConfig) => {
       }
     };
 
+    // Check if this is control window
     const isControl = window.name === 'controlWindow';
     setIsControlWindow(isControl);
 
+    // Request initial state if control window
     if (isControl) {
       broadcastChannel.current.postMessage({ type: 'REQUEST_SYNC' });
     }
@@ -79,22 +92,27 @@ export const useTimerControl = (initialConfig) => {
     return () => {
       broadcastChannel.current.close();
     };
-  }, [itemCount, resetItemTimer, resetRoundTimer, roundDuration, onNextItem]);
+  }, [itemCount, resetItemTimer, resetRoundTimer, roundDuration, onNextItem, isControlWindow]);
 
+  // Helper function to send messages between windows
   const sendMessage = (type, payload = null) => {
     broadcastChannel.current.postMessage({ type, payload });
   };
 
+  // Action handlers
   const getNextItem = useCallback(() => {
-    sendMessage('NEXT_ITEM');
+    if (!isControlWindow) {
+      sendMessage('NEXT_ITEM');
+    }
     setCurrentIndex(prevIndex => (prevIndex + 1) % itemCount);
     if (onNextItem) onNextItem();
-  }, [itemCount, onNextItem]);
+  }, [itemCount, onNextItem, isControlWindow]);
 
   const handleIntervalChange = useCallback((value) => {
-    sendMessage('CHANGE_INTERVAL', value);
-    setChangeInterval(value);
+    const newInterval = value;
+    setChangeInterval(newInterval);
     resetItemTimer();
+    sendMessage('CHANGE_INTERVAL', newInterval);
   }, [resetItemTimer]);
 
   const handleRoundDurationChange = useCallback((value) => {
@@ -131,6 +149,7 @@ export const useTimerControl = (initialConfig) => {
     setIsFullScreen(!isFullScreen);
   }, [isFullScreen, fullScreenHandle]);
 
+  // Auto-advance timer effect
   useEffect(() => {
     if (timer === 0 && isActive) {
       getNextItem();
@@ -149,7 +168,7 @@ export const useTimerControl = (initialConfig) => {
     isControlWindow,
     isFullScreen,
     fullScreenHandle,
-    
+   
     // Actions
     getNextItem,
     handleIntervalChange,
