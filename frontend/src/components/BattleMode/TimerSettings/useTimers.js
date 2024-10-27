@@ -1,6 +1,5 @@
 // components/TimerSettings/useTimers.js
 import { useState, useEffect, useCallback } from 'react';
-
 // Hook for managing item change timer
 // Parameters:
 // - initialInterval: time between item changes
