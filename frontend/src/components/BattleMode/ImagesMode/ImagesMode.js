@@ -1,35 +1,54 @@
-// ImagesMode.js
-
+// components/ImagesMode/ImagesMode.js
 import React, { useState, useEffect, useCallback } from 'react';
+import { FullScreen } from 'react-full-screen';
+import { useTimerControl } from '../SharedControls/useTimerControl';
+import { TimerControls } from '../SharedControls/TimerControls';
 import apiConfig from '../../../config/apiConfig';
-import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
-import {FullScreen, useFullScreenHandle } from 'react-full-screen';
 import ImagePreloader from './ImagePreloader';
 import { getImage } from './indexedDBUtils';
 
 function ImagesMode() {
-  const BUFFER_SIZE = 100;  // Max number of images to keep in memory
+  const BUFFER_SIZE = 100;
   const [images, setImages] = useState([]);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [changeInterval, setChangeInterval] = useState(15);
-  const [roundDuration, setRoundDuration] = useState(90);
-  const [isActive, setIsActive] = useState(true);
-  const [timer, resetImageTimer] = useWordTimer(changeInterval, isActive);
-  const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
   const [nextPage, setNextPage] = useState(null);
-  const [isFullScreen, setIsFullScreen] = useState(false);
   const [imagesPreloaded, setImagesPreloaded] = useState(false);
-  const fullScreenHandle = useFullScreenHandle();
+
+  // Initialize timer control with image-specific configuration
+  const {
+    timer,
+    roundTimer,
+    changeInterval,
+    roundDuration,
+    isActive,
+    currentIndex,
+    isControlWindow,
+    isFullScreen,
+    fullScreenHandle,
+    getNextItem,
+    handleIntervalChange,
+    handleRoundDurationChange,
+    handleResetRound: baseHandleResetRound,
+    toggleActive,
+    openControlWindow,
+    toggleFullScreen,
+  } = useTimerControl({
+    defaultInterval: 15,
+    defaultRoundDuration: 90,
+    defaultIsActive: true,
+    itemCount: images.length,
+    onNextItem: () => {
+      if (currentIndex >= images.length - BUFFER_SIZE / 2 && nextPage) {
+        fetchImages(nextPage);
+      }
+    },
+  });
 
   const fetchImages = useCallback((url, reset = false) => {
-    console.log("Fetching images...");
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        console.log("Fetched data:", data);
         setImages(prevImages => {
           const newImages = reset ? data.results : [...prevImages, ...data.results];
-          // Keep only the latest BUFFER_SIZE images
           return newImages.slice(Math.max(newImages.length - BUFFER_SIZE, 0));
         });
         setNextPage(data.next);
@@ -42,75 +61,34 @@ function ImagesMode() {
     let allImages = [];
     let url = `${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=100`;
     
-    for (let i = 0; i < 20; i++) {  // Fetch 20 pages of 100 images each
+    for (let i = 0; i < 20; i++) {
       try {
         const response = await fetch(url);
         const data = await response.json();
         allImages = [...allImages, ...data.results];
         url = data.next;
-        if (!url) break;  // Stop if there are no more pages
+        if (!url) break;
       } catch (error) {
         console.error('Error fetching many images:', error);
         break;
       }
     }
-
     return allImages;
   }, []);
 
-  const getNextImage = useCallback(() => {
-    setCurrentImageIndex(prevIndex => {
-      let newIndex = prevIndex + 1;
-      if (newIndex >= images.length) {
-        if (nextPage) {
-          fetchImages(nextPage);
-        }
-        newIndex = 0;  // Loop back to the first image if at the end
-      }
-      return newIndex;
-    });
-  }, [images.length, nextPage, fetchImages]);
+  // Custom reset handler that combines timer reset with image reset
+  const handleResetRound = useCallback(() => {
+    setImages([]);
+    fetchImages(`${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=${BUFFER_SIZE}`, true);
+    baseHandleResetRound();
+  }, [fetchImages, baseHandleResetRound]);
 
+  // Initial image fetch
   useEffect(() => {
     fetchImages(`${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=${BUFFER_SIZE}`, true);
   }, [fetchImages]);
 
-  useEffect(() => {
-    if (timer === 0 && isActive) {
-      getNextImage();
-      resetImageTimer();
-    }
-  }, [timer, isActive, getNextImage, resetImageTimer]);
-
-  const handleIntervalChange = useCallback((value) => {
-    setChangeInterval(value);
-    resetImageTimer();
-  }, [resetImageTimer]);
-
-  const handleRoundDurationChange = useCallback((value) => {
-    setRoundDuration(value === 300 ? Infinity : value);
-    resetRoundTimer(value === 300 ? Infinity : value);
-  }, [resetRoundTimer]);
-
-  const handleResetRound = () => {
-    setImages([]);
-    setCurrentImageIndex(0);
-    fetchImages(`${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=${BUFFER_SIZE}`, true);
-    resetRoundTimer(roundDuration);
-    resetImageTimer();
-    setIsActive(true);
-    getNextImage();
-  };
-
-  const toggleFullScreen = () => {
-    if (isFullScreen) {
-      fullScreenHandle.exit();
-    } else {
-      fullScreenHandle.enter();
-    }
-    setIsFullScreen(!isFullScreen);
-  };
-
+  // Image display logic
   const displayImage = useCallback(async (imageUrl) => {
     try {
       const cachedImage = await getImage(imageUrl);
@@ -124,96 +102,131 @@ function ImagesMode() {
   }, []);
 
   useEffect(() => {
-    if (images.length > 0 && currentImageIndex < images.length) {
-      displayImage(images[currentImageIndex].image_file).then(src => {
+    if (images.length > 0 && currentIndex < images.length) {
+      displayImage(images[currentIndex].image_file).then(src => {
         const imgElement = document.getElementById('currentImage');
         if (imgElement) {
           imgElement.src = src;
         }
       });
     }
-  }, [currentImageIndex, images, displayImage]);
+  }, [currentIndex, images, displayImage]);
+
+  // Render control buttons for fullscreen and control panel
+  const renderControlButtons = () => (
+    <div
+      style={{
+        position: 'fixed',
+        top: 10,
+        right: 10,
+        zIndex: 1000,
+        transition: 'opacity 0.3s ease-in-out',
+        opacity: isFullScreen ? 0 : 1,
+      }}
+      onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+      onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+    >
+      <button
+        onClick={openControlWindow}
+        style={{
+          marginBottom: '10px',
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        Open Control Panel
+      </button>
+      <button
+        onClick={toggleFullScreen}
+        style={{
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+      </button>
+    </div>
+  );
 
   return (
     <FullScreen handle={fullScreenHandle}>
-      <div className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}>
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: isFullScreen ? '100vh' : '80vh', position: 'relative' }}>
-          {images.length > 0 ? (
-            <img
-              id="currentImage"
-              alt="Display"
-              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-            />
-          ) : (
-            <p>No images loaded</p>
-          )}
-          <button
-            onClick={toggleFullScreen}
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              background: 'rgba(0,0,0,0.5)',
-              color: 'white',
-              border: 'none',
-              padding: '5px 10px',
-              cursor: 'pointer',
-              zIndex: 1000
-            }}
-          >
-            {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
-          </button>
-          <ImagePreloader
-            images={images}
-            onProgress={(progress) => {
-              console.log(`Preload progress: ${progress * 100}%`);
-              if (progress === 1) setImagesPreloaded(true);
-            }}
-            fetchManyImages={fetchManyImages}
-          />
-        </div>
-        <div
-          className="control-panel"
-          style={{
-            width: '100%',
-            overflowY: 'auto',
-            padding: '10px',
-            boxSizing: 'border-box',
-            maxHeight: isFullScreen ? 'auto' : '20vh',
-            background: 'rgba(0,0,0,0.5)',
-            color: 'white',
-            position: isFullScreen ? 'fixed' : 'static',
-            bottom: 0,
-            left: 0,
-            transition: 'opacity 0.3s ease-in-out',
-            opacity: isFullScreen ? 0 : 1
+      <div 
+        className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`} 
+        style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          width: '100%', 
+          height: '100vh', 
+          overflow: 'hidden' // Removed backgroundColor to match old version
+        }}
+      >
+        {!isControlWindow && (
+  <>
+    <div style={{ 
+      flex: 1, 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      width: '100%', 
+      height: isFullScreen ? '100vh' : '80vh', 
+      position: 'relative'
+    }}>
+      {images.length > 0 ? (
+        <img
+          id="currentImage"
+          alt="Display"
+          style={{ 
+            maxWidth: '100%', 
+            maxHeight: '100%', 
+            objectFit: 'contain'
           }}
-          onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
-          onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
-        >
-          <div className="timer">Image Timer: {timer} seconds</div>
-          <div>Interval: {changeInterval} seconds</div>
-          <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
-          <input
-            type="range"
-            min="10"
-            max="300"
-            value={roundDuration === Infinity ? 300 : roundDuration}
-            onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-            style={{ width: '100%' }}
-          />
-          <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-            <button onClick={getNextImage}>Next Image</button>
-            <button onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}>Decrease Interval</button>
-            <button onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}>Increase Interval</button>
-            <button onClick={() => setIsActive(!isActive)}>{isActive ? 'Pause' : 'Resume'}</button>
-            <button onClick={handleResetRound}>Reset Round</button>
-          </div>
-        </div>
+        />
+      ) : (
+        <p>No images loaded</p>
+      )}
+      <ImagePreloader
+        images={images}
+        onProgress={(progress) => {
+          console.log(`Preload progress: ${progress * 100}%`);
+          if (progress === 1) setImagesPreloaded(true);
+        }}
+        fetchManyImages={fetchManyImages}
+      />
+    </div>
+    {renderControlButtons()}
+  </>
+)}
+
+        <TimerControls
+          timer={timer}
+          roundTimer={roundTimer}
+          changeInterval={changeInterval}
+          roundDuration={roundDuration}
+          isActive={isActive}
+          handleRoundDurationChange={handleRoundDurationChange}
+          getNextItem={getNextItem}
+          handleIntervalChange={handleIntervalChange}
+          toggleActive={toggleActive}
+          handleResetRound={handleResetRound}
+          isControlWindow={isControlWindow}
+          isFullScreen={isFullScreen}
+        />
       </div>
     </FullScreen>
   );
 }
-
 
 export default ImagesMode;

@@ -22,40 +22,44 @@ export const useTimerControl = (initialConfig) => {
     roundDuration,
     isActive,
     currentIndex,
-    actions,
-    initializeStore
+    initializeStore,
+    setTimer,
+    setChangeInterval,
+    setRoundDuration,
+    setIsActive,
+    getNextItem,
+    resetRound,
   } = useTimerStore();
 
   // Initialize store and check window type on mount
   useEffect(() => {
-    const cleanup = initializeStore();
+    const cleanup = initializeStore({ itemCount });
     setIsControlWindow(window.name === 'controlWindow');
     return cleanup;
-  }, [initializeStore]);
+  }, [initializeStore, itemCount]);
 
   // Action handlers
-  const getNextItem = useCallback(() => {
+  const handleNextItem = useCallback(() => {
     if (onNextItem) onNextItem();
-    actions.setCurrentIndex((currentIndex + 1) % itemCount);
-    actions.setTimer(changeInterval);
-  }, [actions, currentIndex, itemCount, changeInterval, onNextItem]);
+    getNextItem();
+  }, [getNextItem, onNextItem]);
 
   const handleIntervalChange = useCallback((value) => {
-    actions.setChangeInterval(value);
-    actions.setTimer(value);
-  }, [actions]);
+    setChangeInterval(value);
+    setTimer(value);
+  }, [setChangeInterval, setTimer]);
 
   const handleRoundDurationChange = useCallback((value) => {
-    actions.setRoundDuration(value);
-  }, [actions]);
+    setRoundDuration(value);
+  }, [setRoundDuration]);
 
   const handleResetRound = useCallback(() => {
-    actions.resetRound();
-  }, [actions]);
+    resetRound();
+  }, [resetRound]);
 
   const toggleActive = useCallback(() => {
-    actions.setIsActive(!isActive);
-  }, [actions, isActive]);
+    setIsActive(!isActive);
+  }, [setIsActive, isActive]);
 
   const openControlWindow = useCallback(() => {
     const controlWindow = window.open('', 'controlWindow', 'width=800,height=400');
@@ -71,13 +75,6 @@ export const useTimerControl = (initialConfig) => {
     setIsFullScreen(!isFullScreen);
   }, [isFullScreen, fullScreenHandle]);
 
-  // Auto-advance effect
-  useEffect(() => {
-    if (timer === 0 && isActive) {
-      getNextItem();
-    }
-  }, [timer, isActive, getNextItem]);
-
   return {
     // State
     timer,
@@ -91,7 +88,7 @@ export const useTimerControl = (initialConfig) => {
     fullScreenHandle,
    
     // Actions
-    getNextItem,
+    getNextItem: handleNextItem,
     handleIntervalChange,
     handleRoundDurationChange,
     handleResetRound,

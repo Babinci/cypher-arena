@@ -7,6 +7,7 @@ const useTimerStore = create()(
     // Private variables to manage timer state
     let timerInterval = null;
     let isInitialized = false;
+    let broadcastChannel = null;  // Moved to module scope
 
     // Helper to safely clear existing interval
     const clearExistingInterval = () => {
@@ -16,38 +17,96 @@ const useTimerStore = create()(
       }
     };
 
+    // Helper to safely create/recreate broadcast channel
+    const createBroadcastChannel = () => {
+      if (typeof window === 'undefined') return null;
+      try {
+        if (broadcastChannel) {
+          broadcastChannel.close();
+        }
+        broadcastChannel = new BroadcastChannel('timer-sync');
+        return broadcastChannel;
+      } catch (error) {
+        console.error('Error creating broadcast channel:', error);
+        return null;
+      }
+    };
+
     // Timer logic centralized in one place
     const handleTimerTick = () => {
       const state = get();
       if (!state.isActive) return;
-
-      // Update timers
+    
+      // Split timer updates into separate operations
       const newTimer = Math.max(0, state.timer - 1);
       const newRoundTimer = state.roundDuration === Infinity 
         ? state.roundTimer 
         : Math.max(0, state.roundTimer - 1);
-
-      // Only broadcast if values actually changed
-      if (newTimer !== state.timer || newRoundTimer !== state.roundTimer) {
+    
+      // Always handle item timer regardless of round timer
+      if (state.timer === 1) {
+        const newIndex = (state.currentIndex + 1) % state.itemCount;
+        set({ 
+          currentIndex: newIndex,
+          timer: state.changeInterval,
+          roundTimer: newRoundTimer
+        });
+      } else {
         set({ 
           timer: newTimer,
           roundTimer: newRoundTimer
         });
-        // Only main window broadcasts timer updates
-        if (!window.name) {
-          get().broadcastState();
-        }
+      }
+    
+      // If round timer hits 0, just set isActive to false but don't return
+      // This allows the current item timer to complete
+      if (newRoundTimer === 0 && state.roundDuration !== Infinity) {
+        set({ isActive: false });
+      }
+    
+      // Only main window broadcasts timer updates
+      if (!window.name) {
+        broadcastState();
       }
     };
+    
 
     // Centralized timer management
     const startTimerInterval = () => {
-      // Ensure only one timer runs at a time
       clearExistingInterval();
       
       // Only main window runs the timer
       if (!window.name) {
         timerInterval = setInterval(handleTimerTick, 1000);
+      }
+    };
+
+    // Utility to broadcast state changes
+    const broadcastState = () => {
+      if (!broadcastChannel || broadcastChannel.closed) {
+        broadcastChannel = createBroadcastChannel();
+      }
+
+      if (!broadcastChannel) return;  // Skip if channel creation failed
+
+      try {
+        const state = {
+          timer: get().timer,
+          roundTimer: get().roundTimer,
+          changeInterval: get().changeInterval,
+          roundDuration: get().roundDuration,
+          isActive: get().isActive,
+          currentIndex: get().currentIndex,
+          itemCount: get().itemCount,
+        };
+        
+        broadcastChannel.postMessage({
+          type: 'STATE_UPDATE',
+          payload: state,
+        });
+      } catch (error) {
+        console.error('Error broadcasting state:', error);
+        broadcastChannel = null;  // Reset for next attempt
       }
     };
 
@@ -59,210 +118,206 @@ const useTimerStore = create()(
       roundDuration: 90,
       isActive: true,
       currentIndex: 0,
-      
-      // Broadcast channel for window sync
-      broadcastChannel: typeof window !== 'undefined' ? new BroadcastChannel('timer-sync') : null,
+      itemCount: 0,
 
-      // Initialize store and setup broadcast listeners
-      initializeStore: () => {
-        if (typeof window === 'undefined' || isInitialized) return;
+      // Initialization
+      initializeStore: (config = {}) => {
+        if (typeof window === 'undefined' || isInitialized) {
+          return () => {};
+        }
         
         isInitialized = true;
-        const channel = get().broadcastChannel;
+        if (config.itemCount) {
+          set({ itemCount: config.itemCount });
+        }
+
+        broadcastChannel = createBroadcastChannel();
         
-        // Set up message handling
-        channel.onmessage = (event) => {
-          const { type, payload } = event.data;
-          const isControlWindow = window.name === 'controlWindow';
-          
-          switch (type) {
-            case 'STATE_UPDATE':
-              // Control window just updates its state
-              if (isControlWindow) {
-                set(payload);
-              }
-              break;
+        if (broadcastChannel) {
+          broadcastChannel.onmessage = (event) => {
+            const { type, payload } = event.data;
+            const isControlWindow = window.name === 'controlWindow';
+            
+            switch (type) {
+              case 'STATE_UPDATE':
+                if (isControlWindow) {
+                  set(payload);
+                }
+                break;
 
-            case 'REQUEST_SYNC':
-              // Only main window responds to sync requests
-              if (!isControlWindow) {
-                channel.postMessage({
-                  type: 'STATE_UPDATE',
-                  payload: {
-                    timer: get().timer,
-                    roundTimer: get().roundTimer,
-                    changeInterval: get().changeInterval,
-                    roundDuration: get().roundDuration,
-                    isActive: get().isActive,
-                    currentIndex: get().currentIndex,
-                  },
-                });
-              }
-              break;
+              case 'REQUEST_SYNC':
+                if (!isControlWindow) {
+                  broadcastChannel.postMessage({
+                    type: 'STATE_UPDATE',
+                    payload: {
+                      timer: get().timer,
+                      roundTimer: get().roundTimer,
+                      changeInterval: get().changeInterval,
+                      roundDuration: get().roundDuration,
+                      isActive: get().isActive,
+                      currentIndex: get().currentIndex,
+                      itemCount: get().itemCount,
+                    },
+                  });
+                }
+                break;
 
-            case 'CONTROL_ACTION':
-              // Only main window processes control actions
-              if (!isControlWindow) {
-                const { action, value } = payload;
-                get().actions[action](value);
-              }
-              break;
-          }
-        };
+              case 'CONTROL_ACTION':
+                if (!isControlWindow) {
+                  const { actionType, value } = payload;
+                  switch (actionType) {
+                    case 'SET_TIMER':
+                      set({ timer: value });
+                      break;
+                    case 'SET_CHANGE_INTERVAL':
+                      set({ changeInterval: value });
+                      break;
+                    case 'SET_ROUND_DURATION':
+                      const newDuration = value === 300 ? Infinity : value;
+                      set({ roundDuration: newDuration, roundTimer: newDuration });
+                      break;
+                    case 'SET_ACTIVE':
+                      if (value) {
+                        startTimerInterval();
+                      } else {
+                        clearExistingInterval();
+                      }
+                      set({ isActive: value });
+                      break;
+                    case 'RESET_ROUND':
+                      clearExistingInterval();
+                      set({
+                        currentIndex: 0,
+                        timer: get().changeInterval,
+                        roundTimer: get().roundDuration,
+                        isActive: true,
+                      });
+                      startTimerInterval();
+                      break;
+                    case 'GET_NEXT_ITEM':
+                      set({
+                        currentIndex: (get().currentIndex + 1) % get().itemCount,
+                        timer: get().changeInterval
+                      });
+                      break;
+                  }
+                  broadcastState();
+                }
+                break;
+            }
+          };
+        }
 
-        // Initial setup based on window type
         if (window.name === 'controlWindow') {
-          // Control window requests initial state
-          channel.postMessage({ type: 'REQUEST_SYNC' });
+          broadcastChannel?.postMessage({ type: 'REQUEST_SYNC' });
         } else {
-          // Main window starts timer if active
           if (get().isActive) {
             startTimerInterval();
           }
         }
 
-        // Cleanup function
         return () => {
           clearExistingInterval();
-          channel.close();
+          if (broadcastChannel) {
+            broadcastChannel.close();
+            broadcastChannel = null;
+          }
           isInitialized = false;
         };
       },
 
-      // Action creators
-      actions: {
-        setTimer: (value) => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            // Control window broadcasts action to main window
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'setTimer', value }
-            });
-          } else {
-            // Main window executes action and broadcasts state
-            set({ timer: value });
-            get().broadcastState();
-          }
-        },
-
-        setRoundTimer: (value) => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'setRoundTimer', value }
-            });
-          } else {
-            set({ roundTimer: value });
-            get().broadcastState();
-          }
-        },
-
-        setChangeInterval: (value) => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'setChangeInterval', value }
-            });
-          } else {
-            set({ changeInterval: value });
-            get().broadcastState();
-          }
-        },
-
-        setRoundDuration: (value) => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'setRoundDuration', value }
-            });
-          } else {
-            const newDuration = value === 300 ? Infinity : value;
-            set({ 
-              roundDuration: newDuration,
-              roundTimer: newDuration
-            });
-            get().broadcastState();
-          }
-        },
-
-        setIsActive: (value) => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'setIsActive', value }
-            });
-          } else {
-            if (value) {
-              startTimerInterval();
-            } else {
-              clearExistingInterval();
-            }
-            set({ isActive: value });
-            get().broadcastState();
-          }
-        },
-
-        setCurrentIndex: (value) => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'setCurrentIndex', value }
-            });
-          } else {
-            set({ currentIndex: value });
-            get().broadcastState();
-          }
-        },
-
-        resetRound: () => {
-          const isControlWindow = window.name === 'controlWindow';
-          
-          if (isControlWindow) {
-            get().broadcastChannel?.postMessage({
-              type: 'CONTROL_ACTION',
-              payload: { action: 'resetRound' }
-            });
-          } else {
-            clearExistingInterval();
-            set({
-              currentIndex: 0,
-              timer: get().changeInterval,
-              roundTimer: get().roundDuration,
-              isActive: true,
-            });
-            startTimerInterval();
-            get().broadcastState();
-          }
-        },
+      // Action methods exposed to components
+      setTimer: (value) => {
+        if (window.name === 'controlWindow') {
+          broadcastChannel?.postMessage({
+            type: 'CONTROL_ACTION',
+            payload: { actionType: 'SET_TIMER', value }
+          });
+        } else {
+          set({ timer: value });
+          broadcastState();
+        }
       },
 
-      // Utility to broadcast state changes
-      broadcastState: () => {
-        const state = {
-          timer: get().timer,
-          roundTimer: get().roundTimer,
-          changeInterval: get().changeInterval,
-          roundDuration: get().roundDuration,
-          isActive: get().isActive,
-          currentIndex: get().currentIndex,
-        };
-        
-        get().broadcastChannel?.postMessage({
-          type: 'STATE_UPDATE',
-          payload: state,
-        });
+      setChangeInterval: (value) => {
+        if (window.name === 'controlWindow') {
+          broadcastChannel?.postMessage({
+            type: 'CONTROL_ACTION',
+            payload: { actionType: 'SET_CHANGE_INTERVAL', value }
+          });
+        } else {
+          set({ changeInterval: value });
+          broadcastState();
+        }
+      },
+
+      setRoundDuration: (value) => {
+        if (window.name === 'controlWindow') {
+          broadcastChannel?.postMessage({
+            type: 'CONTROL_ACTION',
+            payload: { actionType: 'SET_ROUND_DURATION', value }
+          });
+        } else {
+          const newDuration = value === 300 ? Infinity : value;
+          set({ 
+            roundDuration: newDuration,
+            roundTimer: newDuration
+          });
+          broadcastState();
+        }
+      },
+
+      setIsActive: (value) => {
+        if (window.name === 'controlWindow') {
+          broadcastChannel?.postMessage({
+            type: 'CONTROL_ACTION',
+            payload: { actionType: 'SET_ACTIVE', value }
+          });
+        } else {
+          if (value) {
+            startTimerInterval();
+          } else {
+            clearExistingInterval();
+          }
+          set({ isActive: value });
+          broadcastState();
+        }
+      },
+
+      getNextItem: () => {
+        if (window.name === 'controlWindow') {
+          broadcastChannel?.postMessage({
+            type: 'CONTROL_ACTION',
+            payload: { actionType: 'GET_NEXT_ITEM' }
+          });
+        } else {
+          set({
+            currentIndex: (get().currentIndex + 1) % get().itemCount,
+            timer: get().changeInterval
+          });
+          broadcastState();
+        }
+      },
+
+      resetRound: () => {
+        if (window.name === 'controlWindow') {
+          get().broadcastChannel?.postMessage({
+            type: 'CONTROL_ACTION',
+            payload: { actionType: 'RESET_ROUND' }
+          });
+        } else {
+          clearExistingInterval();
+          // Instead of resetting to index 0, get next item
+          const newIndex = (get().currentIndex + 1) % get().itemCount;
+          set({
+            currentIndex: newIndex,  // This is the key change
+            timer: get().changeInterval,
+            roundTimer: get().roundDuration,
+            isActive: true,
+          });
+          startTimerInterval();
+          broadcastState();
+        }
       },
     };
   })
