@@ -163,53 +163,57 @@ function ImagesMode() {
   return (
     <FullScreen handle={fullScreenHandle}>
       <div 
-        className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`} 
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          width: '100%', 
-          height: '100vh', 
-          overflow: 'hidden' // Removed backgroundColor to match old version
+        className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+          height: '100vh',
+          position: 'relative',
+          overflow: 'hidden',
+          backgroundColor: isFullScreen ? '#000' : 'transparent'
         }}
       >
         {!isControlWindow && (
-  <>
-    <div style={{ 
-      flex: 1, 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      width: '100%', 
-      height: isFullScreen ? '100vh' : '80vh', 
-      position: 'relative'
-    }}>
-      {images.length > 0 ? (
-        <img
-          id="currentImage"
-          alt="Display"
-          style={{ 
-            maxWidth: '100%', 
-            maxHeight: '100%', 
-            objectFit: 'contain'
-          }}
-        />
-      ) : (
-        <p>No images loaded</p>
-      )}
-      <ImagePreloader
-        images={images}
-        onProgress={(progress) => {
-          console.log(`Preload progress: ${progress * 100}%`);
-          if (progress === 1) setImagesPreloaded(true);
-        }}
-        fetchManyImages={fetchManyImages}
-      />
-    </div>
-    {renderControlButtons()}
-  </>
-)}
-
+          <>
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              height: '100%',
+              position: 'relative'
+            }}>
+              {images.length > 0 ? (
+                <img
+                  id="currentImage"
+                  alt="Display"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                  }}
+                />
+              ) : (
+                <p>No images loaded</p>
+              )}
+              <ImagePreloader
+                images={images}
+                onProgress={(progress) => {
+                  if (progress === 1) setImagesPreloaded(true);
+                }}
+                fetchManyImages={fetchManyImages}
+              />
+            </div>
+            {/* Keep the existing control buttons */}
+            {renderControlButtons()}
+          </>
+        )}
         <TimerControls
           timer={timer}
           roundTimer={roundTimer}
