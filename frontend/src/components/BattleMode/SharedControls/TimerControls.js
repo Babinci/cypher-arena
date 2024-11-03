@@ -29,6 +29,9 @@ export const TimerControls = ({
   isControlWindow,
   isFullScreen,
 }) => (
+  // Main control panel container
+  // Note: overflow behavior differs between control window and main window
+  // Control window shows full content, main window scrolls
   <div
     className="control-panel"
     style={{
@@ -36,7 +39,7 @@ export const TimerControls = ({
       overflowY: isControlWindow ? 'visible' : 'auto',
       padding: '10px',
       boxSizing: 'border-box',
-      maxHeight: isFullScreen ? 'auto' : '20vh', // Back to original 20vh
+      height: 'auto',
       background: 'rgba(0,0,0,0.5)',
       color: 'white',
       position: isFullScreen ? 'fixed' : 'static',
@@ -44,7 +47,6 @@ export const TimerControls = ({
       left: 0,
       transition: 'opacity 0.3s ease-in-out',
       opacity: isFullScreen ? 0 : 1,
-      marginTop: 'auto' // This helps push it to the bottom
     }}
     onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
     onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}

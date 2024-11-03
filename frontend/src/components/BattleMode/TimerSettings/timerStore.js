@@ -1,4 +1,3 @@
-// components/TimerSettings/timerStore.js
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -36,45 +35,44 @@ const useTimerStore = create()(
     const handleTimerTick = () => {
       const state = get();
       if (!state.isActive) return;
-    
+   
       // Split timer updates into separate operations
       const newTimer = Math.max(0, state.timer - 1);
-      const newRoundTimer = state.roundDuration === Infinity 
-        ? state.roundTimer 
+      const newRoundTimer = state.roundDuration === Infinity
+        ? state.roundTimer
         : Math.max(0, state.roundTimer - 1);
-    
+   
       // Always handle item timer regardless of round timer
       if (state.timer === 1) {
         const newIndex = (state.currentIndex + 1) % state.itemCount;
-        set({ 
+        set({
           currentIndex: newIndex,
           timer: state.changeInterval,
           roundTimer: newRoundTimer
         });
       } else {
-        set({ 
+        set({
           timer: newTimer,
           roundTimer: newRoundTimer
         });
       }
-    
+   
       // If round timer hits 0, just set isActive to false but don't return
       // This allows the current item timer to complete
       if (newRoundTimer === 0 && state.roundDuration !== Infinity) {
         set({ isActive: false });
       }
-    
+   
       // Only main window broadcasts timer updates
       if (!window.name) {
         broadcastState();
       }
     };
-    
-
+   
     // Centralized timer management
     const startTimerInterval = () => {
       clearExistingInterval();
-      
+     
       // Only main window runs the timer
       if (!window.name) {
         timerInterval = setInterval(handleTimerTick, 1000);
@@ -86,9 +84,7 @@ const useTimerStore = create()(
       if (!broadcastChannel || broadcastChannel.closed) {
         broadcastChannel = createBroadcastChannel();
       }
-
       if (!broadcastChannel) return;  // Skip if channel creation failed
-
       try {
         const state = {
           timer: get().timer,
@@ -99,7 +95,7 @@ const useTimerStore = create()(
           currentIndex: get().currentIndex,
           itemCount: get().itemCount,
         };
-        
+       
         broadcastChannel.postMessage({
           type: 'STATE_UPDATE',
           payload: state,
@@ -125,26 +121,24 @@ const useTimerStore = create()(
         if (typeof window === 'undefined' || isInitialized) {
           return () => {};
         }
-        
+       
         isInitialized = true;
         if (config.itemCount) {
           set({ itemCount: config.itemCount });
         }
-
         broadcastChannel = createBroadcastChannel();
-        
+       
         if (broadcastChannel) {
           broadcastChannel.onmessage = (event) => {
             const { type, payload } = event.data;
             const isControlWindow = window.name === 'controlWindow';
-            
+           
             switch (type) {
               case 'STATE_UPDATE':
                 if (isControlWindow) {
                   set(payload);
                 }
                 break;
-
               case 'REQUEST_SYNC':
                 if (!isControlWindow) {
                   broadcastChannel.postMessage({
@@ -161,7 +155,6 @@ const useTimerStore = create()(
                   });
                 }
                 break;
-
               case 'CONTROL_ACTION':
                 if (!isControlWindow) {
                   const { actionType, value } = payload;
@@ -186,13 +179,15 @@ const useTimerStore = create()(
                       break;
                     case 'RESET_ROUND':
                       clearExistingInterval();
+                      const newIndex = (get().currentIndex + 1) % get().itemCount;
                       set({
-                        currentIndex: 0,
+                        currentIndex: newIndex,
                         timer: get().changeInterval,
                         roundTimer: get().roundDuration,
                         isActive: true,
                       });
                       startTimerInterval();
+                      broadcastState();
                       break;
                     case 'GET_NEXT_ITEM':
                       set({
@@ -207,7 +202,6 @@ const useTimerStore = create()(
             }
           };
         }
-
         if (window.name === 'controlWindow') {
           broadcastChannel?.postMessage({ type: 'REQUEST_SYNC' });
         } else {
@@ -215,7 +209,6 @@ const useTimerStore = create()(
             startTimerInterval();
           }
         }
-
         return () => {
           clearExistingInterval();
           if (broadcastChannel) {
@@ -259,7 +252,7 @@ const useTimerStore = create()(
           });
         } else {
           const newDuration = value === 300 ? Infinity : value;
-          set({ 
+          set({
             roundDuration: newDuration,
             roundTimer: newDuration
           });
@@ -301,16 +294,18 @@ const useTimerStore = create()(
 
       resetRound: () => {
         if (window.name === 'controlWindow') {
-          get().broadcastChannel?.postMessage({
+          if (!broadcastChannel || broadcastChannel.closed) {
+            broadcastChannel = createBroadcastChannel();
+          }
+          broadcastChannel?.postMessage({
             type: 'CONTROL_ACTION',
             payload: { actionType: 'RESET_ROUND' }
           });
         } else {
           clearExistingInterval();
-          // Instead of resetting to index 0, get next item
           const newIndex = (get().currentIndex + 1) % get().itemCount;
           set({
-            currentIndex: newIndex,  // This is the key change
+            currentIndex: newIndex,
             timer: get().changeInterval,
             roundTimer: get().roundDuration,
             isActive: true,

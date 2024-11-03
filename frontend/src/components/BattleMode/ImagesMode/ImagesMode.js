@@ -162,29 +162,28 @@ function ImagesMode() {
 
   return (
     <FullScreen handle={fullScreenHandle}>
-      <div 
+      <div
         className={`images-mode ${isFullScreen ? 'fullscreen' : ''}`}
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           width: '100%',
           height: '100vh',
-          position: 'relative',
-          overflow: 'hidden',
-          backgroundColor: isFullScreen ? '#000' : 'transparent'
+          backgroundColor: isFullScreen ? '#000' : 'transparent',
+          overflow: 'hidden'
         }}
       >
         {!isControlWindow && (
           <>
             <div style={{
-              flex: 1,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
-              height: '100%',
-              position: 'relative'
+              flex: 1,
+              minHeight: 0,
+              position: 'relative',
+              marginBottom: -10
             }}>
               {images.length > 0 ? (
                 <img
@@ -194,9 +193,7 @@ function ImagesMode() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
+                    display: 'block'
                   }}
                 />
               ) : (
@@ -210,24 +207,31 @@ function ImagesMode() {
                 fetchManyImages={fetchManyImages}
               />
             </div>
-            {/* Keep the existing control buttons */}
             {renderControlButtons()}
           </>
         )}
-        <TimerControls
-          timer={timer}
-          roundTimer={roundTimer}
-          changeInterval={changeInterval}
-          roundDuration={roundDuration}
-          isActive={isActive}
-          handleRoundDurationChange={handleRoundDurationChange}
-          getNextItem={getNextItem}
-          handleIntervalChange={handleIntervalChange}
-          toggleActive={toggleActive}
-          handleResetRound={handleResetRound}
-          isControlWindow={isControlWindow}
-          isFullScreen={isFullScreen}
-        />
+        <div style={{ 
+          flexShrink: 0,
+          marginTop: -10 
+        }}> 
+          <TimerControls
+            timer={timer}
+            roundTimer={roundTimer}
+            changeInterval={changeInterval}
+            roundDuration={roundDuration}
+            isActive={isActive}
+            handleRoundDurationChange={handleRoundDurationChange}
+            getNextItem={getNextItem}
+            handleIntervalChange={handleIntervalChange}
+            toggleActive={toggleActive}
+            handleResetRound={handleResetRound}
+            isControlWindow={isControlWindow}
+            isFullScreen={isFullScreen}
+            style={{
+              padding: isFullScreen ? '10px' : 0
+            }}
+          />
+        </div>
       </div>
     </FullScreen>
   );
