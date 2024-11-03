@@ -1,74 +1,74 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { FullScreen } from 'react-full-screen';
 import apiConfig from '../../../config/apiConfig';
-import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
+import { useTimerControl } from '../SharedControls/useTimerControl';
+import { TimerControls } from '../SharedControls/TimerControls';
 
 function FreestyleBattleVisualizer() {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
-  const [changeInterval, setChangeInterval] = useState(10);
-  const [roundDuration, setRoundDuration] = useState(90);
-  const [isActive, setIsActive] = useState(true);
-  const [timer, resetWordTimer] = useWordTimer(changeInterval, isActive);
-  const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
-
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+
+  // Initialize timer control with word-specific configuration
+  const {
+    timer,
+    roundTimer,
+    changeInterval,
+    roundDuration,
+    isActive,
+    currentIndex,  // This was causing double increments
+    isControlWindow,
+    isFullScreen,
+    fullScreenHandle,
+    getNextItem,
+    handleIntervalChange,
+    handleRoundDurationChange,
+    handleResetRound,
+    toggleActive,
+    openControlWindow,
+    toggleFullScreen,
+  } = useTimerControl({
+    defaultInterval: 10,
+    defaultRoundDuration: 90,
+    defaultIsActive: true,
+    itemCount: words.length,
+    onNextItem: () => {
+      if (currentIndex >= words.length - 5) {
+        fetchWords();
+      }
+    },
+  });
 
   const fetchWords = useCallback(() => {
     fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.getRandomWord}`)
       .then(response => response.json())
       .then(data => {
         setWords(data.words);
+        // Fix: Set initial word without using modulo
         setCurrentWord(data.words[0]);
       })
       .catch(error => console.error('Error fetching words:', error));
-  }, []);
+  }, []); 
 
+  // Initial words fetch
   useEffect(() => {
     fetchWords();
   }, [fetchWords]);
 
-  const getNextWord = useCallback(() => {
-    let wordIndex = words.indexOf(currentWord) + 1;
-    if (wordIndex < words.length) {
-      setCurrentWord(words[wordIndex]);
-    } else {
-      fetchWords();
-    }
-  }, [words, currentWord, fetchWords]);
-
+  // Update current word when index changes
   useEffect(() => {
-    if (timer === 0 && isActive) {
-      getNextWord();
-      resetWordTimer();
+    if (words.length > 0) {
+      // Fix: Directly use currentIndex without modulo
+      setCurrentWord(words[currentIndex]);
     }
-  }, [timer, isActive, getNextWord, resetWordTimer]);
+  }, [currentIndex, words]);
 
-  const handleIntervalChange = useCallback((increment) => {
-    const intervals = [5, 10, 20, 30, 40, 60, 90, 120, 180, 300];
-    let index = intervals.indexOf(changeInterval);
-    if (increment && index < intervals.length - 1) {
-      setChangeInterval(intervals[index + 1]);
-    } else if (!increment && index > 0) {
-      setChangeInterval(intervals[index - 1]);
-    }
-  }, [changeInterval]);
-
-  const handleRoundDurationChange = (event) => {
-    const value = event.target.value === "300" ? Infinity : parseInt(event.target.value);
-    setRoundDuration(value);
-    resetRoundTimer(value);
-  };
-
-  const resetRound = () => {
-    resetRoundTimer(roundDuration);
-    resetWordTimer(changeInterval);
-    setIsActive(true);
-    getNextWord();
-  };
-
+  // Canvas animation
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
     const { width, height } = canvas;
   
@@ -79,21 +79,20 @@ function FreestyleBattleVisualizer() {
     const centerX = width / 2;
     const centerY = height / 2;
     const maxRadius = Math.min(width, height) * 0.35;
-    const time = Date.now() / 15000; // Even slower animation
+    const time = Date.now() / 15000;
   
-    // Softer colors with less saturation and higher lightness
     const innerColor = `hsla(${(time * 30) % 360}, 50%, 60%, 1)`;
     const midColor = `hsla(${((time * 30) + 30) % 360}, 50%, 65%, 1)`;
     const outerColor = `hsla(${((time * 30) + 60) % 360}, 50%, 70%, 1)`;
   
     const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
     gradient.addColorStop(0, innerColor);
-    gradient.addColorStop(0.5, innerColor); // Extend the inner color
-    gradient.addColorStop(0.8, midColor); // Add a middle color for smoother transition
+    gradient.addColorStop(0.5, innerColor);
+    gradient.addColorStop(0.8, midColor);
     gradient.addColorStop(1, outerColor);
   
     ctx.beginPath();
-    const radiusOffset = Math.sin(time * 2) * 2; // Even more subtle pulsing
+    const radiusOffset = Math.sin(time * 2) * 2;
     ctx.arc(centerX, centerY, maxRadius + radiusOffset, 0, Math.PI * 2);
     ctx.fillStyle = gradient;
     ctx.fill();
@@ -111,74 +110,119 @@ function FreestyleBattleVisualizer() {
     }
   
     ctx.fillText(currentWord, centerX, centerY - fontSize / 4);
-  
     ctx.font = `${fontSize * 0.5}px Arial`;
     ctx.fillText(timer, centerX, centerY + fontSize / 2);
   
     animationRef.current = requestAnimationFrame(draw);
   }, [currentWord, timer]);
 
+  // Canvas setup and animation
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas || isControlWindow) return;
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight - 100; // Leave space for controls
+      canvas.height = window.innerHeight - (isFullScreen ? 0 : 100);
     };
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-
     draw();
 
     return () => {
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [draw]);
+  }, [draw, isControlWindow, isFullScreen]);
 
-  return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#1a1a1a' }}>
-      <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: '10px',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      }}>
-        <p style={{ color: 'white', margin: '5px 0', textAlign: 'center' }}>
-          Interval: {changeInterval}s | Time Left: {roundDuration === Infinity ? 'Infinity' : `${roundTimer}s`}
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '5px' }}>
-          <button onClick={() => handleIntervalChange(false)} style={buttonStyle}>Decrease Interval</button>
-          <input
-            type="range"
-            min="10"
-            max="300"
-            value={roundDuration === Infinity ? 300 : roundDuration}
-            onChange={handleRoundDurationChange}
-            style={{ width: '40%', margin: '0 10px' }}
-          />
-          <button onClick={() => handleIntervalChange(true)} style={buttonStyle}>Increase Interval</button>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <button onClick={resetRound} style={buttonStyle}>Reset Round</button>
-        </div>
-      </div>
+  // Render control buttons for fullscreen and control panel
+  const renderControlButtons = () => (
+    <div
+      style={{
+        position: 'fixed',
+        top: 10,
+        right: 10,
+        zIndex: 1000,
+        transition: 'opacity 0.3s ease-in-out',
+        opacity: isFullScreen ? 0 : 1,
+      }}
+      onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+      onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+    >
+      <button
+        onClick={openControlWindow}
+        style={{
+          marginBottom: '10px',
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        Open Control Panel
+      </button>
+      <button
+        onClick={toggleFullScreen}
+        style={{
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+      </button>
     </div>
   );
-}
 
-const buttonStyle = {
-  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  border: 'none',
-  color: 'white',
-  padding: '8px 12px',
-  margin: '5px',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  fontSize: '14px'
-};
+  return (
+    <FullScreen handle={fullScreenHandle}>
+      <div style={{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        backgroundColor: '#1a1a1a'
+      }}>
+        {!isControlWindow && (
+          <>
+            <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />
+            {renderControlButtons()}
+          </>
+        )}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}>
+          <TimerControls
+            timer={timer}
+            roundTimer={roundTimer}
+            changeInterval={changeInterval}
+            roundDuration={roundDuration}
+            isActive={isActive}
+            handleRoundDurationChange={handleRoundDurationChange}
+            getNextItem={getNextItem}
+            handleIntervalChange={handleIntervalChange}
+            toggleActive={toggleActive}
+            handleResetRound={handleResetRound}
+            isControlWindow={isControlWindow}
+            isFullScreen={isFullScreen}
+          />
+        </div>
+      </div>
+    </FullScreen>
+  );
+}
 
 export default FreestyleBattleVisualizer;

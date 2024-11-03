@@ -1,21 +1,45 @@
-//ContrastingMode.js
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { FullScreen } from 'react-full-screen';
 import apiConfig from '../../../config/apiConfig';
-import { useWordTimer, useRoundTimer } from '../TimerSettings/useTimers';
+import { useTimerControl } from '../SharedControls/useTimerControl';
+import { TimerControls } from '../SharedControls/TimerControls';
 
 function ContrastingMode() {
   const [pairs, setPairs] = useState([]);
-  const [currentPairIndex, setCurrentPairIndex] = useState(0);
-  const [changeInterval, setChangeInterval] = useState(60);
-  const [roundDuration, setRoundDuration] = useState(90);
-  const [isActive, setIsActive] = useState(true);
-  const [timer, resetPairTimer] = useWordTimer(changeInterval, isActive);
-  const [roundTimer, resetRoundTimer] = useRoundTimer(roundDuration, () => setIsActive(false));
   const [highlightedRating, setHighlightedRating] = useState(null);
   const [showRatingMessage, setShowRatingMessage] = useState(false);
   const [csrfToken, setCsrfToken] = useState('');
   const containerRef = useRef(null);
+
+  // Initialize timer control with pair-specific configuration
+  const {
+    timer,
+    roundTimer,
+    changeInterval,
+    roundDuration,
+    isActive,
+    currentIndex,
+    isControlWindow,
+    isFullScreen,
+    fullScreenHandle,
+    getNextItem,
+    handleIntervalChange,
+    handleRoundDurationChange,
+    handleResetRound: baseHandleResetRound,
+    toggleActive,
+    openControlWindow,
+    toggleFullScreen,
+  } = useTimerControl({
+    defaultInterval: 60,
+    defaultRoundDuration: 90,
+    defaultIsActive: true,
+    itemCount: pairs.length,
+    onNextItem: () => {
+      if (currentIndex >= pairs.length - 5) {
+        fetchPairs();
+      }
+    },
+  });
 
   const getCsrfToken = useCallback(() => {
     const name = 'csrftoken=';
@@ -58,13 +82,6 @@ function ContrastingMode() {
   }, [fetchPairs]);
 
   useEffect(() => {
-    if (timer === 0 && isActive) {
-      getNextPair();
-      resetPairTimer();
-    }
-  }, [timer, isActive, resetPairTimer]);
-
-  useEffect(() => {
     const handleKeyPress = (event) => {
       const key = event.key;
       if (['1', '2', '3', '4', '5'].includes(key)) {
@@ -82,41 +99,17 @@ function ContrastingMode() {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [currentPairIndex, pairs]);
+  }, [currentIndex, pairs]);
 
-  function getNextPair() {
-    setCurrentPairIndex(prevIndex => {
-      let newIndex = prevIndex + 1;
-      if (newIndex >= pairs.length) {
-        fetchPairs();
-        newIndex = 0;
-      }
-      return newIndex;
-    });
-  }
-
-  const handleIntervalChange = useCallback((value) => {
-    setChangeInterval(value);
-    resetPairTimer();
-  }, [resetPairTimer]);
-
-  const handleRoundDurationChange = useCallback((value) => {
-    const newDuration = value === 300 ? Infinity : value;
-    setRoundDuration(newDuration);
-    resetRoundTimer(newDuration);
-  }, [resetRoundTimer]);
-
-  const handleResetRound = () => {
+  // Custom reset handler that combines timer reset with pairs reset
+  const handleResetRound = useCallback(() => {
     setPairs([]);
-    setCurrentPairIndex(0);
     fetchPairs();
-    resetRoundTimer(roundDuration);
-    resetPairTimer();
-    setIsActive(true);
-  };
+    baseHandleResetRound();
+  }, [fetchPairs, baseHandleResetRound]);
 
   const handleRating = async (rating) => {
-    const currentPair = pairs[currentPairIndex];
+    const currentPair = pairs[currentIndex];
     try {
       const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.rateContrastPair}${currentPair.id}/rate/`, {
         method: 'POST',
@@ -127,23 +120,23 @@ function ContrastingMode() {
         body: JSON.stringify({ rating }),
         credentials: 'include',
       });
-     
+      
       if (response.ok) {
         const data = await response.json();
         console.log('Rating submitted:', data);
         setHighlightedRating(rating);
         setShowRatingMessage(true);
-       
+        
         setPairs(prevPairs => {
           const updatedPairs = [...prevPairs];
-          updatedPairs[currentPairIndex] = { ...updatedPairs[currentPairIndex], rating: rating };
+          updatedPairs[currentIndex] = { ...updatedPairs[currentIndex], rating: rating };
           return updatedPairs;
         });
+        
         setTimeout(() => {
           setHighlightedRating(null);
           setShowRatingMessage(false);
-          getNextPair();
-          resetPairTimer();
+          getNextItem();
         }, 300);
       } else {
         console.error('Error submitting rating:', await response.text());
@@ -154,7 +147,7 @@ function ContrastingMode() {
   };
 
   const handleAddTag = async (tag) => {
-    const currentPair = pairs[currentPairIndex];
+    const currentPair = pairs[currentIndex];
     try {
       const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.addTagToContrastPair}${currentPair.id}/add_tag/`, {
         method: 'POST',
@@ -165,11 +158,10 @@ function ContrastingMode() {
         body: JSON.stringify({ tag }),
         credentials: 'include',
       });
-     
+      
       if (response.ok) {
         const data = await response.json();
         console.log('Tag added:', data);
-        // You might want to update the local state here to reflect the new tag
       } else {
         console.error('Error adding tag:', await response.text());
       }
@@ -178,108 +170,177 @@ function ContrastingMode() {
     }
   };
 
-  return (
-    <div 
-      className="contrasting-mode" 
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100vh', overflow: 'hidden' }}
-      ref={containerRef}
-      tabIndex={0}
+  // Render control buttons for fullscreen and control panel
+  const renderControlButtons = () => (
+    <div
+      style={{
+        position: 'fixed',
+        top: 10,
+        right: 10,
+        zIndex: 1000,
+        transition: 'opacity 0.3s ease-in-out',
+        opacity: isFullScreen ? 0 : 1,
+      }}
+      onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+      onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
     >
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: '100%', height: '80vh' }}>
-        {pairs.length > 0 && (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '80%',
-            height: '60%',
-            border: '2px solid white',
-            borderRadius: '10px',
-            padding: '20px',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            color: 'white',
-            fontSize: '24px',
-            textAlign: 'center',
-            marginBottom: '20px'
-          }}>
-            <div style={{ marginBottom: '20px' }}>{pairs[currentPairIndex].item1}</div>
-            <div style={{ fontSize: '36px', margin: '10px 0' }}>vs</div>
-            <div>{pairs[currentPairIndex].item2}</div>
-          </div>
-        )}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '10px' }}>
-            {[...Array(5)].map((_, i) => (
-              <span
-                key={i}
-                onClick={() => handleRating(i + 1)}
-                style={{
-                  cursor: 'pointer',
-                  color: i < (pairs[currentPairIndex]?.rating || 0) ? 'yellow' : 'gray',
-                  fontSize: '24px',
-                  marginRight: '5px',
-                  transition: 'transform 0.2s ease-in-out',
-                  transform: highlightedRating === i + 1 ? 'scale(1.2)' : 'scale(1)',
-                }}
-              >
-                ★
-              </span>
-            ))}
-          </div>
-          {showRatingMessage && (
-            <div style={{
-              color: 'green',
-              fontSize: '14px',
-              marginTop: '5px',
-              animation: 'fadeInOut 2s ease-in-out'
-            }}>
-              Rating submitted!
-            </div>
-          )}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <input
-              type="text"
-              placeholder="Add a tag"
-              onKeyPress={(e) => e.key === 'Enter' && handleAddTag(e.target.value)}
-              style={{ marginRight: '10px', padding: '5px' }}
-            />
-            <button onClick={() => handleAddTag(document.querySelector('input[type="text"]').value)}>Add Tag</button>
-          </div>
-        </div>
-      </div>
-      <div
-        className="control-panel"
+      <button
+        onClick={openControlWindow}
         style={{
-          width: '100%',
-          overflowY: 'auto',
+          marginBottom: '10px',
+          display: 'block',
           padding: '10px',
-          boxSizing: 'border-box',
-          maxHeight: '20vh',
-          background: 'rgba(0,0,0,0.5)',
+          backgroundColor: '#4CAF50',
           color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
         }}
       >
-        <div className="timer">Pair Timer: {timer} seconds</div>
-        <div>Interval: {changeInterval} seconds</div>
-        <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
-        <input
-          type="range"
-          min="10"
-          max="300"
-          value={roundDuration === Infinity ? 300 : roundDuration}
-          onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-          style={{ width: '100%' }}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', marginBottom: '10px' }}>
-          <button onClick={getNextPair}>Next Pair</button>
-          <button onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}>Decrease Interval</button>
-          <button onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}>Increase Interval</button>
-          <button onClick={() => setIsActive(!isActive)}>{isActive ? 'Pause' : 'Resume'}</button>
-          <button onClick={handleResetRound}>Reset Round</button>
+        Open Control Panel
+      </button>
+      <button
+        onClick={toggleFullScreen}
+        style={{
+          display: 'block',
+          padding: '10px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%'
+        }}
+      >
+        {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+      </button>
+    </div>
+  );
+
+  return (
+    <FullScreen handle={fullScreenHandle}>
+      <div 
+        className="contrasting-mode" 
+        style={{ 
+          position: 'relative',
+          width: '100vw',
+          height: '100vh',
+          overflow: 'hidden',
+          backgroundColor: '#1a1a1a'
+        }}
+        ref={containerRef}
+        tabIndex={0}
+      >
+        {!isControlWindow && (
+          <>
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              height: '100%',
+              padding: '20px'
+            }}>
+              {pairs.length > 0 && currentIndex < pairs.length && (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  maxWidth: '800px',
+                  border: '2px solid white',
+                  borderRadius: '10px',
+                  padding: '20px',
+                  backgroundColor: 'rgba(0,0,0,0.7)',
+                  color: 'white',
+                  fontSize: '24px',
+                  textAlign: 'center',
+                  marginBottom: '20px'
+                }}>
+                  <div style={{ marginBottom: '20px' }}>{pairs[currentIndex].item1}</div>
+                  <div style={{ fontSize: '36px', margin: '10px 0' }}>vs</div>
+                  <div>{pairs[currentIndex].item2}</div>
+                </div>
+              )}
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center',
+                opacity: isFullScreen ? 0 : 1,
+                transition: 'opacity 0.3s ease-in-out'
+              }}
+              onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+              >
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '10px' }}>
+                  {[...Array(5)].map((_, i) => (
+                    <span
+                      key={i}
+                      onClick={() => handleRating(i + 1)}
+                      style={{
+                        cursor: 'pointer',
+                        color: i < (pairs[currentIndex]?.rating || 0) ? 'yellow' : 'gray',
+                        fontSize: '24px',
+                        marginRight: '5px',
+                        transition: 'transform 0.2s ease-in-out',
+                        transform: highlightedRating === i + 1 ? 'scale(1.2)' : 'scale(1)',
+                      }}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                {showRatingMessage && (
+                  <div style={{
+                    color: 'green',
+                    fontSize: '14px',
+                    marginTop: '5px',
+                    animation: 'fadeInOut 2s ease-in-out'
+                  }}>
+                    Rating submitted!
+                  </div>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    placeholder="Add a tag"
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddTag(e.target.value)}
+                    style={{ marginRight: '10px', padding: '5px' }}
+                  />
+                  <button onClick={() => handleAddTag(document.querySelector('input[type="text"]').value)}>
+                    Add Tag
+                  </button>
+                </div>
+              </div>
+            </div>
+            {renderControlButtons()}
+          </>
+        )}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}>
+          <TimerControls
+            timer={timer}
+            roundTimer={roundTimer}
+            changeInterval={changeInterval}
+            roundDuration={roundDuration}
+            isActive={isActive}
+            handleRoundDurationChange={handleRoundDurationChange}
+            getNextItem={getNextItem}
+            handleIntervalChange={handleIntervalChange}
+            toggleActive={toggleActive}
+            handleResetRound={handleResetRound}
+            isControlWindow={isControlWindow}
+            isFullScreen={isFullScreen}
+          />
         </div>
       </div>
-    </div>
+    </FullScreen>
   );
 }
 
