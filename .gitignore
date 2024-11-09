@@ -11,6 +11,7 @@ backend/shell_test.py
 backend/jupyters/
 backend/db_dumpdata/
 backend/venv/
+backend/core/.env
 
 # Python
 *.pyc
