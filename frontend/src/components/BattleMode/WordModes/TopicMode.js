@@ -41,7 +41,7 @@ function FreestyleBattleVisualizer() {
   });
 
   const fetchWords = useCallback(() => {
-    fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.getRandomWord}`)
+    fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.getTopic}`)
       .then(response => response.json())
       .then(data => {
         setWords(data.words);

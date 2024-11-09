@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import WordMode from './components/BattleMode/WordModes/WordMode';
-import TopicMode from './components/BattleMode/TopicMode/TopicMode';
+import TopicMode from './components/BattleMode/WordModes/TopicMode';
 import ImagesMode from './components/BattleMode/ImagesMode/ImagesMode';
 import ReportFeedback from './components/UserManagement/ReportFeedback';
 import { BackButton } from './components/Navigation/Buttons';
