@@ -13,3 +13,4 @@ class Word(models.Model):
 
 class Temator(models.Model):
     name = models.CharField(max_length=511, unique=True)
+    source = models.CharField(max_length=100, default='standard')
