@@ -4,8 +4,7 @@ import { FullScreen } from 'react-full-screen';
 import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 
-// Base component with all shared logic
-const BaseBattleVisualizer = ({ endpoint }) => {
+const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
@@ -41,14 +40,17 @@ const BaseBattleVisualizer = ({ endpoint }) => {
   });
 
   const fetchWords = useCallback(() => {
-    fetch(endpoint)
-      .then(response => response.json())
+    (fetchFunction || fetch)(endpoint)
+      .then(response => {
+        if (!fetchFunction) return response.json();
+        return response;
+      })
       .then(data => {
         setWords(data.words);
         setCurrentWord(data.words[0]);
       })
       .catch(error => console.error('Error fetching words:', error));
-  }, [endpoint]); 
+  }, [endpoint, fetchFunction]);
 
   useEffect(() => {
     fetchWords();
@@ -63,7 +65,7 @@ const BaseBattleVisualizer = ({ endpoint }) => {
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
+  
     const ctx = canvas.getContext('2d');
     const { width, height } = canvas;
   
@@ -95,16 +97,35 @@ const BaseBattleVisualizer = ({ endpoint }) => {
     ctx.fillStyle = 'black';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    let fontSize = maxRadius / 3;
-    ctx.font = `bold ${fontSize}px Arial`;
   
-    let textWidth = ctx.measureText(currentWord).width;
-    if (textWidth > maxRadius * 1.5) {
-      fontSize *= (maxRadius * 1.5) / textWidth;
+    const lines = currentWord.split('\n');
+    
+    if (lines.length === 1) {
+      // Single line - use original font sizing logic
+      let fontSize = maxRadius / 3;
       ctx.font = `bold ${fontSize}px Arial`;
+      
+      let textWidth = ctx.measureText(currentWord).width;
+      if (textWidth > maxRadius * 1.5) {
+        fontSize *= (maxRadius * 1.5) / textWidth;
+        ctx.font = `bold ${fontSize}px Arial`;
+      }
+      
+      ctx.fillText(currentWord, centerX, centerY);
+    } else {
+      // Multiple lines - adjust font size for multiple lines
+      let fontSize = maxRadius / (2 + lines.length * 0.5);
+      ctx.font = `bold ${fontSize}px Arial`;
+      
+      const lineHeight = fontSize * 1.2;
+      const totalHeight = lineHeight * lines.length;
+      const startY = centerY - (totalHeight / 2) + (lineHeight / 2);
+      
+      lines.forEach((line, index) => {
+        const y = startY + (index * lineHeight);
+        ctx.fillText(line, centerX, y);
+      });
     }
-  
-    ctx.fillText(currentWord, centerX, centerY);
   
     animationRef.current = requestAnimationFrame(draw);
   }, [currentWord]);
