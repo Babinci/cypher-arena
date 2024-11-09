@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserTracker from '../UserManagement/UserTracker';
 
 function Home() {
   const navigate = useNavigate();
 
   return (
     <div className="home">
+       <UserTracker />
       <h1>Apka prawdziwych freestylerów</h1>
       
       <div className="sidebar">
