@@ -74,8 +74,9 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
     ctx.fillRect(0, 0, width, height);
   
     const centerX = width / 2;
-    const centerY = height / 2;
-    const maxRadius = Math.min(width, height) * 0.35;
+    // Adjust centerY to account for controls height
+    const centerY = (height - 100) / 2;  // 100px is approximate controls height
+    const maxRadius = Math.min(width, height - 100) * 0.45; // Increased from 0.35 to 0.45 and accounting for controls
     const time = Date.now() / 15000;
   
     const innerColor = `hsla(${(time * 30) % 360}, 50%, 60%, 1)`;
@@ -101,8 +102,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
     const lines = currentWord.split('\n');
     
     if (lines.length === 1) {
-      // Single line - use original font sizing logic
-      let fontSize = maxRadius / 3;
+      let fontSize = maxRadius / 2.5; // Increased from 3 to 2.5 for bigger text
       ctx.font = `bold ${fontSize}px Arial`;
       
       let textWidth = ctx.measureText(currentWord).width;
@@ -113,8 +113,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
       
       ctx.fillText(currentWord, centerX, centerY);
     } else {
-      // Multiple lines - adjust font size for multiple lines
-      let fontSize = maxRadius / (2 + lines.length * 0.5);
+      let fontSize = maxRadius / (1.5 + lines.length * 0.5); // Adjusted for bigger text
       ctx.font = `bold ${fontSize}px Arial`;
       
       const lineHeight = fontSize * 1.2;
