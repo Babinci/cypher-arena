@@ -75,7 +75,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
   
     const centerX = width / 2;
     // Adjust centerY to account for controls height
-    const centerY = (height - 100) / 2;  // 100px is approximate controls height
+    const centerY = (height - 150) / 2;  // 100px is approximate controls height
     const maxRadius = Math.min(width, height - 100) * 0.45; // Increased from 0.35 to 0.45 and accounting for controls
     const time = Date.now() / 15000;
   
@@ -198,12 +198,14 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
   return (
     <FullScreen handle={fullScreenHandle}>
       <div style={{
-        position: 'relative',
-        width: '100vw',
-        height: '100vh',
-        overflow: 'hidden',
-        backgroundColor: '#1a1a1a'
-      }}>
+  position: 'relative',
+  width: '100vw',
+  height: '100vh',
+  overflow: 'hidden',
+  backgroundColor: '#1a1a1a',
+  // Add responsive padding
+  padding: window.innerWidth < 768 ? '5px' : '10px'
+}}>
         {!isControlWindow && (
           <>
             <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />

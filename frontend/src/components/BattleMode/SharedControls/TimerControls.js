@@ -47,9 +47,12 @@ export const TimerControls = ({
       left: 0,
       transition: 'opacity 0.3s ease-in-out',
       opacity: isFullScreen ? 0 : 1,
+      // Add mobile-specific styles
     }}
     onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
     onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+
+    
   >
     {/* Control window title */}
     {isControlWindow && (
