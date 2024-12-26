@@ -15,10 +15,10 @@ function Home() {
       </div>
       
       <div className="main-content">
-        <h2>Tryb Freestyle</h2>
+        <h2>Rundy Freestyle</h2>
         <button onClick={() => navigate('/word-mode')}>Word Mode</button>
         <button onClick={() => navigate('/image-mode')}>Obrazki</button>
-        <button onClick={() => navigate('/contrasting-mode')}>Contrasting Mode</button>
+        <button onClick={() => navigate('/contrasting-mode')}>Rap Avatar Duel</button>
         <button onClick={() => navigate('/topic-mode')}>Temator</button>
         
         <h2>Tryb Ocenianie Walki</h2>
