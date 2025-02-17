@@ -18,8 +18,14 @@ import ContrastingMode from './components/BattleMode/ContrastingMode/Contrasting
 
 function App() {
   return (
-    <BrowserRouter basename="/freestyle_app">
-      <div className="App">
+    <BrowserRouter>
+      <div className="App" style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/logo.png'})`,
+        backgroundSize: 'cover',
+        opacity: 0.03,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+      }}>
         <BackButton />
         <Routes>
           <Route path="/" element={<Home />} />

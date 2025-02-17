@@ -1,8 +1,13 @@
 ###My Other
 fast_notes.txt
-
+backup_files
+bin
+memory_bank
+frontend_documentation.md
+.clinerules
 # Backend
 backend/media/
+backend/static
 backend/pexel_images/
 backend/db.sqlite3
 backend/download_images_save_model.py

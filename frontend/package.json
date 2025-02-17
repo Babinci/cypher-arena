@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "/freestyle_app",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@testing-library/user-event": "^13.5.0",

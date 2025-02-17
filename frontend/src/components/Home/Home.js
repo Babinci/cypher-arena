@@ -8,11 +8,11 @@ function Home() {
   return (
     <div className="home">
        <UserTracker />
-      <h1>Apka prawdziwych freestylerów</h1>
+      <h1>Cypher Arena</h1>
       
-      <div className="sidebar">
+      {/* <div className="sidebar">
         <button onClick={() => navigate('/account')}>Account</button>
-      </div>
+      </div> */}
       
       <div className="main-content">
         <h2>Rundy Freestyle</h2>
@@ -21,13 +21,13 @@ function Home() {
         <button onClick={() => navigate('/contrasting-mode')}>Rap Avatar Duel</button>
         <button onClick={() => navigate('/topic-mode')}>Temator</button>
         
-        <h2>Tryb Ocenianie Walki</h2>
-        <button onClick={() => navigate('/battle-judging')}>Ocenianie Pojedynczej Walki</button>
+        {/* <h2>Tryb Ocenianie Walki</h2> */}
+        {/* <button onClick={() => navigate('/battle-judging')}>Ocenianie Pojedynczej Walki</button> */}
         
-        <h2>Tryb Zorganizuj Bitwę</h2>
-        <button onClick={() => navigate('/organize-battle')}>Zorganizuj Bitwę</button>
+        {/* <h2>Tryb Zorganizuj Bitwę</h2> */}
+        {/* <button onClick={() => navigate('/organize-battle')}>Zorganizuj Bitwę</button> */}
         
-        <button onClick={() => navigate('/report-feedback')}>Daj Feedback!</button>
+        {/* <button onClick={() => navigate('/report-feedback')}>Daj Feedback!</button> */}
       </div>
     </div>
   );

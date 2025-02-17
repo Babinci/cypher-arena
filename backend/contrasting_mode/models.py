@@ -12,6 +12,19 @@ class ContrastPair(models.Model):
     def __str__(self):
         return f"{self.item1} vs {self.item2}"
 
+class ContrastPairRating(models.Model):
+    contrast_pair = models.ForeignKey(ContrastPair, on_delete=models.CASCADE, related_name='ratings')
+    user_fingerprint = models.CharField(max_length=255)
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('contrast_pair', 'user_fingerprint')
+
+    def __str__(self):
+        return f"Rating for {self.contrast_pair} by {self.user_fingerprint}"
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
     pairs = models.ManyToManyField(ContrastPair, related_name='tags')
