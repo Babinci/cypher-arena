@@ -6,9 +6,9 @@ const apiConfig = {
     getImages: 'images_mode/images/',
     createFeedback: 'user_management/create-feedback/',
     trackUserVisit: 'user_management/track-visit/',
-    getContrastPairs: 'contrasting_mode/contrast-pairs/',
-    rateContrastPair: 'contrasting_mode/contrast-pairs/',
-    addTagToContrastPair: 'contrasting_mode/contrast-pairs/'
+    getContrastPairs: 'words/contrast-pairs/',
+    rateContrastPair: 'words/contrast-pairs/',
+    addTagToContrastPair: 'words/contrast-pairs/'
   }
 };
 
