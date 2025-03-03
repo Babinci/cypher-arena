@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-# Create your views here.
 from .models import Word, Temator
 import random
 from django.http import JsonResponse
@@ -66,12 +64,6 @@ class RandomWordAPIView(APIView):
         return Response({
             "words": word_list
         }, status=status.HTTP_200_OK)
-
-
-
-
-
-
 
 
 # Create your views here.

@@ -9,7 +9,8 @@
    - Basic round management
    - Content display
 
-2. Practice Modes
+2. Celery integration for news search
+3. Practice Modes
    - Topic mode
    - Word mode
    - Images mode

@@ -38,7 +38,6 @@ urlpatterns = [
     path("words/", include("words.urls")),
     path("user_management/", include("user_management.urls")),
     path("images_mode/", include("images_mode.urls")),
-    # path("contrasting_mode/", include("contrasting_mode.urls")),
     path(
         "",
         include(

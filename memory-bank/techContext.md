@@ -4,6 +4,7 @@
 - **Backend**: Django, Django REST Framework, SQLite (for initial implementation).
 - **Frontend**: React Native for web; potential for mobile app conversion later.
 - **Deployment**: Cloudflare Tunnel with Nginx on Linux (Ubuntu Server). Current setup is for backend API as reverse proxy.
+- **Task Queue**: Celery for asynchronous task processing.
 
 ## Development Setup
 1. Backend: Python 3.x environment with Django and DRF dependencies.
@@ -14,6 +15,9 @@
     - server: http://localhost:3000
     - running on cypher_arena_frontend screen session
 3. Deployment: Linux server configuration with Cloudflare Tunnel for domain routing.
+4. Celery:
+    - Celery worker: `celery -A core worker -l info` (runs in `cypher_arena_celery_worker` screen session)
+    - Celery beat: `celery -A core beat -l info` (runs in `cypher_arena_celery_beat` screen session)
 
 ## API Configuration
 ### Frontend

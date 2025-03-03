@@ -18,7 +18,7 @@
 2. **Backend Updates**
    - Implement a feature for contrasting mode to calculate user rating averages.
    - Enhance code protection to prevent unauthorized access to proprietary word/images data.
-   
+   - Integrated Celery for daily news searches to find new topics and contrast pairs.
    ### Challenges
    - In contrasting mode, the challenge is to implement good filtering based on ratings from the ContrastPairRating model.
    - Code protection for the word/image data: Need to discuss how to protect a large database (80k images and 80k words), where part of the content is intellectual property and should not be scraped by competitors.

@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     "words",
     "images_mode",
     "user_management",
-    "contrasting_mode",
+    # "contrasting_mode",
     ##external apps
     "corsheaders",
     "rest_framework",

@@ -56,6 +56,9 @@ class CypherArenaPerplexityDeepResearch(models.Model):
     search_type = models.CharField(null=True, blank=True, max_length=255)  ##deep_research, normal_search
     news_source = models.CharField(null=True, blank=True, max_length=255)  ##news, showbiznes, sport, tech, science, politics
 
+    class Meta:
+        verbose_name = "Perplexity Deep Research Records"
+        verbose_name_plural = "Perplexity Deep Research Records"
 
 
 ##### scraped models

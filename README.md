@@ -8,7 +8,7 @@ The aim of this project is to revolutionize Polish freestyle rap battles, drawin
 
 ## Current state
 
-Cypher Arena is live at https://cypher-arena.com/. Currently, there is word mode, image mode, contrastive mode, and topic mode with customizable timer settings. The frontend and backend work under one gunicorn process.
+Cypher Arena is live at https://cypher-arena.com/. Currently, there is word mode, image mode, contrastive mode, and topic mode with customizable timer settings.
 
 **About word mode**: There is a large (~200,000) database of Polish words, which are then grouped by occurrence and linguistic type.
 **About image mode**: There is a large open-source image library, which is used. There are >2000 unique categories of images, to supply maximum diversity of topics, in about 7GB of data on the production server.
@@ -22,7 +22,7 @@ The Cypher Arena logo represents the dynamic and competitive nature of freestyle
 ## Core Features
 
 *   Basic Battle System: Timer functionality, second window support, basic round management, and content display.
-*   Practice Modes: Topic mode, word mode, image mode, and contrasting mode (with user ratings for AI-generated pairs).
+*   Practice Modes (Topic, Word, Image, Contrasting):  Various practice modes to hone freestyle skills.
 
 ## Goals
 
@@ -50,14 +50,20 @@ The Cypher Arena logo represents the dynamic and competitive nature of freestyle
 
 *   **Frontend**: React Native for Web, targeting both web and potential mobile platforms. Key components include App, BaseBattleVisualizer, and TimerControls. State management is handled using Zustand.
 *   **Backend**: Django REST framework with SQLite as the initial database. Future upgrades may include PostgreSQL.
+*   **Task Queue**: Celery for asynchronous tasks like daily news searches.
 *   **Deployment**: Cloudflare Tunnel with Nginx on Linux (Ubuntu Server).
 
 ## Current Work Focus
 
-*   Finalizing server migration and deploying the live application.
-*   Brainstorming configuration for judging mode.
-*   Researching and implementing authentication via Google, Facebook, and Apple.
-*   Developing beat playback integration (e.g., Spotify/YouTube/SoundCloud).
+*   **Frontend UI Improvements**: Placement of word circle words, browser tab icon, timer text internationalization, and timer UX refinement.
+*   **Backend Updates**: Implementing user rating averages for contrasting mode and enhancing code protection for word/image data.
+*   **Next Steps**: Brainstorming judging mode configuration, researching authentication (Google, Facebook, Apple), and developing beat playback integration (Spotify/YouTube/SoundCloud).
+
+## Frontend Documentation
+
+Detailed frontend documentation is available in the \`memory-bank/\` directory:
+*   \`frontend_documentation.md\`:  Provides an architecture overview, component hierarchy, state management details, API communication, testing strategy, performance considerations, and dependency inventory.
+*   \`frontend_battle_mode.md\`:  Describes the modules used in the Frontend Battle Mode, including TopicMode.js, BaseBattleVisualizer.js, TimerControls.js, useTimerControl.js, timerStore.js, ImagesMode.js, ImagePreloader.js, indexedDBUtils.js, ContrastingMode.js, and WordMode.js.
 
 ---
 
