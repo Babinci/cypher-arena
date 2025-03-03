@@ -27,7 +27,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
-
+PERPLEXITY_API_KEY =  env("PERPLEXITY_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = False
 DEBUG = True
@@ -56,8 +56,11 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "drf_yasg",
+    'django_celery_beat',
 ]
-
+# Celery Configuration
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # "whitenoise.middleware.WhiteNoiseMiddleware",
