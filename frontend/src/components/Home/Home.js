@@ -27,7 +27,7 @@ function Home() {
         {/* <h2>Tryb Zorganizuj Bitwę</h2> */}
         {/* <button onClick={() => navigate('/organize-battle')}>Zorganizuj Bitwę</button> */}
         
-        {/* <button onClick={() => navigate('/report-feedback')}>Daj Feedback!</button> */}
+        <button onClick={() => navigate('/report-feedback')}>Daj Feedback!</button>
       </div>
     </div>
   );

@@ -12,11 +12,11 @@ function TopicMode() {
     // Even more restrictive line lengths to ensure text stays within circle
     let maxCharsPerLine;
     if (text.length > 40) {
-      maxCharsPerLine = 8; // Very restrictive for long texts
+      maxCharsPerLine = 10; // Slightly less restrictive for long texts
     } else if (text.length > 25) {
-      maxCharsPerLine = 10; // Moderately restrictive
+      maxCharsPerLine = 12; // Slightly less restrictive
     } else {
-      maxCharsPerLine = 12; // Less restrictive for shorter texts
+      maxCharsPerLine = 14; // Less restrictive for shorter texts
     }
     
     let currentLine = '';
@@ -109,6 +109,7 @@ function TopicMode() {
     <BaseBattleVisualizer
       endpoint={`${apiConfig.baseUrl}${apiConfig.endpoints.getTopic}`}
       fetchFunction={fetchWithTransform}
+      styleConfig={{ fontSizeFactor: 1.5 }}
     />
   );
 }

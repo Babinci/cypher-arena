@@ -4,7 +4,7 @@ import { FullScreen } from 'react-full-screen';
 import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 
-const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
+const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
@@ -76,7 +76,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
     const centerX = width / 2;
     // Adjust centerY to account for controls height
     const centerY = (height - 150) / 2;  // 100px is approximate controls height
-    const maxRadius = Math.min(width, height - 100) * 0.45; // Increased from 0.35 to 0.45 and accounting for controls
+    const maxRadius = Math.min(width, height - 100)* 0.45;  // Increased from 0.35 to 0.45 and accounting for controls
     const time = Date.now() / 15000;
   
     const innerColor = `hsla(${(time * 30) % 360}, 50%, 60%, 1)`;
@@ -103,6 +103,9 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
     
     if (lines.length === 1) {
       let fontSize = maxRadius / 2.5; // Increased from 3 to 2.5 for bigger text
+      console.log("styleConfig", styleConfig);
+      fontSize /= styleConfig?.fontSizeFactor || 1;
+      console.log("fontSize", fontSize);
       ctx.font = `bold ${fontSize}px Arial`;
       
       let textWidth = ctx.measureText(currentWord).width;
@@ -111,9 +114,12 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
         ctx.font = `bold ${fontSize}px Arial`;
       }
       
-      ctx.fillText(currentWord, centerX, centerY);
+      ctx.fillText(currentWord, centerX, centerY - 10);
     } else {
       let fontSize = maxRadius / (1.5 + lines.length * 0.5); // Adjusted for bigger text
+      console.log("styleConfig", styleConfig);
+      fontSize /= styleConfig?.fontSizeFactor || 1;
+      console.log("fontSize", fontSize);
       ctx.font = `bold ${fontSize}px Arial`;
       
       const lineHeight = fontSize * 1.2;
@@ -122,7 +128,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction }) => {
       
       lines.forEach((line, index) => {
         const y = startY + (index * lineHeight);
-        ctx.fillText(line, centerX, y);
+        ctx.fillText(line, centerX, y - 10);
       });
     }
   
