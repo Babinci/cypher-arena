@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 @shared_task
 def daily_search():
-    end_date = datetime.now()
+    end_date = datetime.now()- timedelta(days=1)
     start_date = end_date - timedelta(days=2)
 
     for name in ["general_news", "polish_showbiznes"]:
