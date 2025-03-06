@@ -1,12 +1,12 @@
 #!/bin/bash
 # server_control.sh
-# ./server_control.sh backend - Restart only the backend
-# ./server_control.sh frontend - Restart only the frontend
-# ./server_control.sh celery-worker - Restart only the celery worker
-# ./server_control.sh celery-beat - Restart only the celery beat
-# ./server_control.sh celery - Restart celery
-# ./server_control.sh all - Restart all services
-# ./server_control.sh status - Show the status of all screen sessions
+# ./restart_server.sh.sh backend - Restart only the backend
+# ./restart_server.sh frontend - Restart only the frontend
+# ./restart_server.sh celery-worker - Restart only the celery worker
+# ./restart_server.sh celery-beat - Restart only the celery beat
+# ./restart_server.sh celery - Restart celery
+# ./restart_server.sh all - Restart all services
+# ./restart_server.sh status - Show the status of all screen sessions
 
 # Load configuration from JSON file
 CONFIG_FILE="$(dirname "$0")/config.json"

@@ -10,6 +10,6 @@ urlpatterns = [
 router = DefaultRouter()
 router.register(r'contrast-pairs', views.ContrastPairViewSet)
 
-urlpatterns = [
+urlpatterns += [
     path('', include(router.urls)),
 ]
