@@ -1,6 +1,6 @@
 #!/bin/bash
 # server_control.sh
-# ./restart_server.sh.sh backend - Restart only the backend
+# ./restart_server.sh backend - Restart only the backend
 # ./restart_server.sh frontend - Restart only the frontend
 # ./restart_server.sh celery-worker - Restart only the celery worker
 # ./restart_server.sh celery-beat - Restart only the celery beat

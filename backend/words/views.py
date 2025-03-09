@@ -30,9 +30,53 @@ def hard_mode(request):
 
 class TopicAPIView(APIView):
     def get(self, request):
-        topics = Temator.objects.all().order_by("?")
+        # Get the page size from query params or use default
+        page_size = int(request.query_params.get('page_size', 200))
+        
+        # Initialize or get the list of already sent Temator IDs from the session
+        if 'sent_temator_ids' not in request.session:
+            request.session['sent_temator_ids'] = []
+        
+        sent_ids = request.session['sent_temator_ids']
+        
+        # Get total count of Temator objects
+        total_count = Temator.objects.count()
+        
+        # Check if we've sent almost all Temators
+        if len(sent_ids) >= total_count - page_size:
+            # Reset the session if we've sent almost all Temators
+            request.session['sent_temator_ids'] = []
+            sent_ids = []
+        
+        # Query for Temators excluding already sent ones
+        available_topics = Temator.objects.exclude(id__in=sent_ids)
+        available_count = available_topics.count()
+        
+        # If we have fewer available records than the page size, just return all of them
+        if available_count <= page_size:
+            topics = list(available_topics)
+            random.shuffle(topics)
+        else:
+            # Select a random subset of the available topics
+            # Get all IDs (this is much faster than fetching all objects)
+            available_ids = list(available_topics.values_list('id', flat=True))
+            
+            # Select random IDs
+            random_ids = random.sample(available_ids, min(page_size, len(available_ids)))
+            
+            # Fetch only the randomly selected objects
+            topics = list(Temator.objects.filter(id__in=random_ids))
+            random.shuffle(topics)
+        
+        # Update the session with the newly sent IDs
+        new_sent_ids = [topic.id for topic in topics]
+        request.session['sent_temator_ids'] = sent_ids + new_sent_ids
+        request.session.modified = True
+        
+        # Extract names
         word_list = [word.name for word in topics]
         
+        # Return standard response (not paginated)
         return Response({
             "words": word_list
         }, status=status.HTTP_200_OK)
