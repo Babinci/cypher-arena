@@ -48,7 +48,7 @@ frontend/.pnp
 frontend/.pnp.js
 frontend/coverage/
 frontend/build/
-
+.env
 # misc
 .DS_Store
 .env.local
@@ -70,3 +70,20 @@ yarn-error.log*
 
 
 config.json
+
+# Added by Claude Task Master
+logs
+dev-debug.log
+# Dependency directories
+node_modules/
+# Environment variables
+.env
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# OS specific
+# Task files
+tasks.json
+tasks/ 
