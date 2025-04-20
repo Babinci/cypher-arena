@@ -1,1228 +1,1228 @@
 id,item1,item2,rating
 4,Sokół,Taco Hemingway,10.0
 5,Dawid Podsiadło,Sanah,10.0
-6,Mateusz Morawiecki,Donald Tusk,
-7,Rafał Trzaskowski,Szymon Hołownia,
-8,Robert Biedroń,Krzysztof Bosak,
-9,Kaczyński,Tusk,
-10,Duda,Trzaskowski,
-11,Lewica,Konfederacja,
-12,PiS,PO,
-13,TVP,TVN,
-15,Onet,Wirtualna Polska,
-16,RMF FM,Radio Zet,
-17,Trójka,TOK FM,
-18,Netflix,Player.pl,
-19,CDA,VOD.pl,
-20,Allegro,OLX,
-21,InPost,Poczta Polska,
-22,Żabka,Biedronka,
-23,Lidl,Kaufland,
-25,PKO BP,mBank,
-26,LOT,Ryanair,
-27,PKP Intercity,FlixBus,
-28,Uber,Bolt,
-29,Glovo,Pyszne.pl,
-30,CD Projekt Red,Techland,
-31,11 bit studios,People Can Fly,
-33,This War of Mine,Dying Light,
-34,Filmweb,IMDB,
-35,Multikino,Cinema City,
-36,Helios,Kino Studyjne,
-37,WOŚP,Caritas,
-38,TVN,Polsat,
-39,Kuba Wojewódzki,Marcin Prokop,
-40,Magda Gessler,Robert Makłowicz,
-41,Krzysztof Ibisz,Hubert Urbański,
-42,Maryla Rodowicz,Beata Kozidrak,
-43,Kayah,Edyta Górniak,
-44,Maciej Musiał,Maciej Stuhr,
-45,Joanna Kulig,Agata Kulesza,
-46,Andrzej Chyra,Borys Szyc,
-47,Jan Komasa,Wojtek Smarzowski,
-48,Paweł Pawlikowski,Agnieszka Holland,
-49,Olga Tokarczuk,Szczepan Twardoch,
-50,Remigiusz Mróz,Katarzyna Bonda,
-51,Blanka Lipińska,Zygmunt Miłoszewski,
-52,Jerzy Bralczyk,Jan Miodek,
-53,Krystyna Czubówna,Tomasz Knapik,
-54,Czesław Mozil,Kuba Badach,
-55,Artur Rojek,Katarzyna Nosowska,
-56,O.S.T.R.,Pezet,
-57,Mata,Young Leosia,
-58,Taco Hemingway,Quebonafide,
-59,PRO8L3M,Łona i Webber,
-60,Bitamina,Bass Astral x Igo,
-61,Daria Zawiałow,Mery Spolsky,
-62,Brodka,Monika Brodka,
-63,Kwiat Jabłoni,Tulia,
-64,Mrozu,Krzysztof Zalewski,
-67,Viki Gabor,Sara James,
-68,Krzysztof Krawczyk,Zenek Martyniuk,
-70,Perfect,Lady Pank,
-71,Dżem,Republika,
-72,Kult,Oddział Zamknięty,
-73,T.Love,Hey,
-74,Myslovitz,Coma,
-75,Wilki,Bajm,
-76,Budka Suflera,Czerwone Gitary,
-77,Maanam,Lombard,
-78,Elektryczne Gitary,Piersi,
-79,Arka Noego,Golec uOrkiestra,
-80,De Mono,Kombi,
-81,Voo Voo,Strachy na Lachy,
-82,Big Cyc,Kobranocka,
-83,Raz Dwa Trzy,Stare Dobre Małżeństwo,
-84,Grzegorz Turnau,Stanisław Soyka,
-85,Anna Maria Jopek,Ania Dąbrowska,
-86,Anita Lipnicka,Kasia Kowalska,
-87,Natalia Przybysz,Natalia Nykiel,
-88,Natalia Kukulska,Sylwia Grzeszczak,
-89,Sarsa,Lanberry,
-91,Michał Szpak,Dawid Kwiatkowski,
-92,Marcin Sójka,Gromee,
-93,Andrzej Piaseczny,Michał Wiśniewski,
-94,Piotr Cugowski,Kuba Badach,
-95,Maciej Maleńczuk,Kazik Staszewski,
-96,Muniek Staszczyk,Piotr Rogucki,
-97,Artur Andrus,Kabaret Moralnego Niepokoju,
-98,Kabaret Ani Mru-Mru,Kabaret Młodych Panów,
-99,Kabaret Neo-Nówka,Kabaret Paranienormalni,
-100,Kabaret Hrabi,Formacja Chatelet,
-101,Robert Górski,Grzegorz Halama,
-102,Cezary Pazura,Tomasz Karolak,
-103,Piotr Fronczewski,Jerzy Stuhr,
-104,Janusz Gajos,Jan Peszek,
-105,Andrzej Seweryn,Jan Nowicki,
-106,Wojciech Pszoniak,Daniel Olbrychski,
-107,Jerzy Trela,Olgierd Łukaszewicz,
-108,Stanisława Celińska,Krystyna Janda,
-109,Maja Ostaszewska,Magdalena Cielecka,
-110,Danuta Stenka,Agata Kulesza,
-111,Kinga Preis,Agata Buzek,
-112,Małgorzata Kożuchowska,Katarzyna Figura,
-113,Joanna Kulig,Maja Ostaszewska,
-115,Tomasz Kot,Piotr Adamczyk,
-117,Andrzej Chyra,Robert Więckiewicz,
-118,Cezary Pazura,Adam Woronowicz,
-119,Agnieszka Dygant,Katarzyna Warnke,
-120,Agnieszka Więdłocha,Agnieszka Grochowska,
-121,Aleksandra Domańska,Julia Wieniawa,
-122,Weronika Rosati,Anna Dereszowska,
-123,Mateusz Banasiuk,Antoni Królikowski,
-125,Paweł Domagała,Maciej Zakościelny,
-126,Bartłomiej Topa,Arkadiusz Jakubik,
-127,Wojciech Zieliński,Leszek Lichota,
-129,Małgorzata Socha,Joanna Brodzik,
-130,Anna Mucha,Katarzyna Zielińska,
-131,Małgorzata Foremniak,Grażyna Szapołowska,
-132,Barbara Kurdej-Szatan,Anna Przybylska,
-133,Katarzyna Skrzynecka,Katarzyna Cichopek,
-134,Michał Piróg,Agustin Egurrola,
-135,Agnieszka Chylińska,Justyna Steczkowska,
-137,Tomson & Baron,Marek Piekarczyk,
-138,Andrzej Piaseczny,Michał Szpak,
-139,Maryla Rodowicz,Edyta Górniak,
-140,Margaret,Sarsa,
-141,Dawid Kwiatkowski,Roksana Węgiel,
-142,Viki Gabor,Sara James,
-143,Blanka,Edyta Górniak (Eurowizja),
-144,Rafał Brzozowski,Michał Szpak (Eurowizja),
-145,Donatan & Cleo,Gromee feat. Lukas Meijer,
-146,Blue Café,Ich Troje,
-147,Ivan i Delfin,Isis Gee,
-148,Kasia Kowalska,Justyna Steczkowska,
-149,Edyta Górniak,Anna Maria Jopek,
-150,Ira,Wilki,
-151,Lady Pank,Perfect,
-152,Myslovitz,Hey,
-153,Kult,T.Love,
-154,Dżem,TSA,
-155,Budka Suflera,Kombi,
-156,Maanam,Bajm,
-158,Czerwone Gitary,Skaldowie,
-159,Raz Dwa Trzy,Stare Dobre Małżeństwo,
-160,Grzegorz Turnau,Marek Grechuta,
-161,Stanisław Soyka,Zbigniew Wodecki,
-162,Anna Maria Jopek,Kayah,
-163,Anita Lipnicka,Kasia Kowalska,
-164,Natalia Przybysz,Monika Brodka,
-165,O.S.T.R.,Pezet,
-166,Taco Hemingway,Quebonafide,
-167,Sokół,Peja,
-169,Kaliber 44,Paktofonika,
-170,Kali,Paluch,
-171,Białas,Solar,
-172,Miuosh,Ten Typ Mes,
-175,Żabson,Malik Montana,
-176,Bedoes,White 2115,
-177,Kukon,Kizo,
-178,Kukiz,Liroy,
-180,Doniu,Ascetoholix,
-181,Liber,Wojtek Łozowski,
-182,WWO,Hemp Gru,
-183,Fenomen,Zipera,
-184,Molesta Ewenement,Mor W.A.,
-185,Slums Attack,Wzgórze Ya-Pa 3,
-186,Grammatik,Kaliber 44,
-187,Pokahontaz,Trzeci Wymiar,
-188,Fisz Emade,Łąki Łan,
-189,Lao Che,Pustki,
-190,Cool Kids of Death,Dick4Dick,
-191,Normalsi,Akurat,
-192,Happysad,Video,
-193,Lemon,Sorry Boys,
-194,Muchy,The Car Is on Fire,
-195,The Dumplings,Rebeka,
-196,Kraków Street Band,Tabu,
-197,Strachy na Lachy,Luxtorpeda,
-198,Big Cyc,Kobranocka,
-199,Pidżama Porno,Farben Lehre,
-200,Coma,Cochise,
-201,Hunter,Kat,
-202,Vader,Behemoth,
-203,Decapitated,Hate,
-204,Acid Drinkers,Turbo,
-205,Frontside,Chassis,
-206,Siekiera,Brygada Kryzys,
-207,Armia,Dezerter,
-208,Robert Lewandowski,Kamil Glik,
-209,Wojciech Szczęsny,Łukasz Fabiański,
-210,Piotr Zieliński,Grzegorz Krychowiak,
-211,Arkadiusz Milik,Krzysztof Piątek,
-212,Jan Bednarek,Kamil Grosicki,
-213,Jakub Błaszczykowski,Łukasz Piszczek,
-214,Michał Pazdan,Thiago Cionek,
-215,Karol Linetty,Bartosz Bereszyński,
-216,Dawid Kownacki,Adam Buksa,
-218,Rafał Gikiewicz,Bartłomiej Drągowski,
-219,Tomasz Kędziora,Bartosz Bereszyński,
-220,Krystian Bielik,Karol Linetty,
-221,Damian Kądzior,Przemysław Płacheta,
-222,Kamil Jóźwiak,Przemysław Frankowski,
-223,Jerzy Brzęczek,Paulo Sousa,
-224,Adam Nawałka,Czesław Michniewicz,
-225,Leo Beenhakker,Franciszek Smuda,
-226,Paweł Janas,Waldemar Fornalik,
-227,Janusz Wójcik,Zbigniew Boniek,
-228,Henryk Kasperczak,Antoni Piechniczek,
-229,Jacek Gmoch,Kazimierz Górski,
-230,Ryszard Kulesza,Andrzej Strejlau,
-231,Wojciech Łazarek,Jerzy Engel,
-232,Andrzej Strejlau,Henryk Apostel,
-233,Jerzy Piechniczek,Wojciech Łazarek,
-234,Lesław Ćmikiewicz,Bernard Blaut,
-235,Jacek Kazimierski,Józef Młynarczyk,
-236,Jan Tomaszewski,Władysław Żmuda,
-237,Zbigniew Boniek,Grzegorz Lato,
-238,Włodzimierz Lubański,Kazimierz Deyna,
-239,Andrzej Szarmach,Jan Domarski,
-240,Robert Gadocha,Lesław Ćmikiewicz,
-241,Henryk Kasperczak,Adam Musiał,
-242,Jerzy Gorgoń,Antoni Szymanowski,
-243,Zygmunt Anczok,Jerzy Woźniak,
-244,Andrzej Iwan,Włodzimierz Smolarek,
-245,Zbigniew Boniek,Andrzej Buncol,
-246,Dariusz Dziekanowski,Jan Urban,
-247,Roman Kosecki,Jacek Krzynówek,
-248,Jerzy Dudek,Artur Boruc,
-249,Jacek Bąk,Tomasz Hajto,
-251,Euzebiusz Smolarek,Ireneusz Jeleń,
-252,Mariusz Lewandowski,Radosław Sobolewski,
-253,Michał Żewłakow,Marcin Wasilewski,
-254,Jakub Błaszczykowski,Ludovic Obraniak,
-256,Łukasz Piszczek,Artur Jędrzejczyk,
-257,Grzegorz Krychowiak,Kamil Glik,
-258,Michał Pazdan,Thiago Cionek,
-259,Rafał Kurzawa,Maciej Rybus,
-260,Bartosz Bereszyński,Tomasz Kędziora,
-261,Jan Bednarek,Kamil Glik,
-262,Piotr Zieliński,Karol Linetty,
-263,Arkadiusz Milik,Krzysztof Piątek,
-264,Kamil Grosicki,Przemysław Frankowski,
-265,Robert Lewandowski,Arkadiusz Milik,
-266,Wojciech Szczęsny,Łukasz Fabiański,
-268,Tomasz Kędziora,Bartosz Bereszyński,
-269,Kamil Glik,Jan Bednarek,
-270,Michał Helik,Sebastian Walukiewicz,
-271,Arkadiusz Reca,Maciej Rybus,
-272,Kamil Jóźwiak,Przemysław Płacheta,
-273,Mateusz Klich,Jakub Moder,
-274,Grzegorz Krychowiak,Karol Linetty,
-275,Sebastian Szymański,Kacper Kozłowski,
-276,Piotr Zieliński,Rafał Augustyniak,
-277,Krzysztof Piątek,Dawid Kownacki,
-278,Młody Leosia,Mata,
-279,Ekipa,Team X,
-280,Klocuch,Cyber Marian,
-281,Boxdel,Gargamel,
-282,Rafonix,Daniel Magical,
-283,Bonus BGC,Popek,
-284,"Karol ""Friz"" Wiśniewski",Gimper,
-285,Quebonafide,Taco Hemingway,
-286,Sokół,Peja,
-287,O.S.T.R.,Łona,
-288,Tede,Pezet,
-289,Paluch,Kali,
-290,Magik,Fokus,
-291,Adidas,Nike,
-292,McDonald's,Vege Burger,
-293,TikTok,Instagram Reels,
-294,Fortnite,Minecraft,
-295,Among Us,Fall Guys,
-296,Clubhouse,Twitter Spaces,
-298,Dogecoin,Bitcoin,
-299,Elon Musk,Jeff Bezos,
-300,Mark Zuckerberg,Jack Dorsey,
-301,PornHub,OnlyFans,
-302,Tinder,Clubhouse,
-303,NFT,Tradycyjna sztuka,
-304,Metawersum,Rzeczywistość,
-305,Squid Game,Dom z papieru,
-306,Stranger Things,Dark,
-307,The Witcher (Netflix),Wiedźmin (gra),
-308,Chłopi Reymont,"Netflix ""Chłopi""",
-309,Euphoria,Skins,
-310,Joker (2019),Heath Ledger's Joker,
-311,Marvel Cinematic Universe,DC Extended Universe,
-312,Billie Eilish,Dua Lipa,
-316,Bad Bunny,J Balvin,
-317,The Weeknd,Post Malone,
-319,Lady Gaga,Ariana Grande,
-321,K-pop,Latino pop,
-323,Lo-fi,Hyperpop,
-325,Vaporwave,Synthwave,
-326,Dieta roślinna,Dieta mięsożercy,
-327,Bezglutenowa,Ketogeniczna,
-329,CrossFit,Kalistenika,
-330,Joga,Pilates,
-331,Trening interwałowy wysokiej intensywności,Cardio o niskiej intensywności,
-332,Zimne prysznice,Gorąca joga,
-333,Medytacja,Nootropiki,
-334,Uważność,Biohacking,
-335,Psychodeliki,Tradycyjna terapia,
-336,Odosobnienia z ayahuascą,Ośrodki rehabilitacyjne,
-337,CBD,THC,
-338,Mikrodawkowanie,Leki na receptę,
-339,Paszporty szczepionkowe,Ruch antyszczepionkowy,
-340,Praca z domu,Cyfrowy nomada,
-341,Ekonomia freelancerów,Bezwarunkowy dochód podstawowy,
-342,Blockchain,Scentralizowana bankowość,
-343,Kryptowaluta,Standard złota,
-344,Kultura unieważniania,Wolność słowa,
-345,Pozytywne nastawienie do ciała,Kultura siłowni,
-346,Dziewczyny VSCO,E-dziewczyny,
-347,Delikatni chłopcy,F-chłopcy,
-348,Mroczna akademia,Styl wiejski,
-349,Moda Y2K,Minimalizm,
-351,Zakupy w second-handach,Luksusowe marki,
-352,Miłośnicy sneakersów,Bieganie boso,
-353,Buty ojca,Wysokie obcasy,
-354,Crocsy,Birkenstock,
-355,Fryzura na czeskiego piłkarza,Męski kok,
-357,Zaimki ono/jego,Tradycyjne zaimki,
-358,Poliamoryczność,Monogamia,
-359,Bezdzietność z wyboru,Duże rodziny,
-360,Życie w vanie,Życie na przedmieściach,
-361,Mikrodomki,McMansions,
-362,Zero odpadów,Konsumpcjonizm,
-363,Minimalizm,Maksymalizm,
-364,Marie Kondo,Zbieracze,
-365,Ruch FIRE,Tradycyjna emerytura,
-366,Cyfrowy detoks,Zawsze online,
-367,Teoria płaskiej Ziemi,Eksploracja kosmosu,
-368,Przeciwnicy 5G,Entuzjaści Internetu Rzeczy,
-369,Aktywizm klimatyczny,Negacja zmian klimatycznych,
-370,Weganizm,Mięso hodowane laboratoryjnie,
-371,GMO,Rolnictwo ekologiczne,
-372,Szybka moda,Powolna moda,
-373,Upcycling,Planowane starzenie produktów,
-375,Ekonomia współdzielenia,Ekonomia własności,
-376,Uber,Tradycyjne taksówki,
-377,Airbnb,Hotele,
-378,Netflix,Kino,
-379,Streaming,Telewizja kablowa,
-381,Szachyboks,MMA,
-382,Parkour,Biegi maratońskie,
-384,Rzucanie toporem,Rzutki,
-385,Piłka nożna w bańkach,Tradycyjna piłka nożna,
-386,Quidditch,Rugby,
-387,Hokej podwodny,Hokej na lodzie,
-388,Roller derby,Łyżwiarstwo figurowe,
-389,Wyścigi dronów,Formuła 1,
-390,Wirtualna rzeczywistość,Rozszerzona rzeczywistość,
-391,Roboty Boston Dynamics,Tradycyjne zwierzęta domowe,
-392,Mięso hodowane laboratoryjnie,Tradycyjne rolnictwo,
-393,Rolnictwo wertykalne,Tradycyjne rolnictwo,
-394,Domy drukowane 3D,Tradycyjne budownictwo,
-395,Inteligentne miasta,Życie na wsi,
-396,Hyperloop,Kolej dużych prędkości,
-397,Hulajnogi elektryczne,Rowery,
-398,Samochody autonomiczne,Prowadzenie manualne,
-400,Kolonizacja Marsa,Eksploracja oceanów,
-401,Neuralink,Tradycyjne interfejsy mózg-komputer,
-402,Edycja genów CRISPR,Dobór naturalny,
-403,Komputery kwantowe,Komputery klasyczne,
-404,6G,Internet dial-up,
-405,Wyświetlacze holograficzne,Tradycyjne ekrany,
-406,Grafen,Krzem,
-407,Energia termojądrowa,Paliwa kopalne,
-408,Ciemna materia,Obserwowalny wszechświat,
-409,Teoria strun,Fizyka klasyczna,
-410,Teoria płaskiej Ziemi,Fakt kulistości Ziemi,
-411,Hipoteza symulacji,Rzeczywistość materialna,
-412,Starożytni kosmici,Nowoczesna archeologia,
-413,Kryptozoologia,Zoologia,
-414,Astrologia,Astronomia,
-415,Czytanie tarota,Analiza danych,
-416,Uzdrawianie energią,Medycyna zachodnia,
-417,Wyrównywanie czakr,Fizjoterapia,
-418,Kąpiele dźwiękowe,Tradycyjne zabiegi spa,
-419,Kąpiele leśne,Życie w mieście,
-420,Sztuka cyfrowa,Tradycyjne malarstwo,
-421,Pixel art,Hiperrealizm,
-422,Sztuka generatywna,Sztuka ręczna,
-423,Muzyka generowana przez AI,Ludzcy kompozytorzy,
-424,Deepfake,Tradycyjne CGI,
-425,Memy,Karykatury polityczne,
-426,GIFy reakcyjne,Emoji,
-427,Mowa pieseł,Oksfordzki angielski,
-428,Leetspeak,Poprawna gramatyka,
-429,Języki sztuczne,Języki naturalne,
-430,Emoji,Hieroglify,
-431,ASCII art,Malarstwo renesansowe,
-432,Estetyka vaporwave,Minimalistyczny design,
-433,Glitch art,Tradycyjna fotografia,
-435,Synthwave,Muzyka klasyczna,
-436,ASMR,Death metal,
-437,Mumble rap,Hip-hop liryczny,
-438,Nightcore,Oryginalne tempo,
-439,Bardcore,Nowoczesny pop,
-440,Szanty,Współczesny folk,
-441,Breakcore,Muzyka ambient,
-442,Extratone,Muzyka dronowa,
-443,Muzyka noise,Muzyka łatwa w odbiorze,
-444,Kawaii metal,Tradycyjny metal,
-445,Witch house,Mainstream EDM,
-446,PC Music,Konwencjonalny pop,
-447,Hyperpop,Ballady akustyczne,
-448,Vocaloid,Ludzcy wokaliści,
-449,AI vtuberzy,Ludzcy streamerzy,
-450,Gry gacha,Tradycyjne RPG,
-451,Roguelike,Linearne narracje,
-452,Gry idle,Gry akcji,
-453,Battle royale,Drużynowy deathmatch,
-454,Souls-like,Gry casual,
-455,Symulatory chodzenia,Gry akcji-przygodowe,
-456,Powieści wizualne,Tradycyjne powieści,
-457,Gry rytmiczne,Strzelanki pierwszoosobowe,
-458,Auto chess,Tradycyjne szachy,
-459,E-sport,Tradycyjne sporty,
-460,Speedrunning,Kompletowanie gry,
-461,Przejścia 100%,Casualowe przejścia,
-462,Permanentna śmierć,Nadużywanie zapisów,
-463,Generowanie proceduralne,Ręcznie tworzone poziomy,
-464,Otwarty świat,Liniowa rozgrywka,
-466,Metawersum,Świat fizyczny,
-467,Gry oparte na blockchain,Tradycyjne granie,
-468,Granie dla zarobku,Płatne granie,
-469,Loot boxy,Odblokowywalne przedmioty,
-471,Wczesny dostęp,Gotowe produkty,
-472,Gry jako usługa,Jednorazowe zakupy,
-473,Modowanie,Czysta rozgrywka,
-474,Twitch Plays,Gra jednoosobowa,
-475,Let's Playe,Recenzje gier,
-476,Filmy reakcji,Krytyka filmowa,
-478,Mukbang,Programy kulinarne,
-479,ASMR,Tradycyjne podcasty,
-480,Podcasty true crime,Fikcyjne dramaty,
-481,Słuchowiska,Audiobooki,
-482,Fikcja interaktywna,Linearne narracje,
-483,Seriale w stylu Bandersnatch,Tradycyjne seriale TV,
-484,Wirtualni YouTuberzy,Ludzcy YouTuberzy,
-485,Deepfake'owe gwiazdy,Prawdziwe gwiazdy,
-486,Influencerzy AI,Ludzcy influencerzy,
-487,Moda cyfrowa,Fizyczne ubrania,
-488,Przymierzanie w AR,Fizyczne przymierzalnie,
-489,Koncerty wirtualne,Występy na żywo,
-491,Ciche dyskoteki,Tradycyjne kluby,
-492,Pokoje zagadek,Gry planszowe,
-493,LARP,Gry wideo,
-494,Cosplay,Tradycyjne aktorstwo,
-495,Fan fiction,Oryginalna twórczość,
-496,Shipping,Kanoniczne związki,
-497,Zasada 34,Treści bezpieczne w pracy,
-498,Przeklęte obrazy,Artystyczna fotografia,
-501,Dank memy,Suchary,
-502,Shitposting,Formalne pisanie,
-503,Copypasta,Oryginalne treści,
-504,Trollowanie,Szczera dyskusja,
-505,Wyszukiwanie obrazem,Pytanie o źródło,
-506,Konta alternatywne,Prawdziwe tożsamości,
-507,Konta jednorazowe,Główne konta,
-508,Zweryfikowane konta,Anonimowi użytkownicy,
-510,Bliscy znajomi,Publiczne posty,
-511,Relacje,Posty w feedzie,
-512,Reels,IGTV,
-513,Filtry Snapchat,Naturalne zdjęcia,
-514,Face tune,#BezFiltra,
-515,Dziecięcy influencerzy,Dziecięcy aktorzy,
-516,Rodzinni vlogerzy,Tradycyjne zdjęcia rodzinne,
-518,Kultura foodies,Domowe gotowanie,
-519,Zestawy do gotowania,Zakupy spożywcze,
-520,Wirtualne restauracje,Tradycyjne restauracje,
-521,Kuchnie w chmurze,Restauracje stacjonarne,
-522,Sklepy dark store,Tradycyjny handel detaliczny,
-523,Sklepy bezobsługowe,Tradycyjne kasy,
-524,Menu z kodem QR,Fizyczne menu,
-525,Płatności zbliżeniowe,Transakcje gotówkowe,
-528,NFT,Fizyczne kolekcjonerskie przedmioty,
-529,Gry play-to-earn,Tradycyjne granie,
-530,DAO,Tradycyjne organizacje,
-531,Web3,Web2.0,
-532,Metawersum,Świat fizyczny,
-533,Wirtualne nieruchomości,Fizyczne nieruchomości,
-534,Cyfrowi nomadzi,Pracownicy biurowi,
-535,Praca zdalna,Praca stacjonarna,
-536,Zmęczenie Zoomem,Rozmowy przy automacie z wodą,
-537,Wirtualna integracja zespołu,Imprezy biurowe,
-538,Przestrzenie co-livingowe,Tradycyjne mieszkania,
-539,Coliving,Domy rodzin nuklearnych,
-540,Mikrodomy,McMansions,
-541,Życie w vanie,Życie na przedmieściach,
-543,Domy ziemne,Tradycyjne budownictwo,
-544,Domy drukowane 3D,Tradycyjne budownictwo,
-545,Inteligentne domy,Zwykłe domy,
-546,Urządzenia IoT,Analogowe urządzenia,
-547,Asystenci głosowi,Ręczne sterowanie,
-548,Roboty odkurzające,Tradycyjne sprzątanie,
-549,Mięso hodowane laboratoryjnie,Tradycyjne rolnictwo,
-550,Rolnictwo wertykalne,Tradycyjne rolnictwo,
-551,Hydroponika,Uprawa w glebie,
-552,Akwaponika,Tradycyjne rybołówstwo,
-553,Białko owadzie,Tradycyjne mięso,
-554,Mięso roślinne,Produkty odzwierzęce,
-555,Gastronomia molekularna,Tradycyjne gotowanie,
-556,Gotowanie sous vide,Tradycyjne piekarniki,
-557,Frytkownice beztłuszczowe,Frytkownice tradycyjne,
-558,Garnki Instant Pot,Wolnowary,
-559,Koktajle zastępujące posiłki,Tradycyjne posiłki,
-560,Nootropiki,Tradycyjne suplementy,
-561,Biohacking,Konwencjonalne zdrowie,
-562,Krioterapia,Tradycyjna regeneracja,
-563,Komory deprywacji sensorycznej,Tradycyjny relaks,
-564,Mikrodawkowanie,Tradycyjne leki,
-565,Wyjazdy z ayahuascą,Tradycyjna terapia,
-566,Terapia MDMA,Psychoterapia,
-567,Kliniki ketaminowe,Tradycyjne antydepresanty,
-568,Badania nad psylocybiną,Konwencjonalna psychiatria,
-569,Legalizacja konopi,Wojna z narkotykami,
-570,Redukcja szkód,Całkowita abstynencja,
-571,Edukacja sex-pozytywna,Edukacja promująca abstynencję,
-573,Etyczna niemonogamia,Tradycyjne związki,
-574,Związki aromantyczne,Związki romantyczne,
-575,Aseksualność,Allseksualność,
-576,Demiseksualność,Kultura przygodnego seksu,
-577,Panseksualność,Monoseksualność,
-578,Płynność płciowa,Binarna płeć,
-580,Neozaimki,Tradycyjne zaimki,
-581,Rodziny z wyboru,Rodziny biologiczne,
-582,Rodziny znalezione,Rodziny nuklearne,
-583,Współrodzicielstwo,Tradycyjne rodzicielstwo,
-584,Rodzicielstwo platoniczne,Rodzicielstwo romantyczne,
-585,Dobrowolna bezdzietność,Duże rodziny,
-586,Antynatalizm,Pronatalizm,
-587,Dobrowolne wymarcie ludzkości,Wzrost populacji,
-588,Transhumanizm,Biokonserwatyzm,
-589,Posthumanizm,Humanizm,
-591,Interfejsy mózg-komputer,Tradycyjne metody wprowadzania,
-592,Neuralink,Konwencjonalne protezy,
-593,Dzieci CRISPR,Naturalne poczęcie,
-594,Dzieci projektowane,Naturalna genetyka,
-595,Klonowanie ludzi,Naturalna reprodukcja,
-596,Sztuczne macice,Tradycyjna ciąża,
-597,Ektogeneza,Naturalna ciąża,
-598,Przedłużanie życia,Naturalne starzenie się,
-599,Krionika,Tradycyjny pochówek,
-600,Digital afterlife,Physical legacy,
-601,Wgrywanie świadomości,Świadomość biologiczna,
-602,Rzeczywistość symulowana,Rzeczywistość fizyczna,
-603,Cyfrowe bliźniaki,Fizyczne istnienie,
-604,Komunikacja holograficzna,Tradycyjne rozmowy telefoniczne,
-605,Roboty teleprezencyjne,Spotkania osobiste,
-606,Technologia haptyczna,Fizyczny dotyk,
-607,Telewizja zapachowa,Tradycyjne media,
-608,Kino 4D,Tradycyjne filmy 2D,
-609,Rozdzielczość 8K,1080p,
-610,Wysoka częstotliwość odświeżania,Standardowe 60Hz,
-611,Ray tracing,Tradycyjne renderowanie,
-612,Komputery kwantowe,Komputery klasyczne,
-613,Przetwarzanie brzegowe,Chmura obliczeniowa,
-614,6G,5G,
-615,Li-Fi,Wi-Fi,
-616,Internet kwantowy,Klasyczny internet,
-617,Komunikacja mózg-mózg,Komunikacja werbalna,
-618,Myśl na tekst,Tradycyjne pisanie,
-619,Interfejsy śledzące wzrok,Mysz i klawiatura,
-620,Sterowanie gestami,Tradycyjne piloty,
-621,Sterowanie głosem,Obsługa ręczna,
-622,Interfejsy jak z Raportu mniejszości,Tradycyjne interfejsy graficzne,
-623,Hologramy,Wyświetlacze 2D,
-624,Wyświetlacze światła polowego,Konwencjonalne ekrany,
-625,Elastyczne wyświetlacze,Sztywne ekrany,
-626,E-papier,LCD/OLED,
-627,Rozszerzona rzeczywistość,Rzeczywistość fizyczna,
-628,Rzeczywistość mieszana,Czyste VR lub czysta rzeczywistość,
-629,Wirtualna turystyka,Podróże fizyczne,
-630,Cyfrowe bliźniaki miast,Fizyczne planowanie miejskie,
-631,Inteligentny pył,Tradycyjne czujniki,
-632,Robotyka rojowa,Pojedyncze roboty,
-633,Nanorobotyka,Tradycyjna medycyna,
-634,Claytronica,Statyczne obiekty,
-635,Programowalna materia,Tradycyjne materiały,
-636,Druk 4D,Druk 3D,
-637,Materiały samoleczące,Tradycyjne naprawy,
-638,Biomimikra,Konwencjonalne projektowanie,
-639,Biologia syntetyczna,Tradycyjna biologia,
-640,Ksenoboty,Tradycyjne organizmy,
-641,Mięso hodowane laboratoryjnie,Tradycyjne rolnictwo,
-642,Pionowe farmy oceaniczne,Tradycyjne rybołówstwo,
-643,Górnictwo denne,Górnictwo lądowe,
-644,Górnictwo kosmiczne,Wydobycie zasobów ziemskich,
-645,Bazy księżycowe,Stacje naziemne,
-646,Kolonie na Marsie,Miasta na Ziemi,
-648,Żagle słoneczne,Napęd chemiczny,
-649,Napęd antymaterii,Konwencjonalne paliwo rakietowe,
-650,Napęd nadświetlny,Podróże podświetlne,
-651,Sfery Dysona,Tradycyjne pozyskiwanie energii,
-652,Silniki gwiezdne,Cywilizacje planetarne,
-653,Cywilizacje w skali Kardaszewa,Obecna cywilizacja ludzka,
-654,SETI,Tradycyjna astronomia,
-655,Kolonizacja egzoplanet,Ekspansja na Ziemi,
-656,Statki międzypokoleniowe,Krótkoterminowe misje kosmiczne,
-657,Kriosen,Tradycyjny sen,
-658,Terraformowanie,Adaptacja do istniejących warunków,
-659,Kontrola pogody,Naturalny klimat,
-660,Geoinżynieria,Naturalne procesy,
-662,Energia termojądrowa,Rozszczepienie i paliwa kopalne,
-664,Bezprzewodowe przesyłanie energii,Przewodowa elektryczność,
-665,Drogi piezoelektryczne,Tradycyjne autostrady,
-666,Hyperloop,Szybka kolej,
-667,Latające samochody,Pojazdy naziemne,
-668,Plecaki odrzutowe,Chodzenie,
-669,Latające deskorolki,Zwykłe deskorolki,
-670,Egzoszkielety,Naturalna siła człowieka,
-671,Kombinezony mecha,Tradycyjne pojazdy,
-672,Pola siłowe,Fizyczne bariery,
-673,Peleryny niewidki,Kamuflaż,
-674,Teleportacja,Konwencjonalny transport,
-675,Podróże w czasie,Liniowy upływ czasu,
-676,Wszechświaty równoległe,Teoria jednego wszechświata,
-677,Teoria wieloświata,Wszechświat,
-678,Robert Lewandowski,Cristiano Ronaldo,
-679,Andrzej Duda,Barack Obama,
-680,Magda Gessler,Gordon Ramsay,
-681,Zenon Martyniuk,Freddie Mercury,
-682,Krystyna Pawłowicz,Alexandria Ocasio-Cortez,
-683,Jarosław Kaczyński,Donald Trump,
-684,Robert Makłowicz,Anthony Bourdain,
-685,Jerzy Owsiak,Bill Gates,
-686,Mariusz Pudzianowski,Conor McGregor,
-687,Olga Tokarczuk,J.K. Rowling,
-688,Wisława Szymborska,Rupi Kaur,
-689,Adam Małysz,Usain Bolt,
-690,Iga Świątek,Serena Williams,
-691,Lech Wałęsa,Nelson Mandela,
-692,Kuba Wojewódzki,Jimmy Fallon,
-694,Maryla Rodowicz,Madonna,
-695,Dawid Podsiadło,Ed Sheeran,
-696,Agnieszka Dygant,Jennifer Aniston,
-697,Cezary Pazura,Jim Carrey,
-698,Joanna Krupa,Kim Kardashian,
-700,Kamil Stoch,Michael Phelps,
-701,Robert Biedroń,Emmanuel Macron,
-702,Katarzyna Cichopek,Scarlett Johansson,
-703,Tomasz Karolak,Brad Pitt,
-704,Sławomir Zapała,Justin Timberlake,
-705,Doda,Lady Gaga,
-706,Radosław Majdan,David Beckham,
-707,Edyta Górniak,Beyoncé,
-708,Marcin Prokop,Ryan Seacrest,
-709,Agnieszka Chylińska,Pink,
-710,Maciej Musiał,Timothée Chalamet,
-711,Julia Wieniawa,Zendaya,
-712,Tomasz Kot,Benedict Cumberbatch,
-713,Borys Szyc,Leonardo DiCaprio,
-714,Magdalena Boczarska,Margot Robbie,
-715,Piotr Fronczewski,Morgan Freeman,
-716,Janusz Gajos,Robert De Niro,
-717,Danuta Stenka,Meryl Streep,
-718,Wojciech Smarzowski,Quentin Tarantino,
-719,Jan Komasa,Christopher Nolan,
-720,Agnieszka Holland,Sofia Coppola,
-721,Andrzej Sapkowski,George R.R. Martin,
-722,Zygmunt Miłoszewski,Dan Brown,
-723,Jakub Żulczyk,Chuck Palahniuk,
-724,Katarzyna Bonda,Gillian Flynn,
-725,Remigiusz Mróz,Stephen King,
-727,Mikołaj Roznerski,Chris Hemsworth,
-728,Michał Szpak,Adam Lambert,
-729,Margaret,Ariana Grande,
-730,Dawid Kwiatkowski,Shawn Mendes,
-731,Roksana Węgiel,Billie Eilish,
-732,Viki Gabor,Olivia Rodrigo,
-733,Krzysztof Ibisz,Ryan Seacrest,
-734,Martyna Wojciechowska,Bear Grylls,
-735,Kinga Rusin,Oprah Winfrey,
-736,Hubert Urbański,Alex Trebek,
-737,Maciej Stuhr,Steve Carell,
-738,Piotr Adamczyk,Hugh Jackman,
-739,Małgorzata Kożuchowska,Jennifer Lawrence,
-740,Maja Ostaszewska,Cate Blanchett,
-741,Bartosz Bielenia,Timothée Chalamet,
-742,Joanna Kulig,Emma Stone,
-743,Tomasz Kot,Gary Oldman,
-744,Agata Kulesza,Olivia Colman,
-745,Robert Więckiewicz,Tom Hardy,
-747,Marcin Dorociński,Mads Mikkelsen,
-748,Andrzej Seweryn,Anthony Hopkins,
-749,Krystyna Janda,Helen Mirren,
-750,Jerzy Stuhr,Bill Murray,
-752,Wojciech Pszoniak,Ian McKellen,
-754,Andrzej Chyra,Willem Dafoe,
-755,Maja Komorowska,Maggie Smith,
-756,Piotr Fronczewski,Christopher Plummer,
-757,Magdalena Cielecka,Tilda Swinton,
-758,Jacek Braciak,Steve Buscemi,
-759,Marian Dziędziel,John Goodman,
-761,Kinga Preis,Frances McDormand,
-762,Agata Buzek,Carey Mulligan,
-763,Dawid Ogrodnik,Rami Malek,
-764,Jakub Gierszał,Ansel Elgort,
-765,Mateusz Kościukiewicz,Lucas Hedges,
-766,Zofia Wichłacz,Saoirse Ronan,
-767,Tomasz Ziętek,Taron Egerton,
-768,Maciej Musiał,Tom Holland,
-769,Antoni Królikowski,Ezra Miller,
-771,Magdalena Różczka,Emily Blunt,
-772,Katarzyna Warnke,Margot Robbie,
-773,Piotr Głowacki,Mark Ruffalo,
-774,Łukasz Simlat,Joaquin Phoenix,
-775,Marcin Kowalczyk,Adam Driver,
-776,Józef Pawłowski,Timothée Chalamet,
-777,Tomasz Schuchardt,Oscar Isaac,
-778,Mateusz Kościukiewicz,Paul Dano,
-779,Jan Englert,Ian McKellen,
-780,Jerzy Trela,Christopher Plummer,
-781,Jerzy Radziwiłowicz,Jeremy Irons,
-782,Marek Kondrat,Michael Caine,
-784,Artur Żmijewski,Jude Law,
-785,Cezary Żak,John C. Reilly,
-786,Adam Woronowicz,Ralph Fiennes,
-787,Wojciech Zieliński,Ethan Hawke,
-788,Jan Frycz,Geoffrey Rush,
-790,Piotr Machalica,Stanley Tucci,
-791,Janusz Chabior,Stellan Skarsgård,
-793,Marian Opania,John Malkovich,
-794,Piotr Gąsowski,Rob Lowe,
-795,Piotr Polk,Paul Rudd,
-796,Przemysław Sadowski,Matthew McConaughey,
-797,Rafał Królikowski,Mark Ruffalo,
-798,Paweł Małaszyński,James Franco,
-799,Maciej Zakościelny,Channing Tatum,
-800,Bartłomiej Topa,Woody Harrelson,
-802,Paweł Wilczak,Jeff Bridges,
-803,Krzysztof Globisz,Philip Seymour Hoffman,
-804,Jerzy Bończak,John Lithgow,
-806,Andrzej Grabowski,John Goodman,
-807,Adam Ferency,Ben Kingsley,
-808,Franciszek Pieczka,Max von Sydow,
-809,Piotr Fronczewski,Michael Caine,
-810,Jerzy Skolimowski,David Lynch,
-811,Krzysztof Zanussi,Woody Allen,
-812,Agnieszka Holland,Jane Campion,
-813,Małgorzata Szumowska,Sofia Coppola,
-814,Jan Komasa,Damien Chazelle,
-815,Wojciech Smarzowski,Quentin Tarantino,
-816,Paweł Pawlikowski,Alfonso Cuarón,
-817,Jerzy Skolimowski,Werner Herzog,
-818,Andrzej Wajda,Martin Scorsese,
-819,Roman Polański,Francis Ford Coppola,
-820,Krzysztof Kieślowski,Stanley Kubrick,
-821,Agnieszka Holland,Kathryn Bigelow,
-822,Małgorzata Szumowska,Greta Gerwig,
-824,Maria Sadowska,Lulu Wang,
-825,Kinga Dębska,Chloé Zhao,
-826,Anna Kazejak,Emerald Fennell,
-827,Olga Chajdas,Céline Sciamma,
-828,Jagoda Szelc,Julia Ducournau,
-829,Agnieszka Smoczyńska,Ana Lily Amirpour,
-830,Jan P. Matuszyński,Barry Jenkins,
-831,Bartosz M. Kowalski,Jordan Peele,
-832,Adrian Panek,Robert Eggers,
-833,Piotr Domalewski,Kenneth Lonergan,
-834,Paweł Maślona,Yorgos Lanthimos,
-835,Bartosz Konopka,Alex Garland,
-836,Magnus von Horn,Ruben Östlund,
-837,Łukasz Ronduda,Michel Hazanavicius,
-838,Tomasz Wasilewski,Tom Ford,
-839,Marcin Wrona,Ari Aster,
-840,Krzysztof Skonieczny,Nicolas Winding Refn,
-841,Michał Marczak,Terrence Malick,
-842,Marcin Koszałka,Roger Deakins,
-843,Światło,Ciemność,
-844,Ciepło,Zimno,
-845,Młodość,Starość,
-846,Optymizm,Pesymizm,
-847,Tradycja,Nowoczesność,
-849,Analogowe,Cyfrowe,
-850,Rozwój,Stagnacja,
-851,Miłość,Nienawiść,
-852,Szczęście,Smutek,
-854,Wytrwałość,Rezygnacja,
-855,Sukces,Porażka,
-856,Wiedza,Niewiedza,
-857,Konserwatyzm,Liberalizm,
-858,Władza,Podporządkowanie,
-859,Naturalne,Sztuczne,
-860,Bogactwo,Ubóstwo,
-861,Ekstrawersja,Introwersja,
-862,Uczciwość,Nieuczciwość,
-863,Pokój,Wojna,
-864,Harmonia,Konflikt,
-865,Idealizm,Realizm,
-866,Radość,Żal,
-867,Nadzieja,Rozpacz,
-868,Beztroska,Troska,
-869,Sztuka,Nauka,
-870,Indywidualizm,Kolektywizm,
-871,Prawda,Fałsz,
-872,Praca,Odpoczynek,
-873,Miasto,Wieś,
-874,Góry,Morze,
-875,Lato,Zima,
-876,Dzień,Noc,
-877,Rozrywka,Praca,
-878,Cisza,Hałas,
-879,Teoria,Praktyka,
-880,Płytkość,Głębia,
-881,Samotność,Towarzystwo,
-882,Aktywność,Lenistwo,
-885,Męstwo,Tchórzostwo,
-886,Wola,Bierność,
-887,Natura,Technologia,
-888,Zdrowie,Choroba,
-889,Piękno,Brzydota,
-890,Młodzieńczość,Dojrzałość,
-891,Przewidywalność,Nieprzewidywalność,
-892,Gęstość,Pustka,
-893,Komedia,Tragedia,
-894,Wszechświat,Ziemia,
-895,Duchowość,Materializm,
-896,Prostota,Złożoność,
-897,Klasyczność,Awangarda,
-898,Monarchia,Demokracja,
-899,Szybkość,Powolność,
-900,Długowieczność,Krótkotrwałość,
-901,Skromność,Przepych,
-902,Hojność,Skąpstwo,
-903,Spójność,Chaos,
-904,Zaufanie,Nieufność,
-905,Odwaga,Strach,
-906,Zwycięstwo,Porażka,
-907,Bezpieczeństwo,Niebezpieczeństwo,
-908,Słodycz,Gorzkość,
-910,Konkret,Abstrakcja,
-911,Stałość,Zmienność,
-912,Optymalizacja,Marnotrawstwo,
-913,Czystość,Brud,
-914,Lojalność,Zdrada,
-915,Zwierzęta,Ludzie,
-916,Równość,Nierówność,
-917,Wewnętrzne,Zewnętrzne,
-918,Jasność,Mglistość,
-919,Wiedza,Ignorancja,
-920,Stałość,Zmiana,
-921,Siła,Słabość,
-922,Sherlock Holmes,Dr Watson,
-923,Batman,Joker,
-924,Gandalf,Saruman,
-925,Harry Potter,Voldemort,
-926,Luke Skywalker,Darth Vader,
-928,Frodo Baggins,Sauron,
-929,Superman,Lex Luthor,
-930,Spider-Man,Green Goblin,
-931,Iron Man,Thanos,
-932,Captain America,Red Skull,
-933,Wonder Woman,Ares,
-934,Thor,Loki,
-935,King Arthur,Mordred,
-936,Robin Hood,Sheriff of Nottingham,
-937,Simba,Scar,
-938,Mulan,Shan Yu,
-939,Elsa,Hans,
-940,Moana,Te Kā,
-941,Ariel,Ursula,
-942,Albus Dumbledore,Severus Snape,
-943,Indiana Jones,René Belloq,
-944,Neo,Agent Smith,
-945,John McClane,Hans Gruber,
-947,Tony Montana,Alejandro Sosa,
-948,Michael Corleone,Hyman Roth,
-949,Jack Sparrow,Davy Jones,
-951,Jay Gatsby,Tom Buchanan,
-952,Atticus Finch,Bob Ewell,
-953,Holden Caulfield,Society,
-954,Don Quixote,Reality,
-955,Sherlock Holmes,Moriarty,
-956,Dracula,Van Helsing,
-957,Frankenstein,Society,
-958,Hamlet,Claudius,
-959,Romeo,Paris,
-960,Juliet,Rosaline,
-961,Odysseus,Poseidon,
-962,Achilles,Hector,
-963,Hercules,Hades,
-964,Alice,Queen of Hearts,
-966,Winnie the Pooh,Heffalumps,
-967,Cinderella,Stepmother,
-968,Snow White,Evil Queen,
-969,Rapunzel,Mother Gothel,
-970,Belle,Gaston,
-971,Beast,Gaston,
-972,Pocahontas,Governor Ratcliffe,
-973,Tiana,Dr. Facilier,
-974,Merida,Mor'du,
-975,Miguel,Ernesto de la Cruz,
-977,Maleficent,King Stefan,
-978,Black Widow,Taskmaster,
-979,Hulk,General Ross,
-980,Vision,Ultron,
-981,Jean Grey,Magneto,
-982,Deadpool,Ajax,
-983,Wolverine,Sabretooth,
-984,Professor X,Magneto,
-985,Cyclops,Magneto,
-986,Storm,Magneto,
-987,Beast (X-Men),Magneto,
-988,Magneto,Society,
-989,Daredevil,Kingpin,
-991,Ghost Rider,Mephistopheles,
-992,Silver Surfer,Galactus,
-993,Green Lantern,Sinestro,
-994,Flash,Reverse Flash,
-995,Aquaman,Black Manta,
-996,Shazam,Dr. Sivana,
-997,Martian Manhunter,Ma'alefa'ak,
-998,Hawkgirl,Shadow Thief,
-999,Black Canary,Black Siren,
-1001,Poison Ivy,Batman,
-1002,Harley Quinn,Batman,
-1003,Riddler,Batman,
-1004,Penguin,Batman,
-1005,Scarecrow,Batman,
-1006,Two-Face,Batman,
-1007,Ra's al Ghul,Batman,
-1008,Bane,Batman,
-1009,Mr. Freeze,Batman,
-1010,Killer Croc,Batman,
-1011,Clayface,Batman,
-1012,Mad Hatter,Batman,
-1013,Hugo Strange,Batman,
-1016,Firefly,Batman,
-1017,Man-Bat,Batman,
-1019,Kite Man,Batman,
-1020,Condiment King,Batman,
-1021,Captain Boomerang,Batman,
-1022,Maratończyk,Crossfitowiec,
-1023,Janusz Gajos,Bogusław Linda,
-1024,Geralt z Rivii,Jaskier,
-1025,Król Maciuś Pierwszy,Zły Wuj,
-1026,Pan Twardowski,Diabeł,
-1027,Ksiądz Robak,Jacek Soplica,
-1028,Tadeusz Soplica,Gerwazy,
-1029,Jaga Hupało,Jan Nowicki,
-1030,Andrzej Seweryn,Daniel Olbrychski,
-1031,Mikołaj Kopernik,Jan Heweliusz,
-1033,Fryderyk Chopin,Johann Sebastian Bach,
-1034,Henryk Sienkiewicz,Bolesław Prus,
-1035,Wisława Szymborska,Czesław Miłosz,
-1036,Stanisław Lem,Isaac Asimov,
-1037,Józef Piłsudski,Roman Dmowski,
-1038,Adam Mickiewicz,Juliusz Słowacki,
-1039,Lech Wałęsa,Wojciech Jaruzelski,
-1040,Zbigniew Wodecki,Czesław Niemen,
-1041,Kora,Maryla Rodowicz,
-1042,Krzysztof Kieślowski,Andrzej Wajda,
-1043,Jerzy Grotowski,Tadeusz Kantor,
-1044,Zbigniew Herbert,Adam Zagajewski,
-1045,Stanisław Ignacy Witkiewicz,Tadeusz Peiper,
-1046,Jan Paweł II,Karol Wojtyła,
-1047,Stefan Batory,Zygmunt Stary,
-1048,Lech Kaczyński,Donald Tusk,
-1049,Matejko,Malczewski,
-1050,Kmicic,Zagłoba,
-1051,Hugo Kołłątaj,Stanisław Staszic,
-1052,Stanisław August Poniatowski,Tadeusz Kościuszko,
-1053,Ryszard Kapuściński,Ryszard Ochódzki,
-1054,Jerzy Dudek,Zbigniew Boniek,
-1055,Irena Sendlerowa,Maximilian Kolbe,
-1056,Ignacy Łukasiewicz,Ernest Malinowski,
-1057,Jacek Malczewski,Józef Chełmoński,
-1058,Piotr Wysocki,Jan Henryk Dąbrowski,
-1059,Kazimierz Pułaski,Tadeusz Kościuszko,
-1061,Edward Gierek,Władysław Gomułka,
-1064,Jerzy Pilch,Marek Hłasko,
-1066,Robert Lewandowski,Zbigniew Boniek,
-1067,Szewc Kopytko,Szewc Dratewka,
-1068,Agnieszka Holland,Krzysztof Zanussi,
-1069,Mistrz Twardowski,Stańczyk,
-1070,Wojciech Młynarski,Agnieszka Osiecka,
-1071,Marek Grechuta,Wojciech Młynarski,
-1072,Kajko,Kokosz,
-1073,Zdzisław Beksiński,Stanisław Ignacy Witkiewicz,
-1074,Olga Tokarczuk,Andrzej Sapkowski,
-1075,Małgorzata Musierowicz,Henryk Sienkiewicz,
-1076,Jarosław Iwaszkiewicz,Julian Tuwim,
-1077,Wisława Szymborska,Zbigniew Herbert,
-1078,Jan Brzechwa,Julian Tuwim,
-1079,Stefan Banach,Marian Rejewski,
-1080,Adam Małysz,Kamil Stoch,
-1081,Aleksander Wielki,Dariusz III,
-1082,Juliusz Cezar,Pompejusz,
-1083,Napoleon Bonaparte,Wellington,
-1084,Abraham Lincoln,Jefferson Davis,
-1085,Kleopatra,Oktawian August,
-1086,Gandhi,Lord Mountbatten,
-1087,Martin Luther King Jr.,Malcolm X,
-1088,Muhammad Ali,Joe Frazier,
-1089,Michael Jordan,Larry Bird,
-1090,Lionel Messi,Cristiano Ronaldo,
-1091,Serena Williams,Maria Sharapova,
-1092,Usain Bolt,Tyson Gay,
-1093,Michael Phelps,Mark Spitz,
-1094,Roger Federer,Rafael Nadal,
-1095,Tom Brady,Peyton Manning,
-1096,Babe Ruth,Ty Cobb,
-1097,LeBron James,Kevin Durant,
-1098,Shaquille O'Neal,Hakeem Olajuwon,
-1099,Zinedine Zidane,Ronaldinho,
-1100,Tiger Woods,Jack Nicklaus,
-1101,Zeus,Hades,
-1102,Posejdon,Atena,
-1103,Thor,Fenrir,
-1104,Odyseusz,Polifem,
-1105,Hercules,Hera,
-1106,Achilles,Agamemnon,
-1107,Luke Skywalker,Darth Vader,
-1108,Frodo Baggins,Gollum,
-1111,Neo,Morfeusz,
-1112,Simba,Scar,
-1113,Elsa (Frozen),Anna (Frozen),
-1115,Jack Sparrow (Pirates),Davy Jones (Pirates),
-1116,James Bond,Le Chiffre,
-1117,Batman,Ra's al Ghul,
-1118,Sherlock Holmes,James Moriarty,
-1119,Indiana Jones,Rene Belloq,
-1121,Maximus (Gladiator),Commodus (Gladiator),
-1122,Forrest Gump,Jenny Curran,
-1123,Vito Corleone,Michael Corleone,
-1124,Rick Blaine (Casablanca),Victor Laszlo (Casablanca),
-1125,Tony Montana,Manny Ribera,
-1126,Don Vito Corleone,Hyman Roth,
-1127,Hannibal Lecter,Clarice Starling,
-1128,Tyler Durden,Narrator (Fight Club),
-1129,Andy Dufresne,Warden Norton,
-1130,Joker (The Dark Knight),Batman (The Dark Knight),
-1131,Spock,Captain Kirk,
-1132,Darth Vader,Emperor Palpatine,
-1133,Albus Dumbledore,Lord Voldemort,
-1134,Katniss Everdeen,President Snow,
-1135,Jon Snow,Ramsay Bolton,
-1136,Daenerys Targaryen,Cersei Lannister,
-1137,Walter White,Gus Fring,
-1138,Saul Goodman,Chuck McGill,
-1139,Michael Scofield,Alexander Mahone,
-1140,Jack Bauer,Nina Myers,
-1141,Dexter Morgan,Doakes,
-1142,Thomas Shelby,Alfie Solomons,
-1143,Bruce Wayne,The Penguin,
-1144,Clark Kent,Lex Luthor,
-1145,Peter Parker,Norman Osborn,
-1146,Frodo Baggins,Sauron,
-1147,Obi-Wan Kenobi,Anakin Skywalker,
-1148,Captain America,Thanos,
-1149,Tony Stark,Thanos,
-1150,Thor,Hela,
-1151,Hulk,General Ross,
-1152,Black Widow,Taskmaster,
-1153,Loki,Heimdall,
-1154,Ant-Man,Yellowjacket,
-1155,Vision,Ultron,
-1156,Black Panther,Killmonger,
-1157,Captain Marvel,Yon-Rogg,
-1158,Spider-Man,Doctor Octopus,
-1159,Doctor Strange,Dormammu,
-1160,Scarlett Witch,Agatha Harkness,
-1161,The Mandalorian,Moff Gideon,
-1162,Robin Hood,Szeryf z Nottingham,
-1164,Dr Jekyll,Mr Hyde,
-1165,Sherlock Holmes,Profesor Moriarty,
-1166,Kapitan Nemo,Profesor Aronnax,
-1167,Don Kichot,Sancho Pansa,
-1168,Hrabia Monte Christo,Fernand Mondego,
-1169,Jean Valjean,Javert,
-1170,Elizabeth Bennet,Lady Catherine,
-1171,Ebenezer Scrooge,Bob Cratchit,
-1172,Faust,Mefistofeles,
-1174,Macbeth,Duncan,
-1175,Romeo,Tybalt,
-1176,Cyrano de Bergerac,Christian de Neuvillette,
-1177,Achilles,Hector,
-1178,Herkules,Hades,
-1179,Odysseusz,Penelopa,
-1180,Aeneas,Turnus,
-1181,Gatsby,Tom Buchanan,
-1182,Edyp,Kreon,
-1183,Lancelot,Król Artur,
-1184,Beowulf,Grendel,
-1185,Tristan,Izolda z Białymi Rękami,
-1186,Gandalf,Saruman,
-1187,Aragorn,Sauron,
-1188,Frodo Baggins,Gollum,
-1189,Thorin Dębowa Tarcza,Smok Smaug,
-1190,Heidi,Klara Sesemann,
-1191,Aladyn,Dżafar,
-1192,Sindbad Żeglarz,Król morskich potworów,
-1193,Ali Baba,40 rozbójników,
-1194,Królewna Śnieżka,Zła królowa,
-1195,Kopciuszek,Zła macocha,
-1196,Roszpunka,Matka Gothel,
-1197,Pinokio,Mistrz Czeresnia,
-1199,Piotruś Pan,Kapitan Hak,
-1200,Mikołajek,Agnan,
-1201,Ania z Zielonego Wzgórza,Gilbert Blythe,
-1202,Asteriks,Juliusz Cezar,
-1203,Obelix,Juliusz Cezar,
-1204,Hercule Poirot,Pułkownik Arbuthnot,
-1205,Miss Marple,Podejrzany,
-1206,Harry Potter,Draco Malfoy,
-1208,Jon Snow,Biały Wędrowiec,
-1209,Tyrion Lannister,Cersei Lannister,
-1210,James Bond,Auric Goldfinger,
-1211,Indiana Jones,Belloq,
-1212,Luke Skywalker,Imperator Palpatine,
-1215,Elsa (Kraina lodu),Książę Hans,
-1216,Moana,Kakamora,
-1217,Mulan,Shan Yu,
-1218,Simba,Skaza,
-1219,Ariel (Mała Syrenka),Urszula,
-1220,Bella (Piękna i Bestia),Gaston,
-1221,Albus Dumbledore,Voldemort,
-1222,Neo (Matrix),Agent Smith,
-1223,Frodo (Władca Pierścieni),Saruman,
-1224,Sherlock Holmes,Moriarty,
-1225,Indiana Jones,Arnold Ernst Toht,
-1226,Batman,Joker,
-1228,Krystyna Pawłowicz,Rafał Ziemkiewicz,
-1229,Donald Tusk,Jarosław Kaczyński,
-1230,Marilyn Monroe,Coco Chanel,
-1231,LeBron James,Michael Jordan,
-1232,Filipek,Tupac,
-1233,Nitro,Kizo,
-1234,Mini Majk,Malczyński,
-1235,Andrzej Duda,Aleksander Kwaśniewski,
-1236,Beethoven,Chopin,
-1237,Steve Jobs,Mark Zuckerberg,
-1238,Indiana Jones,Han Solo,
-1239,John Lennon,Paul McCartney,
-1240,Ewa Chodakowska,Anna Lewandowska,
-1241,Boxdel,Rafonix,
-1242,Cristiano Ronaldo,Lionel Messi,
-1243,Albert Einstein,Stephen Hawking,
-1244,Keanu Reeves,Tom Hanks,
-1245,Arnold Schwarzenegger,Sylvester Stallone,
-1246,Wojtek Gola,Abstrachuje,
-1247,Shakespeare,Dante Alighieri,
-1248,Cleopatra,Queen Elizabeth I,
-1249,Daenerys Targaryen,Jon Snow,
-1250,PewDiePie,Dr Disrespect,
-1251,Lexy Chaplin,Stuu,
-1252,Borixon,Peja,
-1253,Ariana Grande,Selena Gomez,
-1254,Queen,The Beatles,
-1255,Greta Thunberg,Donald Trump,
-1256,Harry Potter,Luke Skywalker,
-1257,Sherlock Holmes,Hercule Poirot,
-1258,Tomasz Kot,Andrzej Seweryn,
-1259,Young Leosia,Oliwka Brazil,
-1260,Robert Lewandowski,Zlatan Ibrahimović,
-1261,Gordon Ramsay,Jamie Oliver,
-1262,Lady Gaga,Madonna,
-1263,J.R.R. Tolkien,George R.R. Martin,
-1267,Fousey,VitalyzdTv,
-1268,Kim Kardashian,Kylie Jenner,
-1269,Remigiusz Mróz,Stephen King,
-1270,Julia Wieniawa,Barbara Kurdej-Szatan,
-1271,Martin Scorsese,Quentin Tarantino,
-1272,Naruto,Goku,
-1274,Snoop Dogg,Jay-Z,
-1275,Zenek Martyniuk,Andrzej Piaseczny,
-1276,Spider-Man,Batman,
-1277,Oprah Winfrey,Ellen DeGeneres,
-1278,H.P. Lovecraft,Edgar Allan Poe,
-1279,Rocky Balboa,John Rambo,
-1280,Agnieszka Chylińska,Doda,
-1281,Bruce Lee,Jackie Chan,
-1282,Joe Rogan,Howard Stern,
-1283,Nikola Tesla,Albert Einstein,
-1284,Kurt Cobain,Jimi Hendrix,
-1285,Robin Hood,King Arthur,
-1286,Cleopatra,Helen of Troy,
-1288,Freddie Mercury,David Bowie,
-1289,Angelina Jolie,Scarlett Johansson,
-1290,Jim Carrey,Robin Williams,
-1291,Mozart,Beethoven,
-1292,Isaac Newton,Galileo Galilei,
-1294,Bill Gates,Steve Jobs,
-1295,Muhammad Ali,Floyd Mayweather,
-1296,Tony Hawk,Shaun White,
-1298,Wolverine,Deadpool,
-1299,Hannibal Lecter,Norman Bates,
-1300,Indiana Jones,Lara Croft,
-1301,James Bond,Ethan Hunt,
-1302,Gandalf,Dumbledore,
-1303,Thor,Zeus,
-1304,Homer Simpson,Peter Griffin,
-1305,Mario,Sonic,
-1306,Godzilla,King Kong,
-1307,Shrek,Fiona,
-1308,Sam Winchester,Dean Winchester,
-1309,Yoda,Obi-Wan Kenobi,
-1311,The Witcher,Jon Snow,
-1313,Luke Skywalker,Spock,
-1314,Neo,Morpheus,
-1315,John Wick,Jason Bourne,
-1316,Iron Man,Captain America,
-1317,Hulk,Thor,
-1318,Loki,The Joker,
-1319,Thanos,Darkseid,
-1320,Megatron,Optimus Prime,
-1321,Black Panther,Spider-Man,
-1322,Wonder Woman,Captain Marvel,
-1323,Arya Stark,Daenerys Targaryen,
-1324,Jon Snow,Robb Stark,
-1325,Tyrion Lannister,Varys,
-1326,The Hound,The Mountain,
-1327,Joffrey Baratheon,Ramsay Bolton,
-1328,Simba,Mufasa,
-1329,Albus Dumbledore,Severus Snape,
-1330,Hermione Granger,Luna Lovegood,
-1331,Han Solo,Chewbacca,
-1332,R2-D2,C-3PO,
-1333,Legolas,Aragorn,
-1334,Saruman,Sauron,
-1335,Frodo Baggins,Bilbo Baggins,
+6,Mateusz Morawiecki,Donald Tusk,10.0
+7,Rafał Trzaskowski,Szymon Hołownia,10.0
+8,Robert Biedroń,Krzysztof Bosak,8.0
+9,Kaczyński,Tusk,10.0
+10,Duda,Trzaskowski,9.0
+11,Lewica,Konfederacja,8.0
+12,PiS,PO,10.0
+13,TVP,TVN,10.0
+15,Onet,Wirtualna Polska,9.0
+16,RMF FM,Radio Zet,9.0
+17,Trójka,TOK FM,7.0
+18,Netflix,Player.pl,8.0
+19,CDA,VOD.pl,8.0
+20,Allegro,OLX,10.0
+21,InPost,Poczta Polska,10.0
+22,Żabka,Biedronka,10.0
+23,Lidl,Kaufland,9.0
+25,PKO BP,mBank,8.0
+26,LOT,Ryanair,9.0
+27,PKP Intercity,FlixBus,8.0
+28,Uber,Bolt,9.0
+29,Glovo,Pyszne.pl,8.0
+30,CD Projekt Red,Techland,7.0
+31,11 bit studios,People Can Fly,4.0
+33,This War of Mine,Dying Light,7.0
+34,Filmweb,IMDB,6.0
+35,Multikino,Cinema City,9.0
+36,Helios,Kino Studyjne,7.0
+37,WOŚP,Caritas,9.0
+38,TVN,Polsat,10.0
+39,Kuba Wojewódzki,Marcin Prokop,8.0
+40,Magda Gessler,Robert Makłowicz,9.0
+41,Krzysztof Ibisz,Hubert Urbański,9.0
+42,Maryla Rodowicz,Beata Kozidrak,8.0
+43,Kayah,Edyta Górniak,8.0
+44,Maciej Musiał,Maciej Stuhr,7.0
+45,Joanna Kulig,Agata Kulesza,5.0
+46,Andrzej Chyra,Borys Szyc,6.0
+47,Jan Komasa,Wojtek Smarzowski,4.0
+48,Paweł Pawlikowski,Agnieszka Holland,4.0
+49,Olga Tokarczuk,Szczepan Twardoch,5.0
+50,Remigiusz Mróz,Katarzyna Bonda,4.0
+51,Blanka Lipińska,Zygmunt Miłoszewski,5.0
+52,Jerzy Bralczyk,Jan Miodek,6.0
+53,Krystyna Czubówna,Tomasz Knapik,7.0
+54,Czesław Mozil,Kuba Badach,6.0
+55,Artur Rojek,Katarzyna Nosowska,7.0
+56,O.S.T.R.,Pezet,10.0
+57,Mata,Young Leosia,10.0
+58,Taco Hemingway,Quebonafide,10.0
+59,PRO8L3M,Łona i Webber,9.0
+60,Bitamina,Bass Astral x Igo,8.0
+61,Daria Zawiałow,Mery Spolsky,7.0
+62,Brodka,Monika Brodka,2.0
+63,Kwiat Jabłoni,Tulia,7.0
+64,Mrozu,Krzysztof Zalewski,7.0
+67,Viki Gabor,Sara James,7.0
+68,Krzysztof Krawczyk,Zenek Martyniuk,9.0
+70,Perfect,Lady Pank,8.0
+71,Dżem,Republika,7.0
+72,Kult,Oddział Zamknięty,7.0
+73,T.Love,Hey,8.0
+74,Myslovitz,Coma,7.0
+75,Wilki,Bajm,8.0
+76,Budka Suflera,Czerwone Gitary,8.0
+77,Maanam,Lombard,7.0
+78,Elektryczne Gitary,Piersi,7.0
+79,Arka Noego,Golec uOrkiestra,8.0
+80,De Mono,Kombi,7.0
+81,Voo Voo,Strachy na Lachy,7.0
+82,Big Cyc,Kobranocka,7.0
+83,Raz Dwa Trzy,Stare Dobre Małżeństwo,6.0
+84,Grzegorz Turnau,Stanisław Soyka,6.0
+85,Anna Maria Jopek,Ania Dąbrowska,7.0
+86,Anita Lipnicka,Kasia Kowalska,7.0
+87,Natalia Przybysz,Natalia Nykiel,7.0
+88,Natalia Kukulska,Sylwia Grzeszczak,8.0
+89,Sarsa,Lanberry,7.0
+91,Michał Szpak,Dawid Kwiatkowski,8.0
+92,Marcin Sójka,Gromee,6.0
+93,Andrzej Piaseczny,Michał Wiśniewski,9.0
+94,Piotr Cugowski,Kuba Badach,6.0
+95,Maciej Maleńczuk,Kazik Staszewski,8.0
+96,Muniek Staszczyk,Piotr Rogucki,7.0
+97,Artur Andrus,Kabaret Moralnego Niepokoju,7.0
+98,Kabaret Ani Mru-Mru,Kabaret Młodych Panów,7.0
+99,Kabaret Neo-Nówka,Kabaret Paranienormalni,7.0
+100,Kabaret Hrabi,Formacja Chatelet,6.0
+101,Robert Górski,Grzegorz Halama,7.0
+102,Cezary Pazura,Tomasz Karolak,9.0
+103,Piotr Fronczewski,Jerzy Stuhr,8.0
+104,Janusz Gajos,Jan Peszek,7.0
+105,Andrzej Seweryn,Jan Nowicki,7.0
+106,Wojciech Pszoniak,Daniel Olbrychski,6.0
+107,Jerzy Trela,Olgierd Łukaszewicz,5.0
+108,Stanisława Celińska,Krystyna Janda,7.0
+109,Maja Ostaszewska,Magdalena Cielecka,6.0
+110,Danuta Stenka,Agata Kulesza,6.0
+111,Kinga Preis,Agata Buzek,5.0
+112,Małgorzata Kożuchowska,Katarzyna Figura,8.0
+113,Joanna Kulig,Maja Ostaszewska,6.0
+115,Tomasz Kot,Piotr Adamczyk,8.0
+117,Andrzej Chyra,Robert Więckiewicz,7.0
+118,Cezary Pazura,Adam Woronowicz,7.0
+119,Agnieszka Dygant,Katarzyna Warnke,7.0
+120,Agnieszka Więdłocha,Agnieszka Grochowska,6.0
+121,Aleksandra Domańska,Julia Wieniawa,7.0
+122,Weronika Rosati,Anna Dereszowska,7.0
+123,Mateusz Banasiuk,Antoni Królikowski,6.0
+125,Paweł Domagała,Maciej Zakościelny,7.0
+126,Bartłomiej Topa,Arkadiusz Jakubik,6.0
+127,Wojciech Zieliński,Leszek Lichota,5.0
+129,Małgorzata Socha,Joanna Brodzik,9.0
+130,Anna Mucha,Katarzyna Zielińska,8.0
+131,Małgorzata Foremniak,Grażyna Szapołowska,8.0
+132,Barbara Kurdej-Szatan,Anna Przybylska,8.0
+133,Katarzyna Skrzynecka,Katarzyna Cichopek,8.0
+134,Michał Piróg,Agustin Egurrola,7.0
+135,Agnieszka Chylińska,Justyna Steczkowska,9.0
+137,Tomson & Baron,Marek Piekarczyk,7.0
+138,Andrzej Piaseczny,Michał Szpak,8.0
+139,Maryla Rodowicz,Edyta Górniak,10.0
+140,Margaret,Sarsa,8.0
+141,Dawid Kwiatkowski,Roksana Węgiel,8.0
+142,Viki Gabor,Sara James,7.0
+143,Blanka,Edyta Górniak (Eurowizja),8.0
+144,Rafał Brzozowski,Michał Szpak (Eurowizja),8.0
+145,Donatan & Cleo,Gromee feat. Lukas Meijer,7.0
+146,Blue Café,Ich Troje,8.0
+147,Ivan i Delfin,Isis Gee,5.0
+148,Kasia Kowalska,Justyna Steczkowska,9.0
+149,Edyta Górniak,Anna Maria Jopek,9.0
+150,Ira,Wilki,8.0
+151,Lady Pank,Perfect,8.0
+152,Myslovitz,Hey,8.0
+153,Kult,T.Love,8.0
+154,Dżem,TSA,7.0
+155,Budka Suflera,Kombi,7.0
+156,Maanam,Bajm,8.0
+158,Czerwone Gitary,Skaldowie,6.0
+159,Raz Dwa Trzy,Stare Dobre Małżeństwo,5.0
+160,Grzegorz Turnau,Marek Grechuta,5.0
+161,Stanisław Soyka,Zbigniew Wodecki,7.0
+162,Anna Maria Jopek,Kayah,8.0
+163,Anita Lipnicka,Kasia Kowalska,8.0
+164,Natalia Przybysz,Monika Brodka,7.0
+165,O.S.T.R.,Pezet,10.0
+166,Taco Hemingway,Quebonafide,10.0
+167,Sokół,Peja,10.0
+169,Kaliber 44,Paktofonika,10.0
+170,Kali,Paluch,9.0
+171,Białas,Solar,9.0
+172,Miuosh,Ten Typ Mes,9.0
+175,Żabson,Malik Montana,9.0
+176,Bedoes,White 2115,9.0
+177,Kukon,Kizo,8.0
+178,Kukiz,Liroy,8.0
+180,Doniu,Ascetoholix,7.0
+181,Liber,Wojtek Łozowski,6.0
+182,WWO,Hemp Gru,9.0
+183,Fenomen,Zipera,8.0
+184,Molesta Ewenement,Mor W.A.,9.0
+185,Slums Attack,Wzgórze Ya-Pa 3,9.0
+186,Grammatik,Kaliber 44,9.0
+187,Pokahontaz,Trzeci Wymiar,8.0
+188,Fisz Emade,Łąki Łan,7.0
+189,Lao Che,Pustki,7.0
+190,Cool Kids of Death,Dick4Dick,5.0
+191,Normalsi,Akurat,5.0
+192,Happysad,Video,7.0
+193,Lemon,Sorry Boys,6.0
+194,Muchy,The Car Is on Fire,4.0
+195,The Dumplings,Rebeka,6.0
+196,Kraków Street Band,Tabu,5.0
+197,Strachy na Lachy,Luxtorpeda,7.0
+198,Big Cyc,Kobranocka,6.0
+199,Pidżama Porno,Farben Lehre,7.0
+200,Coma,Cochise,6.0
+201,Hunter,Kat,6.0
+202,Vader,Behemoth,7.0
+203,Decapitated,Hate,5.0
+204,Acid Drinkers,Turbo,6.0
+205,Frontside,Chassis,3.0
+206,Siekiera,Brygada Kryzys,6.0
+207,Armia,Dezerter,7.0
+208,Robert Lewandowski,Kamil Glik,9.0
+209,Wojciech Szczęsny,Łukasz Fabiański,9.0
+210,Piotr Zieliński,Grzegorz Krychowiak,8.0
+211,Arkadiusz Milik,Krzysztof Piątek,8.0
+212,Jan Bednarek,Kamil Grosicki,8.0
+213,Jakub Błaszczykowski,Łukasz Piszczek,9.0
+214,Michał Pazdan,Thiago Cionek,7.0
+215,Karol Linetty,Bartosz Bereszyński,7.0
+216,Dawid Kownacki,Adam Buksa,7.0
+218,Rafał Gikiewicz,Bartłomiej Drągowski,6.0
+219,Tomasz Kędziora,Bartosz Bereszyński,6.0
+220,Krystian Bielik,Karol Linetty,6.0
+221,Damian Kądzior,Przemysław Płacheta,5.0
+222,Kamil Jóźwiak,Przemysław Frankowski,6.0
+223,Jerzy Brzęczek,Paulo Sousa,8.0
+224,Adam Nawałka,Czesław Michniewicz,8.0
+225,Leo Beenhakker,Franciszek Smuda,7.0
+226,Paweł Janas,Waldemar Fornalik,7.0
+227,Janusz Wójcik,Zbigniew Boniek,8.0
+228,Henryk Kasperczak,Antoni Piechniczek,5.0
+229,Jacek Gmoch,Kazimierz Górski,6.0
+230,Ryszard Kulesza,Andrzej Strejlau,5.0
+231,Wojciech Łazarek,Jerzy Engel,6.0
+232,Andrzej Strejlau,Henryk Apostel,5.0
+233,Jerzy Piechniczek,Wojciech Łazarek,5.0
+234,Lesław Ćmikiewicz,Bernard Blaut,3.0
+235,Jacek Kazimierski,Józef Młynarczyk,4.0
+236,Jan Tomaszewski,Władysław Żmuda,6.0
+237,Zbigniew Boniek,Grzegorz Lato,7.0
+238,Włodzimierz Lubański,Kazimierz Deyna,6.0
+239,Andrzej Szarmach,Jan Domarski,5.0
+240,Robert Gadocha,Lesław Ćmikiewicz,4.0
+241,Henryk Kasperczak,Adam Musiał,4.0
+242,Jerzy Gorgoń,Antoni Szymanowski,4.0
+243,Zygmunt Anczok,Jerzy Woźniak,3.0
+244,Andrzej Iwan,Włodzimierz Smolarek,5.0
+245,Zbigniew Boniek,Andrzej Buncol,5.0
+246,Dariusz Dziekanowski,Jan Urban,5.0
+247,Roman Kosecki,Jacek Krzynówek,6.0
+248,Jerzy Dudek,Artur Boruc,8.0
+249,Jacek Bąk,Tomasz Hajto,7.0
+251,Euzebiusz Smolarek,Ireneusz Jeleń,7.0
+252,Mariusz Lewandowski,Radosław Sobolewski,6.0
+253,Michał Żewłakow,Marcin Wasilewski,7.0
+254,Jakub Błaszczykowski,Ludovic Obraniak,8.0
+256,Łukasz Piszczek,Artur Jędrzejczyk,8.0
+257,Grzegorz Krychowiak,Kamil Glik,9.0
+258,Michał Pazdan,Thiago Cionek,7.0
+259,Rafał Kurzawa,Maciej Rybus,6.0
+260,Bartosz Bereszyński,Tomasz Kędziora,6.0
+261,Jan Bednarek,Kamil Glik,8.0
+262,Piotr Zieliński,Karol Linetty,7.0
+263,Arkadiusz Milik,Krzysztof Piątek,8.0
+264,Kamil Grosicki,Przemysław Frankowski,7.0
+265,Robert Lewandowski,Arkadiusz Milik,9.0
+266,Wojciech Szczęsny,Łukasz Fabiański,9.0
+268,Tomasz Kędziora,Bartosz Bereszyński,6.0
+269,Kamil Glik,Jan Bednarek,8.0
+270,Michał Helik,Sebastian Walukiewicz,5.0
+271,Arkadiusz Reca,Maciej Rybus,6.0
+272,Kamil Jóźwiak,Przemysław Płacheta,6.0
+273,Mateusz Klich,Jakub Moder,7.0
+274,Grzegorz Krychowiak,Karol Linetty,7.0
+275,Sebastian Szymański,Kacper Kozłowski,6.0
+276,Piotr Zieliński,Rafał Augustyniak,6.0
+277,Krzysztof Piątek,Dawid Kownacki,7.0
+278,Młody Leosia,Mata,10.0
+279,Ekipa,Team X,8.0
+280,Klocuch,Cyber Marian,8.0
+281,Boxdel,Gargamel,7.0
+282,Rafonix,Daniel Magical,7.0
+283,Bonus BGC,Popek,8.0
+284,"Karol ""Friz"" Wiśniewski",Gimper,8.0
+285,Quebonafide,Taco Hemingway,10.0
+286,Sokół,Peja,10.0
+287,O.S.T.R.,Łona,9.0
+288,Tede,Pezet,10.0
+289,Paluch,Kali,9.0
+290,Magik,Fokus,9.0
+291,Adidas,Nike,10.0
+292,McDonald's,Vege Burger,9.0
+293,TikTok,Instagram Reels,9.0
+294,Fortnite,Minecraft,10.0
+295,Among Us,Fall Guys,9.0
+296,Clubhouse,Twitter Spaces,6.0
+298,Dogecoin,Bitcoin,8.0
+299,Elon Musk,Jeff Bezos,9.0
+300,Mark Zuckerberg,Jack Dorsey,8.0
+301,PornHub,OnlyFans,9.0
+302,Tinder,Clubhouse,8.0
+303,NFT,Tradycyjna sztuka,8.0
+304,Metawersum,Rzeczywistość,8.0
+305,Squid Game,Dom z papieru,9.0
+306,Stranger Things,Dark,8.0
+307,The Witcher (Netflix),Wiedźmin (gra),10.0
+308,Chłopi Reymont,"Netflix ""Chłopi""",8.0
+309,Euphoria,Skins,7.0
+310,Joker (2019),Heath Ledger's Joker,9.0
+311,Marvel Cinematic Universe,DC Extended Universe,9.0
+312,Billie Eilish,Dua Lipa,9.0
+316,Bad Bunny,J Balvin,7.0
+317,The Weeknd,Post Malone,9.0
+319,Lady Gaga,Ariana Grande,10.0
+321,K-pop,Latino pop,9.0
+323,Lo-fi,Hyperpop,8.0
+325,Vaporwave,Synthwave,7.0
+326,Dieta roślinna,Dieta mięsożercy,8.0
+327,Bezglutenowa,Ketogeniczna,9.0
+329,CrossFit,Kalistenika,8.0
+330,Joga,Pilates,9.0
+331,Trening interwałowy wysokiej intensywności,Cardio o niskiej intensywności,7.0
+332,Zimne prysznice,Gorąca joga,8.0
+333,Medytacja,Nootropiki,7.0
+334,Uważność,Biohacking,7.0
+335,Psychodeliki,Tradycyjna terapia,8.0
+336,Odosobnienia z ayahuascą,Ośrodki rehabilitacyjne,7.0
+337,CBD,THC,9.0
+338,Mikrodawkowanie,Leki na receptę,7.0
+339,Paszporty szczepionkowe,Ruch antyszczepionkowy,9.0
+340,Praca z domu,Cyfrowy nomada,9.0
+341,Ekonomia freelancerów,Bezwarunkowy dochód podstawowy,8.0
+342,Blockchain,Scentralizowana bankowość,8.0
+343,Kryptowaluta,Standard złota,8.0
+344,Kultura unieważniania,Wolność słowa,9.0
+345,Pozytywne nastawienie do ciała,Kultura siłowni,9.0
+346,Dziewczyny VSCO,E-dziewczyny,8.0
+347,Delikatni chłopcy,F-chłopcy,8.0
+348,Mroczna akademia,Styl wiejski,7.0
+349,Moda Y2K,Minimalizm,8.0
+351,Zakupy w second-handach,Luksusowe marki,9.0
+352,Miłośnicy sneakersów,Bieganie boso,7.0
+353,Buty ojca,Wysokie obcasy,8.0
+354,Crocsy,Birkenstock,9.0
+355,Fryzura na czeskiego piłkarza,Męski kok,8.0
+357,Zaimki ono/jego,Tradycyjne zaimki,7.0
+358,Poliamoryczność,Monogamia,8.0
+359,Bezdzietność z wyboru,Duże rodziny,9.0
+360,Życie w vanie,Życie na przedmieściach,8.0
+361,Mikrodomki,McMansions,7.0
+362,Zero odpadów,Konsumpcjonizm,9.0
+363,Minimalizm,Maksymalizm,8.0
+364,Marie Kondo,Zbieracze,7.0
+365,Ruch FIRE,Tradycyjna emerytura,5.0
+366,Cyfrowy detoks,Zawsze online,9.0
+367,Teoria płaskiej Ziemi,Eksploracja kosmosu,9.0
+368,Przeciwnicy 5G,Entuzjaści Internetu Rzeczy,7.0
+369,Aktywizm klimatyczny,Negacja zmian klimatycznych,9.0
+370,Weganizm,Mięso hodowane laboratoryjnie,8.0
+371,GMO,Rolnictwo ekologiczne,8.0
+372,Szybka moda,Powolna moda,7.0
+373,Upcycling,Planowane starzenie produktów,6.0
+375,Ekonomia współdzielenia,Ekonomia własności,6.0
+376,Uber,Tradycyjne taksówki,10.0
+377,Airbnb,Hotele,9.0
+378,Netflix,Kino,10.0
+379,Streaming,Telewizja kablowa,9.0
+381,Szachyboks,MMA,5.0
+382,Parkour,Biegi maratońskie,9.0
+384,Rzucanie toporem,Rzutki,7.0
+385,Piłka nożna w bańkach,Tradycyjna piłka nożna,8.0
+386,Quidditch,Rugby,8.0
+387,Hokej podwodny,Hokej na lodzie,6.0
+388,Roller derby,Łyżwiarstwo figurowe,6.0
+389,Wyścigi dronów,Formuła 1,8.0
+390,Wirtualna rzeczywistość,Rozszerzona rzeczywistość,7.0
+391,Roboty Boston Dynamics,Tradycyjne zwierzęta domowe,6.0
+392,Mięso hodowane laboratoryjnie,Tradycyjne rolnictwo,8.0
+393,Rolnictwo wertykalne,Tradycyjne rolnictwo,6.0
+394,Domy drukowane 3D,Tradycyjne budownictwo,7.0
+395,Inteligentne miasta,Życie na wsi,8.0
+396,Hyperloop,Kolej dużych prędkości,6.0
+397,Hulajnogi elektryczne,Rowery,10.0
+398,Samochody autonomiczne,Prowadzenie manualne,9.0
+400,Kolonizacja Marsa,Eksploracja oceanów,8.0
+401,Neuralink,Tradycyjne interfejsy mózg-komputer,5.0
+402,Edycja genów CRISPR,Dobór naturalny,6.0
+403,Komputery kwantowe,Komputery klasyczne,7.0
+404,6G,Internet dial-up,8.0
+405,Wyświetlacze holograficzne,Tradycyjne ekrany,8.0
+406,Grafen,Krzem,4.0
+407,Energia termojądrowa,Paliwa kopalne,7.0
+408,Ciemna materia,Obserwowalny wszechświat,5.0
+409,Teoria strun,Fizyka klasyczna,5.0
+410,Teoria płaskiej Ziemi,Fakt kulistości Ziemi,9.0
+411,Hipoteza symulacji,Rzeczywistość materialna,7.0
+412,Starożytni kosmici,Nowoczesna archeologia,8.0
+413,Kryptozoologia,Zoologia,6.0
+414,Astrologia,Astronomia,9.0
+415,Czytanie tarota,Analiza danych,8.0
+416,Uzdrawianie energią,Medycyna zachodnia,8.0
+417,Wyrównywanie czakr,Fizjoterapia,7.0
+418,Kąpiele dźwiękowe,Tradycyjne zabiegi spa,5.0
+419,Kąpiele leśne,Życie w mieście,6.0
+420,Sztuka cyfrowa,Tradycyjne malarstwo,9.0
+421,Pixel art,Hiperrealizm,7.0
+422,Sztuka generatywna,Sztuka ręczna,6.0
+423,Muzyka generowana przez AI,Ludzcy kompozytorzy,8.0
+424,Deepfake,Tradycyjne CGI,8.0
+425,Memy,Karykatury polityczne,9.0
+426,GIFy reakcyjne,Emoji,10.0
+427,Mowa pieseł,Oksfordzki angielski,7.0
+428,Leetspeak,Poprawna gramatyka,8.0
+429,Języki sztuczne,Języki naturalne,6.0
+430,Emoji,Hieroglify,9.0
+431,ASCII art,Malarstwo renesansowe,7.0
+432,Estetyka vaporwave,Minimalistyczny design,7.0
+433,Glitch art,Tradycyjna fotografia,7.0
+435,Synthwave,Muzyka klasyczna,8.0
+436,ASMR,Death metal,9.0
+437,Mumble rap,Hip-hop liryczny,10.0
+438,Nightcore,Oryginalne tempo,8.0
+439,Bardcore,Nowoczesny pop,6.0
+440,Szanty,Współczesny folk,6.0
+441,Breakcore,Muzyka ambient,6.0
+442,Extratone,Muzyka dronowa,4.0
+443,Muzyka noise,Muzyka łatwa w odbiorze,7.0
+444,Kawaii metal,Tradycyjny metal,5.0
+445,Witch house,Mainstream EDM,5.0
+446,PC Music,Konwencjonalny pop,4.0
+447,Hyperpop,Ballady akustyczne,7.0
+448,Vocaloid,Ludzcy wokaliści,7.0
+449,AI vtuberzy,Ludzcy streamerzy,7.0
+450,Gry gacha,Tradycyjne RPG,6.0
+451,Roguelike,Linearne narracje,6.0
+452,Gry idle,Gry akcji,7.0
+453,Battle royale,Drużynowy deathmatch,9.0
+454,Souls-like,Gry casual,8.0
+455,Symulatory chodzenia,Gry akcji-przygodowe,7.0
+456,Powieści wizualne,Tradycyjne powieści,7.0
+457,Gry rytmiczne,Strzelanki pierwszoosobowe,9.0
+458,Auto chess,Tradycyjne szachy,6.0
+459,E-sport,Tradycyjne sporty,10.0
+460,Speedrunning,Kompletowanie gry,8.0
+461,Przejścia 100%,Casualowe przejścia,9.0
+462,Permanentna śmierć,Nadużywanie zapisów,8.0
+463,Generowanie proceduralne,Ręcznie tworzone poziomy,7.0
+464,Otwarty świat,Liniowa rozgrywka,10.0
+466,Metawersum,Świat fizyczny,8.0
+467,Gry oparte na blockchain,Tradycyjne granie,7.0
+468,Granie dla zarobku,Płatne granie,7.0
+469,Loot boxy,Odblokowywalne przedmioty,9.0
+471,Wczesny dostęp,Gotowe produkty,9.0
+472,Gry jako usługa,Jednorazowe zakupy,8.0
+473,Modowanie,Czysta rozgrywka,9.0
+474,Twitch Plays,Gra jednoosobowa,7.0
+475,Let's Playe,Recenzje gier,9.0
+476,Filmy reakcji,Krytyka filmowa,9.0
+478,Mukbang,Programy kulinarne,8.0
+479,ASMR,Tradycyjne podcasty,9.0
+480,Podcasty true crime,Fikcyjne dramaty,8.0
+481,Słuchowiska,Audiobooki,7.0
+482,Fikcja interaktywna,Linearne narracje,8.0
+483,Seriale w stylu Bandersnatch,Tradycyjne seriale TV,7.0
+484,Wirtualni YouTuberzy,Ludzcy YouTuberzy,8.0
+485,Deepfake'owe gwiazdy,Prawdziwe gwiazdy,8.0
+486,Influencerzy AI,Ludzcy influencerzy,7.0
+487,Moda cyfrowa,Fizyczne ubrania,6.0
+488,Przymierzanie w AR,Fizyczne przymierzalnie,7.0
+489,Koncerty wirtualne,Występy na żywo,9.0
+491,Ciche dyskoteki,Tradycyjne kluby,8.0
+492,Pokoje zagadek,Gry planszowe,9.0
+493,LARP,Gry wideo,7.0
+494,Cosplay,Tradycyjne aktorstwo,9.0
+495,Fan fiction,Oryginalna twórczość,9.0
+496,Shipping,Kanoniczne związki,8.0
+497,Zasada 34,Treści bezpieczne w pracy,9.0
+498,Przeklęte obrazy,Artystyczna fotografia,8.0
+501,Dank memy,Suchary,10.0
+502,Shitposting,Formalne pisanie,9.0
+503,Copypasta,Oryginalne treści,8.0
+504,Trollowanie,Szczera dyskusja,10.0
+505,Wyszukiwanie obrazem,Pytanie o źródło,8.0
+506,Konta alternatywne,Prawdziwe tożsamości,9.0
+507,Konta jednorazowe,Główne konta,9.0
+508,Zweryfikowane konta,Anonimowi użytkownicy,9.0
+510,Bliscy znajomi,Publiczne posty,10.0
+511,Relacje,Posty w feedzie,10.0
+512,Reels,IGTV,9.0
+513,Filtry Snapchat,Naturalne zdjęcia,10.0
+514,Face tune,#BezFiltra,9.0
+515,Dziecięcy influencerzy,Dziecięcy aktorzy,7.0
+516,Rodzinni vlogerzy,Tradycyjne zdjęcia rodzinne,8.0
+518,Kultura foodies,Domowe gotowanie,8.0
+519,Zestawy do gotowania,Zakupy spożywcze,7.0
+520,Wirtualne restauracje,Tradycyjne restauracje,7.0
+521,Kuchnie w chmurze,Restauracje stacjonarne,5.0
+522,Sklepy dark store,Tradycyjny handel detaliczny,5.0
+523,Sklepy bezobsługowe,Tradycyjne kasy,9.0
+524,Menu z kodem QR,Fizyczne menu,9.0
+525,Płatności zbliżeniowe,Transakcje gotówkowe,10.0
+528,NFT,Fizyczne kolekcjonerskie przedmioty,8.0
+529,Gry play-to-earn,Tradycyjne granie,7.0
+530,DAO,Tradycyjne organizacje,4.0
+531,Web3,Web2.0,6.0
+532,Metawersum,Świat fizyczny,8.0
+533,Wirtualne nieruchomości,Fizyczne nieruchomości,6.0
+534,Cyfrowi nomadzi,Pracownicy biurowi,8.0
+535,Praca zdalna,Praca stacjonarna,10.0
+536,Zmęczenie Zoomem,Rozmowy przy automacie z wodą,8.0
+537,Wirtualna integracja zespołu,Imprezy biurowe,8.0
+538,Przestrzenie co-livingowe,Tradycyjne mieszkania,6.0
+539,Coliving,Domy rodzin nuklearnych,6.0
+540,Mikrodomy,McMansions,7.0
+541,Życie w vanie,Życie na przedmieściach,8.0
+543,Domy ziemne,Tradycyjne budownictwo,6.0
+544,Domy drukowane 3D,Tradycyjne budownictwo,7.0
+545,Inteligentne domy,Zwykłe domy,9.0
+546,Urządzenia IoT,Analogowe urządzenia,7.0
+547,Asystenci głosowi,Ręczne sterowanie,8.0
+548,Roboty odkurzające,Tradycyjne sprzątanie,8.0
+549,Mięso hodowane laboratoryjnie,Tradycyjne rolnictwo,5.0
+550,Rolnictwo wertykalne,Tradycyjne rolnictwo,4.0
+551,Hydroponika,Uprawa w glebie,4.0
+552,Akwaponika,Tradycyjne rybołówstwo,3.0
+553,Białko owadzie,Tradycyjne mięso,5.0
+554,Mięso roślinne,Produkty odzwierzęce,7.0
+555,Gastronomia molekularna,Tradycyjne gotowanie,5.0
+556,Gotowanie sous vide,Tradycyjne piekarniki,6.0
+557,Frytkownice beztłuszczowe,Frytkownice tradycyjne,8.0
+558,Garnki Instant Pot,Wolnowary,5.0
+559,Koktajle zastępujące posiłki,Tradycyjne posiłki,7.0
+560,Nootropiki,Tradycyjne suplementy,4.0
+561,Biohacking,Konwencjonalne zdrowie,4.0
+562,Krioterapia,Tradycyjna regeneracja,6.0
+563,Komory deprywacji sensorycznej,Tradycyjny relaks,5.0
+564,Mikrodawkowanie,Tradycyjne leki,5.0
+565,Wyjazdy z ayahuascą,Tradycyjna terapia,4.0
+566,Terapia MDMA,Psychoterapia,5.0
+567,Kliniki ketaminowe,Tradycyjne antydepresanty,4.0
+568,Badania nad psylocybiną,Konwencjonalna psychiatria,5.0
+569,Legalizacja konopi,Wojna z narkotykami,8.0
+570,Redukcja szkód,Całkowita abstynencja,6.0
+571,Edukacja sex-pozytywna,Edukacja promująca abstynencję,7.0
+573,Etyczna niemonogamia,Tradycyjne związki,6.0
+574,Związki aromantyczne,Związki romantyczne,4.0
+575,Aseksualność,Allseksualność,5.0
+576,Demiseksualność,Kultura przygodnego seksu,5.0
+577,Panseksualność,Monoseksualność,5.0
+578,Płynność płciowa,Binarna płeć,6.0
+580,Neozaimki,Tradycyjne zaimki,5.0
+581,Rodziny z wyboru,Rodziny biologiczne,6.0
+582,Rodziny znalezione,Rodziny nuklearne,5.0
+583,Współrodzicielstwo,Tradycyjne rodzicielstwo,6.0
+584,Rodzicielstwo platoniczne,Rodzicielstwo romantyczne,4.0
+585,Dobrowolna bezdzietność,Duże rodziny,7.0
+586,Antynatalizm,Pronatalizm,4.0
+587,Dobrowolne wymarcie ludzkości,Wzrost populacji,4.0
+588,Transhumanizm,Biokonserwatyzm,4.0
+589,Posthumanizm,Humanizm,3.0
+591,Interfejsy mózg-komputer,Tradycyjne metody wprowadzania,6.0
+592,Neuralink,Konwencjonalne protezy,5.0
+593,Dzieci CRISPR,Naturalne poczęcie,5.0
+594,Dzieci projektowane,Naturalna genetyka,6.0
+595,Klonowanie ludzi,Naturalna reprodukcja,7.0
+596,Sztuczne macice,Tradycyjna ciąża,5.0
+597,Ektogeneza,Naturalna ciąża,3.0
+598,Przedłużanie życia,Naturalne starzenie się,6.0
+599,Krionika,Tradycyjny pochówek,6.0
+600,Digital afterlife,Physical legacy,5.0
+601,Wgrywanie świadomości,Świadomość biologiczna,6.0
+602,Rzeczywistość symulowana,Rzeczywistość fizyczna,7.0
+603,Cyfrowe bliźniaki,Fizyczne istnienie,4.0
+604,Komunikacja holograficzna,Tradycyjne rozmowy telefoniczne,7.0
+605,Roboty teleprezencyjne,Spotkania osobiste,5.0
+606,Technologia haptyczna,Fizyczny dotyk,6.0
+607,Telewizja zapachowa,Tradycyjne media,5.0
+608,Kino 4D,Tradycyjne filmy 2D,8.0
+609,Rozdzielczość 8K,1080p,8.0
+610,Wysoka częstotliwość odświeżania,Standardowe 60Hz,7.0
+611,Ray tracing,Tradycyjne renderowanie,6.0
+612,Komputery kwantowe,Komputery klasyczne,7.0
+613,Przetwarzanie brzegowe,Chmura obliczeniowa,4.0
+614,6G,5G,7.0
+615,Li-Fi,Wi-Fi,4.0
+616,Internet kwantowy,Klasyczny internet,5.0
+617,Komunikacja mózg-mózg,Komunikacja werbalna,5.0
+618,Myśl na tekst,Tradycyjne pisanie,6.0
+619,Interfejsy śledzące wzrok,Mysz i klawiatura,6.0
+620,Sterowanie gestami,Tradycyjne piloty,7.0
+621,Sterowanie głosem,Obsługa ręczna,8.0
+622,Interfejsy jak z Raportu mniejszości,Tradycyjne interfejsy graficzne,6.0
+623,Hologramy,Wyświetlacze 2D,8.0
+624,Wyświetlacze światła polowego,Konwencjonalne ekrany,3.0
+625,Elastyczne wyświetlacze,Sztywne ekrany,7.0
+626,E-papier,LCD/OLED,7.0
+627,Rozszerzona rzeczywistość,Rzeczywistość fizyczna,8.0
+628,Rzeczywistość mieszana,Czyste VR lub czysta rzeczywistość,6.0
+629,Wirtualna turystyka,Podróże fizyczne,7.0
+630,Cyfrowe bliźniaki miast,Fizyczne planowanie miejskie,4.0
+631,Inteligentny pył,Tradycyjne czujniki,3.0
+632,Robotyka rojowa,Pojedyncze roboty,5.0
+633,Nanorobotyka,Tradycyjna medycyna,6.0
+634,Claytronica,Statyczne obiekty,2.0
+635,Programowalna materia,Tradycyjne materiały,4.0
+636,Druk 4D,Druk 3D,5.0
+637,Materiały samoleczące,Tradycyjne naprawy,5.0
+638,Biomimikra,Konwencjonalne projektowanie,4.0
+639,Biologia syntetyczna,Tradycyjna biologia,4.0
+640,Ksenoboty,Tradycyjne organizmy,3.0
+641,Mięso hodowane laboratoryjnie,Tradycyjne rolnictwo,5.0
+642,Pionowe farmy oceaniczne,Tradycyjne rybołówstwo,3.0
+643,Górnictwo denne,Górnictwo lądowe,4.0
+644,Górnictwo kosmiczne,Wydobycie zasobów ziemskich,6.0
+645,Bazy księżycowe,Stacje naziemne,7.0
+646,Kolonie na Marsie,Miasta na Ziemi,7.0
+648,Żagle słoneczne,Napęd chemiczny,4.0
+649,Napęd antymaterii,Konwencjonalne paliwo rakietowe,5.0
+650,Napęd nadświetlny,Podróże podświetlne,7.0
+651,Sfery Dysona,Tradycyjne pozyskiwanie energii,5.0
+652,Silniki gwiezdne,Cywilizacje planetarne,3.0
+653,Cywilizacje w skali Kardaszewa,Obecna cywilizacja ludzka,4.0
+654,SETI,Tradycyjna astronomia,6.0
+655,Kolonizacja egzoplanet,Ekspansja na Ziemi,6.0
+656,Statki międzypokoleniowe,Krótkoterminowe misje kosmiczne,5.0
+657,Kriosen,Tradycyjny sen,7.0
+658,Terraformowanie,Adaptacja do istniejących warunków,6.0
+659,Kontrola pogody,Naturalny klimat,7.0
+660,Geoinżynieria,Naturalne procesy,5.0
+662,Energia termojądrowa,Rozszczepienie i paliwa kopalne,6.0
+664,Bezprzewodowe przesyłanie energii,Przewodowa elektryczność,7.0
+665,Drogi piezoelektryczne,Tradycyjne autostrady,3.0
+666,Hyperloop,Szybka kolej,7.0
+667,Latające samochody,Pojazdy naziemne,9.0
+668,Plecaki odrzutowe,Chodzenie,8.0
+669,Latające deskorolki,Zwykłe deskorolki,8.0
+670,Egzoszkielety,Naturalna siła człowieka,7.0
+671,Kombinezony mecha,Tradycyjne pojazdy,7.0
+672,Pola siłowe,Fizyczne bariery,8.0
+673,Peleryny niewidki,Kamuflaż,8.0
+674,Teleportacja,Konwencjonalny transport,9.0
+675,Podróże w czasie,Liniowy upływ czasu,9.0
+676,Wszechświaty równoległe,Teoria jednego wszechświata,7.0
+677,Teoria wieloświata,Wszechświat,7.0
+678,Robert Lewandowski,Cristiano Ronaldo,10.0
+679,Andrzej Duda,Barack Obama,9.0
+680,Magda Gessler,Gordon Ramsay,8.0
+681,Zenon Martyniuk,Freddie Mercury,9.0
+682,Krystyna Pawłowicz,Alexandria Ocasio-Cortez,5.0
+683,Jarosław Kaczyński,Donald Trump,9.0
+684,Robert Makłowicz,Anthony Bourdain,7.0
+685,Jerzy Owsiak,Bill Gates,8.0
+686,Mariusz Pudzianowski,Conor McGregor,8.0
+687,Olga Tokarczuk,J.K. Rowling,8.0
+688,Wisława Szymborska,Rupi Kaur,4.0
+689,Adam Małysz,Usain Bolt,9.0
+690,Iga Świątek,Serena Williams,9.0
+691,Lech Wałęsa,Nelson Mandela,8.0
+692,Kuba Wojewódzki,Jimmy Fallon,7.0
+694,Maryla Rodowicz,Madonna,9.0
+695,Dawid Podsiadło,Ed Sheeran,9.0
+696,Agnieszka Dygant,Jennifer Aniston,7.0
+697,Cezary Pazura,Jim Carrey,8.0
+698,Joanna Krupa,Kim Kardashian,8.0
+700,Kamil Stoch,Michael Phelps,8.0
+701,Robert Biedroń,Emmanuel Macron,7.0
+702,Katarzyna Cichopek,Scarlett Johansson,7.0
+703,Tomasz Karolak,Brad Pitt,7.0
+704,Sławomir Zapała,Justin Timberlake,7.0
+705,Doda,Lady Gaga,8.0
+706,Radosław Majdan,David Beckham,8.0
+707,Edyta Górniak,Beyoncé,8.0
+708,Marcin Prokop,Ryan Seacrest,6.0
+709,Agnieszka Chylińska,Pink,7.0
+710,Maciej Musiał,Timothée Chalamet,6.0
+711,Julia Wieniawa,Zendaya,6.0
+712,Tomasz Kot,Benedict Cumberbatch,7.0
+713,Borys Szyc,Leonardo DiCaprio,7.0
+714,Magdalena Boczarska,Margot Robbie,6.0
+715,Piotr Fronczewski,Morgan Freeman,7.0
+716,Janusz Gajos,Robert De Niro,7.0
+717,Danuta Stenka,Meryl Streep,7.0
+718,Wojciech Smarzowski,Quentin Tarantino,6.0
+719,Jan Komasa,Christopher Nolan,5.0
+720,Agnieszka Holland,Sofia Coppola,5.0
+721,Andrzej Sapkowski,George R.R. Martin,8.0
+722,Zygmunt Miłoszewski,Dan Brown,6.0
+723,Jakub Żulczyk,Chuck Palahniuk,4.0
+724,Katarzyna Bonda,Gillian Flynn,5.0
+725,Remigiusz Mróz,Stephen King,7.0
+727,Mikołaj Roznerski,Chris Hemsworth,7.0
+728,Michał Szpak,Adam Lambert,6.0
+729,Margaret,Ariana Grande,8.0
+730,Dawid Kwiatkowski,Shawn Mendes,7.0
+731,Roksana Węgiel,Billie Eilish,7.0
+732,Viki Gabor,Olivia Rodrigo,6.0
+733,Krzysztof Ibisz,Ryan Seacrest,6.0
+734,Martyna Wojciechowska,Bear Grylls,7.0
+735,Kinga Rusin,Oprah Winfrey,7.0
+736,Hubert Urbański,Alex Trebek,5.0
+737,Maciej Stuhr,Steve Carell,7.0
+738,Piotr Adamczyk,Hugh Jackman,7.0
+739,Małgorzata Kożuchowska,Jennifer Lawrence,7.0
+740,Maja Ostaszewska,Cate Blanchett,6.0
+741,Bartosz Bielenia,Timothée Chalamet,5.0
+742,Joanna Kulig,Emma Stone,6.0
+743,Tomasz Kot,Gary Oldman,6.0
+744,Agata Kulesza,Olivia Colman,5.0
+745,Robert Więckiewicz,Tom Hardy,6.0
+747,Marcin Dorociński,Mads Mikkelsen,6.0
+748,Andrzej Seweryn,Anthony Hopkins,7.0
+749,Krystyna Janda,Helen Mirren,7.0
+750,Jerzy Stuhr,Bill Murray,6.0
+752,Wojciech Pszoniak,Ian McKellen,5.0
+754,Andrzej Chyra,Willem Dafoe,5.0
+755,Maja Komorowska,Maggie Smith,6.0
+756,Piotr Fronczewski,Christopher Plummer,5.0
+757,Magdalena Cielecka,Tilda Swinton,5.0
+758,Jacek Braciak,Steve Buscemi,6.0
+759,Marian Dziędziel,John Goodman,5.0
+761,Kinga Preis,Frances McDormand,5.0
+762,Agata Buzek,Carey Mulligan,4.0
+763,Dawid Ogrodnik,Rami Malek,6.0
+764,Jakub Gierszał,Ansel Elgort,4.0
+765,Mateusz Kościukiewicz,Lucas Hedges,3.0
+766,Zofia Wichłacz,Saoirse Ronan,4.0
+767,Tomasz Ziętek,Taron Egerton,4.0
+768,Maciej Musiał,Tom Holland,7.0
+769,Antoni Królikowski,Ezra Miller,5.0
+771,Magdalena Różczka,Emily Blunt,6.0
+772,Katarzyna Warnke,Margot Robbie,6.0
+773,Piotr Głowacki,Mark Ruffalo,6.0
+774,Łukasz Simlat,Joaquin Phoenix,6.0
+775,Marcin Kowalczyk,Adam Driver,5.0
+776,Józef Pawłowski,Timothée Chalamet,5.0
+777,Tomasz Schuchardt,Oscar Isaac,4.0
+778,Mateusz Kościukiewicz,Paul Dano,3.0
+779,Jan Englert,Ian McKellen,6.0
+780,Jerzy Trela,Christopher Plummer,5.0
+781,Jerzy Radziwiłowicz,Jeremy Irons,5.0
+782,Marek Kondrat,Michael Caine,6.0
+784,Artur Żmijewski,Jude Law,7.0
+785,Cezary Żak,John C. Reilly,5.0
+786,Adam Woronowicz,Ralph Fiennes,6.0
+787,Wojciech Zieliński,Ethan Hawke,5.0
+788,Jan Frycz,Geoffrey Rush,5.0
+790,Piotr Machalica,Stanley Tucci,4.0
+791,Janusz Chabior,Stellan Skarsgård,5.0
+793,Marian Opania,John Malkovich,5.0
+794,Piotr Gąsowski,Rob Lowe,5.0
+795,Piotr Polk,Paul Rudd,6.0
+796,Przemysław Sadowski,Matthew McConaughey,6.0
+797,Rafał Królikowski,Mark Ruffalo,6.0
+798,Paweł Małaszyński,James Franco,5.0
+799,Maciej Zakościelny,Channing Tatum,6.0
+800,Bartłomiej Topa,Woody Harrelson,6.0
+802,Paweł Wilczak,Jeff Bridges,5.0
+803,Krzysztof Globisz,Philip Seymour Hoffman,4.0
+804,Jerzy Bończak,John Lithgow,4.0
+806,Andrzej Grabowski,John Goodman,6.0
+807,Adam Ferency,Ben Kingsley,5.0
+808,Franciszek Pieczka,Max von Sydow,4.0
+809,Piotr Fronczewski,Michael Caine,6.0
+810,Jerzy Skolimowski,David Lynch,5.0
+811,Krzysztof Zanussi,Woody Allen,6.0
+812,Agnieszka Holland,Jane Campion,4.0
+813,Małgorzata Szumowska,Sofia Coppola,4.0
+814,Jan Komasa,Damien Chazelle,4.0
+815,Wojciech Smarzowski,Quentin Tarantino,6.0
+816,Paweł Pawlikowski,Alfonso Cuarón,5.0
+817,Jerzy Skolimowski,Werner Herzog,4.0
+818,Andrzej Wajda,Martin Scorsese,6.0
+819,Roman Polański,Francis Ford Coppola,7.0
+820,Krzysztof Kieślowski,Stanley Kubrick,6.0
+821,Agnieszka Holland,Kathryn Bigelow,4.0
+822,Małgorzata Szumowska,Greta Gerwig,4.0
+824,Maria Sadowska,Lulu Wang,3.0
+825,Kinga Dębska,Chloé Zhao,3.0
+826,Anna Kazejak,Emerald Fennell,3.0
+827,Olga Chajdas,Céline Sciamma,3.0
+828,Jagoda Szelc,Julia Ducournau,2.0
+829,Agnieszka Smoczyńska,Ana Lily Amirpour,2.0
+830,Jan P. Matuszyński,Barry Jenkins,3.0
+831,Bartosz M. Kowalski,Jordan Peele,4.0
+832,Adrian Panek,Robert Eggers,2.0
+833,Piotr Domalewski,Kenneth Lonergan,2.0
+834,Paweł Maślona,Yorgos Lanthimos,3.0
+835,Bartosz Konopka,Alex Garland,3.0
+836,Magnus von Horn,Ruben Östlund,2.0
+837,Łukasz Ronduda,Michel Hazanavicius,2.0
+838,Tomasz Wasilewski,Tom Ford,3.0
+839,Marcin Wrona,Ari Aster,3.0
+840,Krzysztof Skonieczny,Nicolas Winding Refn,3.0
+841,Michał Marczak,Terrence Malick,3.0
+842,Marcin Koszałka,Roger Deakins,2.0
+843,Światło,Ciemność,10.0
+844,Ciepło,Zimno,10.0
+845,Młodość,Starość,10.0
+846,Optymizm,Pesymizm,10.0
+847,Tradycja,Nowoczesność,10.0
+849,Analogowe,Cyfrowe,9.0
+850,Rozwój,Stagnacja,9.0
+851,Miłość,Nienawiść,10.0
+852,Szczęście,Smutek,10.0
+854,Wytrwałość,Rezygnacja,9.0
+855,Sukces,Porażka,10.0
+856,Wiedza,Niewiedza,10.0
+857,Konserwatyzm,Liberalizm,9.0
+858,Władza,Podporządkowanie,9.0
+859,Naturalne,Sztuczne,10.0
+860,Bogactwo,Ubóstwo,10.0
+861,Ekstrawersja,Introwersja,9.0
+862,Uczciwość,Nieuczciwość,10.0
+863,Pokój,Wojna,10.0
+864,Harmonia,Konflikt,10.0
+865,Idealizm,Realizm,9.0
+866,Radość,Żal,10.0
+867,Nadzieja,Rozpacz,10.0
+868,Beztroska,Troska,9.0
+869,Sztuka,Nauka,10.0
+870,Indywidualizm,Kolektywizm,9.0
+871,Prawda,Fałsz,10.0
+872,Praca,Odpoczynek,10.0
+873,Miasto,Wieś,10.0
+874,Góry,Morze,10.0
+875,Lato,Zima,10.0
+876,Dzień,Noc,10.0
+877,Rozrywka,Praca,10.0
+878,Cisza,Hałas,10.0
+879,Teoria,Praktyka,10.0
+880,Płytkość,Głębia,10.0
+881,Samotność,Towarzystwo,10.0
+882,Aktywność,Lenistwo,10.0
+885,Męstwo,Tchórzostwo,10.0
+886,Wola,Bierność,9.0
+887,Natura,Technologia,10.0
+888,Zdrowie,Choroba,10.0
+889,Piękno,Brzydota,10.0
+890,Młodzieńczość,Dojrzałość,10.0
+891,Przewidywalność,Nieprzewidywalność,9.0
+892,Gęstość,Pustka,9.0
+893,Komedia,Tragedia,10.0
+894,Wszechświat,Ziemia,10.0
+895,Duchowość,Materializm,9.0
+896,Prostota,Złożoność,10.0
+897,Klasyczność,Awangarda,8.0
+898,Monarchia,Demokracja,9.0
+899,Szybkość,Powolność,10.0
+900,Długowieczność,Krótkotrwałość,9.0
+901,Skromność,Przepych,10.0
+902,Hojność,Skąpstwo,10.0
+903,Spójność,Chaos,9.0
+904,Zaufanie,Nieufność,10.0
+905,Odwaga,Strach,10.0
+906,Zwycięstwo,Porażka,10.0
+907,Bezpieczeństwo,Niebezpieczeństwo,10.0
+908,Słodycz,Gorzkość,10.0
+910,Konkret,Abstrakcja,9.0
+911,Stałość,Zmienność,9.0
+912,Optymalizacja,Marnotrawstwo,9.0
+913,Czystość,Brud,10.0
+914,Lojalność,Zdrada,10.0
+915,Zwierzęta,Ludzie,10.0
+916,Równość,Nierówność,10.0
+917,Wewnętrzne,Zewnętrzne,10.0
+918,Jasność,Mglistość,9.0
+919,Wiedza,Ignorancja,10.0
+920,Stałość,Zmiana,10.0
+921,Siła,Słabość,10.0
+922,Sherlock Holmes,Dr Watson,9.0
+923,Batman,Joker,10.0
+924,Gandalf,Saruman,8.0
+925,Harry Potter,Voldemort,10.0
+926,Luke Skywalker,Darth Vader,9.0
+928,Frodo Baggins,Sauron,8.0
+929,Superman,Lex Luthor,9.0
+930,Spider-Man,Green Goblin,8.0
+931,Iron Man,Thanos,9.0
+932,Captain America,Red Skull,8.0
+933,Wonder Woman,Ares,7.0
+934,Thor,Loki,9.0
+935,King Arthur,Mordred,6.0
+936,Robin Hood,Sheriff of Nottingham,8.0
+937,Simba,Scar,9.0
+938,Mulan,Shan Yu,7.0
+939,Elsa,Hans,8.0
+940,Moana,Te Kā,6.0
+941,Ariel,Ursula,9.0
+942,Albus Dumbledore,Severus Snape,10.0
+943,Indiana Jones,René Belloq,6.0
+944,Neo,Agent Smith,9.0
+945,John McClane,Hans Gruber,7.0
+947,Tony Montana,Alejandro Sosa,5.0
+948,Michael Corleone,Hyman Roth,5.0
+949,Jack Sparrow,Davy Jones,9.0
+951,Jay Gatsby,Tom Buchanan,5.0
+952,Atticus Finch,Bob Ewell,4.0
+953,Holden Caulfield,Society,3.0
+954,Don Quixote,Reality,6.0
+955,Sherlock Holmes,Moriarty,8.0
+956,Dracula,Van Helsing,8.0
+957,Frankenstein,Society,6.0
+958,Hamlet,Claudius,6.0
+959,Romeo,Paris,5.0
+960,Juliet,Rosaline,4.0
+961,Odysseus,Poseidon,6.0
+962,Achilles,Hector,6.0
+963,Hercules,Hades,7.0
+964,Alice,Queen of Hearts,9.0
+966,Winnie the Pooh,Heffalumps,7.0
+967,Cinderella,Stepmother,10.0
+968,Snow White,Evil Queen,10.0
+969,Rapunzel,Mother Gothel,8.0
+970,Belle,Gaston,9.0
+971,Beast,Gaston,9.0
+972,Pocahontas,Governor Ratcliffe,7.0
+973,Tiana,Dr. Facilier,6.0
+974,Merida,Mor'du,6.0
+975,Miguel,Ernesto de la Cruz,6.0
+977,Maleficent,King Stefan,7.0
+978,Black Widow,Taskmaster,6.0
+979,Hulk,General Ross,6.0
+980,Vision,Ultron,7.0
+981,Jean Grey,Magneto,6.0
+982,Deadpool,Ajax,7.0
+983,Wolverine,Sabretooth,7.0
+984,Professor X,Magneto,8.0
+985,Cyclops,Magneto,6.0
+986,Storm,Magneto,6.0
+987,Beast (X-Men),Magneto,5.0
+988,Magneto,Society,6.0
+989,Daredevil,Kingpin,7.0
+991,Ghost Rider,Mephistopheles,5.0
+992,Silver Surfer,Galactus,5.0
+993,Green Lantern,Sinestro,5.0
+994,Flash,Reverse Flash,6.0
+995,Aquaman,Black Manta,6.0
+996,Shazam,Dr. Sivana,5.0
+997,Martian Manhunter,Ma'alefa'ak,3.0
+998,Hawkgirl,Shadow Thief,3.0
+999,Black Canary,Black Siren,4.0
+1001,Poison Ivy,Batman,8.0
+1002,Harley Quinn,Batman,9.0
+1003,Riddler,Batman,9.0
+1004,Penguin,Batman,9.0
+1005,Scarecrow,Batman,8.0
+1006,Two-Face,Batman,9.0
+1007,Ra's al Ghul,Batman,7.0
+1008,Bane,Batman,9.0
+1009,Mr. Freeze,Batman,8.0
+1010,Killer Croc,Batman,7.0
+1011,Clayface,Batman,6.0
+1012,Mad Hatter,Batman,6.0
+1013,Hugo Strange,Batman,5.0
+1016,Firefly,Batman,4.0
+1017,Man-Bat,Batman,5.0
+1019,Kite Man,Batman,3.0
+1020,Condiment King,Batman,2.0
+1021,Captain Boomerang,Batman,5.0
+1022,Maratończyk,Crossfitowiec,7.0
+1023,Janusz Gajos,Bogusław Linda,8.0
+1024,Geralt z Rivii,Jaskier,10.0
+1025,Król Maciuś Pierwszy,Zły Wuj,7.0
+1026,Pan Twardowski,Diabeł,8.0
+1027,Ksiądz Robak,Jacek Soplica,7.0
+1028,Tadeusz Soplica,Gerwazy,7.0
+1029,Jaga Hupało,Jan Nowicki,5.0
+1030,Andrzej Seweryn,Daniel Olbrychski,7.0
+1031,Mikołaj Kopernik,Jan Heweliusz,7.0
+1033,Fryderyk Chopin,Johann Sebastian Bach,9.0
+1034,Henryk Sienkiewicz,Bolesław Prus,8.0
+1035,Wisława Szymborska,Czesław Miłosz,8.0
+1036,Stanisław Lem,Isaac Asimov,7.0
+1037,Józef Piłsudski,Roman Dmowski,7.0
+1038,Adam Mickiewicz,Juliusz Słowacki,8.0
+1039,Lech Wałęsa,Wojciech Jaruzelski,8.0
+1040,Zbigniew Wodecki,Czesław Niemen,7.0
+1041,Kora,Maryla Rodowicz,8.0
+1042,Krzysztof Kieślowski,Andrzej Wajda,7.0
+1043,Jerzy Grotowski,Tadeusz Kantor,5.0
+1044,Zbigniew Herbert,Adam Zagajewski,5.0
+1045,Stanisław Ignacy Witkiewicz,Tadeusz Peiper,4.0
+1046,Jan Paweł II,Karol Wojtyła,10.0
+1047,Stefan Batory,Zygmunt Stary,7.0
+1048,Lech Kaczyński,Donald Tusk,9.0
+1049,Matejko,Malczewski,7.0
+1050,Kmicic,Zagłoba,7.0
+1051,Hugo Kołłątaj,Stanisław Staszic,6.0
+1052,Stanisław August Poniatowski,Tadeusz Kościuszko,8.0
+1053,Ryszard Kapuściński,Ryszard Ochódzki,7.0
+1054,Jerzy Dudek,Zbigniew Boniek,8.0
+1055,Irena Sendlerowa,Maximilian Kolbe,7.0
+1056,Ignacy Łukasiewicz,Ernest Malinowski,5.0
+1057,Jacek Malczewski,Józef Chełmoński,6.0
+1058,Piotr Wysocki,Jan Henryk Dąbrowski,6.0
+1059,Kazimierz Pułaski,Tadeusz Kościuszko,7.0
+1061,Edward Gierek,Władysław Gomułka,6.0
+1064,Jerzy Pilch,Marek Hłasko,5.0
+1066,Robert Lewandowski,Zbigniew Boniek,9.0
+1067,Szewc Kopytko,Szewc Dratewka,6.0
+1068,Agnieszka Holland,Krzysztof Zanussi,6.0
+1069,Mistrz Twardowski,Stańczyk,7.0
+1070,Wojciech Młynarski,Agnieszka Osiecka,7.0
+1071,Marek Grechuta,Wojciech Młynarski,7.0
+1072,Kajko,Kokosz,8.0
+1073,Zdzisław Beksiński,Stanisław Ignacy Witkiewicz,6.0
+1074,Olga Tokarczuk,Andrzej Sapkowski,9.0
+1075,Małgorzata Musierowicz,Henryk Sienkiewicz,7.0
+1076,Jarosław Iwaszkiewicz,Julian Tuwim,7.0
+1077,Wisława Szymborska,Zbigniew Herbert,7.0
+1078,Jan Brzechwa,Julian Tuwim,8.0
+1079,Stefan Banach,Marian Rejewski,5.0
+1080,Adam Małysz,Kamil Stoch,10.0
+1081,Aleksander Wielki,Dariusz III,7.0
+1082,Juliusz Cezar,Pompejusz,7.0
+1083,Napoleon Bonaparte,Wellington,7.0
+1084,Abraham Lincoln,Jefferson Davis,6.0
+1085,Kleopatra,Oktawian August,7.0
+1086,Gandhi,Lord Mountbatten,6.0
+1087,Martin Luther King Jr.,Malcolm X,7.0
+1088,Muhammad Ali,Joe Frazier,7.0
+1089,Michael Jordan,Larry Bird,7.0
+1090,Lionel Messi,Cristiano Ronaldo,10.0
+1091,Serena Williams,Maria Sharapova,8.0
+1092,Usain Bolt,Tyson Gay,6.0
+1093,Michael Phelps,Mark Spitz,6.0
+1094,Roger Federer,Rafael Nadal,9.0
+1095,Tom Brady,Peyton Manning,4.0
+1096,Babe Ruth,Ty Cobb,3.0
+1097,LeBron James,Kevin Durant,6.0
+1098,Shaquille O'Neal,Hakeem Olajuwon,4.0
+1099,Zinedine Zidane,Ronaldinho,9.0
+1100,Tiger Woods,Jack Nicklaus,6.0
+1101,Zeus,Hades,9.0
+1102,Posejdon,Atena,8.0
+1103,Thor,Fenrir,6.0
+1104,Odyseusz,Polifem,7.0
+1105,Hercules,Hera,7.0
+1106,Achilles,Agamemnon,7.0
+1107,Luke Skywalker,Darth Vader,9.0
+1108,Frodo Baggins,Gollum,9.0
+1111,Neo,Morfeusz,8.0
+1112,Simba,Scar,9.0
+1113,Elsa (Frozen),Anna (Frozen),9.0
+1115,Jack Sparrow (Pirates),Davy Jones (Pirates),9.0
+1116,James Bond,Le Chiffre,7.0
+1117,Batman,Ra's al Ghul,7.0
+1118,Sherlock Holmes,James Moriarty,8.0
+1119,Indiana Jones,Rene Belloq,6.0
+1121,Maximus (Gladiator),Commodus (Gladiator),7.0
+1122,Forrest Gump,Jenny Curran,8.0
+1123,Vito Corleone,Michael Corleone,8.0
+1124,Rick Blaine (Casablanca),Victor Laszlo (Casablanca),5.0
+1125,Tony Montana,Manny Ribera,6.0
+1126,Don Vito Corleone,Hyman Roth,6.0
+1127,Hannibal Lecter,Clarice Starling,8.0
+1128,Tyler Durden,Narrator (Fight Club),7.0
+1129,Andy Dufresne,Warden Norton,7.0
+1130,Joker (The Dark Knight),Batman (The Dark Knight),10.0
+1131,Spock,Captain Kirk,7.0
+1132,Darth Vader,Emperor Palpatine,8.0
+1133,Albus Dumbledore,Lord Voldemort,10.0
+1134,Katniss Everdeen,President Snow,8.0
+1135,Jon Snow,Ramsay Bolton,8.0
+1136,Daenerys Targaryen,Cersei Lannister,8.0
+1137,Walter White,Gus Fring,8.0
+1138,Saul Goodman,Chuck McGill,6.0
+1139,Michael Scofield,Alexander Mahone,7.0
+1140,Jack Bauer,Nina Myers,6.0
+1141,Dexter Morgan,Doakes,6.0
+1142,Thomas Shelby,Alfie Solomons,7.0
+1143,Bruce Wayne,The Penguin,9.0
+1144,Clark Kent,Lex Luthor,9.0
+1145,Peter Parker,Norman Osborn,8.0
+1146,Frodo Baggins,Sauron,9.0
+1147,Obi-Wan Kenobi,Anakin Skywalker,9.0
+1148,Captain America,Thanos,8.0
+1149,Tony Stark,Thanos,9.0
+1150,Thor,Hela,8.0
+1151,Hulk,General Ross,6.0
+1152,Black Widow,Taskmaster,6.0
+1153,Loki,Heimdall,7.0
+1154,Ant-Man,Yellowjacket,6.0
+1155,Vision,Ultron,7.0
+1156,Black Panther,Killmonger,7.0
+1157,Captain Marvel,Yon-Rogg,5.0
+1158,Spider-Man,Doctor Octopus,9.0
+1159,Doctor Strange,Dormammu,6.0
+1160,Scarlett Witch,Agatha Harkness,6.0
+1161,The Mandalorian,Moff Gideon,6.0
+1162,Robin Hood,Szeryf z Nottingham,8.0
+1164,Dr Jekyll,Mr Hyde,8.0
+1165,Sherlock Holmes,Profesor Moriarty,8.0
+1166,Kapitan Nemo,Profesor Aronnax,6.0
+1167,Don Kichot,Sancho Pansa,7.0
+1168,Hrabia Monte Christo,Fernand Mondego,6.0
+1169,Jean Valjean,Javert,7.0
+1170,Elizabeth Bennet,Lady Catherine,5.0
+1171,Ebenezer Scrooge,Bob Cratchit,7.0
+1172,Faust,Mefistofeles,7.0
+1174,Macbeth,Duncan,6.0
+1175,Romeo,Tybalt,7.0
+1176,Cyrano de Bergerac,Christian de Neuvillette,5.0
+1177,Achilles,Hector,7.0
+1178,Herkules,Hades,7.0
+1179,Odysseusz,Penelopa,7.0
+1180,Aeneas,Turnus,4.0
+1181,Gatsby,Tom Buchanan,6.0
+1182,Edyp,Kreon,5.0
+1183,Lancelot,Król Artur,8.0
+1184,Beowulf,Grendel,5.0
+1185,Tristan,Izolda z Białymi Rękami,4.0
+1186,Gandalf,Saruman,8.0
+1187,Aragorn,Sauron,8.0
+1188,Frodo Baggins,Gollum,9.0
+1189,Thorin Dębowa Tarcza,Smok Smaug,7.0
+1190,Heidi,Klara Sesemann,5.0
+1191,Aladyn,Dżafar,9.0
+1192,Sindbad Żeglarz,Król morskich potworów,6.0
+1193,Ali Baba,40 rozbójników,7.0
+1194,Królewna Śnieżka,Zła królowa,10.0
+1195,Kopciuszek,Zła macocha,10.0
+1196,Roszpunka,Matka Gothel,8.0
+1197,Pinokio,Mistrz Czeresnia,8.0
+1199,Piotruś Pan,Kapitan Hak,9.0
+1200,Mikołajek,Agnan,6.0
+1201,Ania z Zielonego Wzgórza,Gilbert Blythe,6.0
+1202,Asteriks,Juliusz Cezar,8.0
+1203,Obelix,Juliusz Cezar,8.0
+1204,Hercule Poirot,Pułkownik Arbuthnot,4.0
+1205,Miss Marple,Podejrzany,5.0
+1206,Harry Potter,Draco Malfoy,10.0
+1208,Jon Snow,Biały Wędrowiec,8.0
+1209,Tyrion Lannister,Cersei Lannister,8.0
+1210,James Bond,Auric Goldfinger,7.0
+1211,Indiana Jones,Belloq,6.0
+1212,Luke Skywalker,Imperator Palpatine,8.0
+1215,Elsa (Kraina lodu),Książę Hans,9.0
+1216,Moana,Kakamora,6.0
+1217,Mulan,Shan Yu,7.0
+1218,Simba,Skaza,9.0
+1219,Ariel (Mała Syrenka),Urszula,9.0
+1220,Bella (Piękna i Bestia),Gaston,9.0
+1221,Albus Dumbledore,Voldemort,10.0
+1222,Neo (Matrix),Agent Smith,9.0
+1223,Frodo (Władca Pierścieni),Saruman,8.0
+1224,Sherlock Holmes,Moriarty,8.0
+1225,Indiana Jones,Arnold Ernst Toht,5.0
+1226,Batman,Joker,10.0
+1228,Krystyna Pawłowicz,Rafał Ziemkiewicz,7.0
+1229,Donald Tusk,Jarosław Kaczyński,10.0
+1230,Marilyn Monroe,Coco Chanel,7.0
+1231,LeBron James,Michael Jordan,8.0
+1232,Filipek,Tupac,9.0
+1233,Nitro,Kizo,9.0
+1234,Mini Majk,Malczyński,8.0
+1235,Andrzej Duda,Aleksander Kwaśniewski,9.0
+1236,Beethoven,Chopin,9.0
+1237,Steve Jobs,Mark Zuckerberg,9.0
+1238,Indiana Jones,Han Solo,8.0
+1239,John Lennon,Paul McCartney,8.0
+1240,Ewa Chodakowska,Anna Lewandowska,8.0
+1241,Boxdel,Rafonix,8.0
+1242,Cristiano Ronaldo,Lionel Messi,10.0
+1243,Albert Einstein,Stephen Hawking,9.0
+1244,Keanu Reeves,Tom Hanks,8.0
+1245,Arnold Schwarzenegger,Sylvester Stallone,9.0
+1246,Wojtek Gola,Abstrachuje,7.0
+1247,Shakespeare,Dante Alighieri,7.0
+1248,Cleopatra,Queen Elizabeth I,7.0
+1249,Daenerys Targaryen,Jon Snow,9.0
+1250,PewDiePie,Dr Disrespect,7.0
+1251,Lexy Chaplin,Stuu,7.0
+1252,Borixon,Peja,9.0
+1253,Ariana Grande,Selena Gomez,9.0
+1254,Queen,The Beatles,9.0
+1255,Greta Thunberg,Donald Trump,9.0
+1256,Harry Potter,Luke Skywalker,9.0
+1257,Sherlock Holmes,Hercule Poirot,8.0
+1258,Tomasz Kot,Andrzej Seweryn,7.0
+1259,Young Leosia,Oliwka Brazil,9.0
+1260,Robert Lewandowski,Zlatan Ibrahimović,10.0
+1261,Gordon Ramsay,Jamie Oliver,8.0
+1262,Lady Gaga,Madonna,9.0
+1263,J.R.R. Tolkien,George R.R. Martin,8.0
+1267,Fousey,VitalyzdTv,5.0
+1268,Kim Kardashian,Kylie Jenner,9.0
+1269,Remigiusz Mróz,Stephen King,7.0
+1270,Julia Wieniawa,Barbara Kurdej-Szatan,8.0
+1271,Martin Scorsese,Quentin Tarantino,8.0
+1272,Naruto,Goku,8.0
+1274,Snoop Dogg,Jay-Z,9.0
+1275,Zenek Martyniuk,Andrzej Piaseczny,9.0
+1276,Spider-Man,Batman,10.0
+1277,Oprah Winfrey,Ellen DeGeneres,7.0
+1278,H.P. Lovecraft,Edgar Allan Poe,6.0
+1279,Rocky Balboa,John Rambo,8.0
+1280,Agnieszka Chylińska,Doda,9.0
+1281,Bruce Lee,Jackie Chan,9.0
+1282,Joe Rogan,Howard Stern,5.0
+1283,Nikola Tesla,Albert Einstein,9.0
+1284,Kurt Cobain,Jimi Hendrix,8.0
+1285,Robin Hood,King Arthur,8.0
+1286,Cleopatra,Helen of Troy,7.0
+1288,Freddie Mercury,David Bowie,9.0
+1289,Angelina Jolie,Scarlett Johansson,9.0
+1290,Jim Carrey,Robin Williams,9.0
+1291,Mozart,Beethoven,9.0
+1292,Isaac Newton,Galileo Galilei,8.0
+1294,Bill Gates,Steve Jobs,9.0
+1295,Muhammad Ali,Floyd Mayweather,8.0
+1296,Tony Hawk,Shaun White,6.0
+1298,Wolverine,Deadpool,9.0
+1299,Hannibal Lecter,Norman Bates,7.0
+1300,Indiana Jones,Lara Croft,9.0
+1301,James Bond,Ethan Hunt,8.0
+1302,Gandalf,Dumbledore,10.0
+1303,Thor,Zeus,9.0
+1304,Homer Simpson,Peter Griffin,9.0
+1305,Mario,Sonic,9.0
+1306,Godzilla,King Kong,9.0
+1307,Shrek,Fiona,9.0
+1308,Sam Winchester,Dean Winchester,6.0
+1309,Yoda,Obi-Wan Kenobi,9.0
+1311,The Witcher,Jon Snow,9.0
+1313,Luke Skywalker,Spock,9.0
+1314,Neo,Morpheus,8.0
+1315,John Wick,Jason Bourne,8.0
+1316,Iron Man,Captain America,10.0
+1317,Hulk,Thor,9.0
+1318,Loki,The Joker,9.0
+1319,Thanos,Darkseid,7.0
+1320,Megatron,Optimus Prime,8.0
+1321,Black Panther,Spider-Man,9.0
+1322,Wonder Woman,Captain Marvel,8.0
+1323,Arya Stark,Daenerys Targaryen,8.0
+1324,Jon Snow,Robb Stark,8.0
+1325,Tyrion Lannister,Varys,8.0
+1326,The Hound,The Mountain,8.0
+1327,Joffrey Baratheon,Ramsay Bolton,8.0
+1328,Simba,Mufasa,9.0
+1329,Albus Dumbledore,Severus Snape,10.0
+1330,Hermione Granger,Luna Lovegood,10.0
+1331,Han Solo,Chewbacca,9.0
+1332,R2-D2,C-3PO,9.0
+1333,Legolas,Aragorn,9.0
+1334,Saruman,Sauron,8.0
+1335,Frodo Baggins,Bilbo Baggins,9.0
 1336,Gollum,Smeagol,
 1337,Gandalf,Saruman,
 1338,Green Lantern,Flash,
