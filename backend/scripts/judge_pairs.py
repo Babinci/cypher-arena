@@ -3,6 +3,7 @@ from pydantic import BaseModel, conint
 from typing import List
 import pandas as pd
 import os
+import math
 
 app = FastAPI()
 CSV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'contrast_pairs_processed.csv'))
@@ -17,8 +18,11 @@ def get_next_batch():
         raise HTTPException(status_code=404, detail="CSV file not found.")
     df = pd.read_csv(CSV_PATH)
     unrated = df[df['rating'].isnull()].head(10)
-    # Return all columns except 'rating'
-    result = unrated.to_dict(orient='records')
+    # Convert NaN to None for JSON serialization
+    result = []
+    for row in unrated.to_dict(orient='records'):
+        row['rating'] = None if (('rating' in row) and (row['rating'] is None or (isinstance(row['rating'], float) and math.isnan(row['rating'])))) else row['rating']
+        result.append(row)
     return {"batch": result}
 
 @app.post("/rate")
