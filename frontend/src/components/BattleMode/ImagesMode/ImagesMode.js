@@ -44,14 +44,18 @@ function ImagesMode() {
   });
 
   const fetchImages = useCallback((url, reset = false) => {
+    console.log(`Fetching images from: ${url}`);
     fetch(url)
       .then(response => response.json())
       .then(data => {
+        console.log(`Fetched images:`, data.results);
         setImages(prevImages => {
           const newImages = reset ? data.results : [...prevImages, ...data.results];
+          console.log(`New images array:`, newImages);
           return newImages.slice(Math.max(newImages.length - BUFFER_SIZE, 0));
         });
         setNextPage(data.next);
+        console.log(`Next page URL: ${data.next}`);
         setImagesPreloaded(false);
       })
       .catch(error => console.error('Error fetching images:', error));
@@ -90,6 +94,7 @@ function ImagesMode() {
 
   // Image display logic
   const displayImage = useCallback(async (imageUrl) => {
+    console.log(`Displaying image: ${imageUrl}`);
     try {
       const cachedImage = await getImage(imageUrl);
       if (cachedImage) {
@@ -103,6 +108,7 @@ function ImagesMode() {
 
   useEffect(() => {
     if (images.length > 0 && currentIndex < images.length) {
+      console.log(`Current index: ${currentIndex}, Total images: ${images.length}`);
       displayImage(images[currentIndex].image_file).then(src => {
         const imgElement = document.getElementById('currentImage');
         if (imgElement) {
