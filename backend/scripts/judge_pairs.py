@@ -1,41 +1,38 @@
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, conint
+from typing import List
 import pandas as pd
 import os
 
-def get_unrated_pairs(file_path, num_pairs=20):
-    df = pd.read_csv(file_path)
-    unrated_pairs = df[df['rating'].isnull()]
-    return df, unrated_pairs.head(num_pairs)
+app = FastAPI()
+CSV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'contrast_pairs_processed.csv'))
 
-def main():
-    file_path = os.path.join(os.path.dirname(__file__), 'contrast_pairs_processed.csv')
-    file_path = os.path.abspath(file_path)
-    if not os.path.exists(file_path):
-        print(f"CSV file not found: {file_path}")
-        return
+class Rating(BaseModel):
+    id: int
+    rating: conint(ge=1, le=10)
 
-    df, pairs = get_unrated_pairs(file_path)
+@app.get("/next_batch")
+def get_next_batch():
+    if not os.path.exists(CSV_PATH):
+        raise HTTPException(status_code=404, detail="CSV file not found.")
+    df = pd.read_csv(CSV_PATH)
+    unrated = df[df['rating'].isnull()].head(10)
+    # Return all columns except 'rating'
+    result = unrated.to_dict(orient='records')
+    return {"batch": result}
 
-    if pairs.empty:
-        print("No unrated pairs available.")
-        return
-
-    print(f"Rating next {len(pairs)} unrated pairs:")
-    for idx, row in pairs.iterrows():
-        # Display all columns except 'rating'
-        display = {col: row[col] for col in row.index if col != 'rating'}
-        print(f"\nPair #{idx}:")
-        for k, v in display.items():
-            print(f"  {k}: {v}")
-        while True:
-            rating = input("Enter your rating (1-5): ").strip()
-            if rating in {'1', '2', '3', '4', '5'}:
-                df.at[idx, 'rating'] = int(rating)
-                break
-            else:
-                print("Invalid input. Please enter a number between 1 and 5.")
-
-    df.to_csv(file_path, index=False)
-    print("\nRatings saved successfully.")
-
-if __name__ == "__main__":
-    main()
+@app.post("/rate")
+def rate_batch(ratings: List[Rating]):
+    if not os.path.exists(CSV_PATH):
+        raise HTTPException(status_code=404, detail="CSV file not found.")
+    if len(ratings) > 10:
+        raise HTTPException(status_code=400, detail="You can rate up to 10 pairs at a time.")
+    df = pd.read_csv(CSV_PATH)
+    id_set = set(df['id'])
+    for r in ratings:
+        if r.id not in id_set:
+            raise HTTPException(status_code=400, detail=f"ID {r.id} not found in CSV.")
+        idx = df.index[df['id'] == r.id][0]
+        df.at[idx, 'rating'] = r.rating
+    df.to_csv(CSV_PATH, index=False)
+    return {"success": True, "rated": [r.id for r in ratings]}
