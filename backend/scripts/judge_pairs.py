@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, conint
+from pydantic import BaseModel, Field
 from typing import List
 import pandas as pd
 import os
@@ -9,8 +9,8 @@ app = FastAPI()
 CSV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'contrast_pairs_processed.csv'))
 
 class Rating(BaseModel):
-    id: int
-    rating: conint(ge=1, le=10)
+    id: int = Field(..., description="The ID of the pair from the CSV.")
+    rating: int = Field(..., ge=1, le=10, description="The rating for the pair (1-10).")
 
 @app.get("/next_batch")
 def get_next_batch():
