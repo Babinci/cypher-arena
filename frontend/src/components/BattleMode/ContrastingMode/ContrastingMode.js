@@ -6,9 +6,11 @@ import { TimerControls } from '../SharedControls/TimerControls';
 
 function ContrastingMode() {
   const [pairs, setPairs] = useState([]);
-  const [highlightedRating, setHighlightedRating] = useState(null);
-  const [showRatingMessage, setShowRatingMessage] = useState(false);
-  const [csrfToken, setCsrfToken] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [hasFetched, setHasFetched] = useState(false);
+  const canvasRef = useRef(null);
+  const animationRef = useRef(null);
   const containerRef = useRef(null);
 
   // Initialize timer control with pair-specific configuration
@@ -35,140 +37,225 @@ function ContrastingMode() {
     defaultIsActive: true,
     itemCount: pairs.length,
     onNextItem: () => {
-      if (currentIndex >= pairs.length - 5) {
-        fetchPairs();
-      }
+      // No action needed for pagination in this simplified implementation
     },
   });
 
-  const getCsrfToken = useCallback(() => {
-    const name = 'csrftoken=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-    for (let i = 0; i < cookieArray.length; i++) {
-      let cookie = cookieArray[i].trim();
-      if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length);
-      }
-    }
-    return '';
-  }, []);
-
-  useEffect(() => {
-    setCsrfToken(getCsrfToken());
-  }, [getCsrfToken]);
-
   const fetchPairs = useCallback(async () => {
+    // If we've already fetched or are currently loading, don't fetch again
+    if (isLoading || hasFetched) return;
+    
+    setIsLoading(true);
+    setHasError(false);
+    
     try {
-      const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.getContrastPairs}`, {
-        headers: {
-          'X-CSRFToken': csrfToken,
-        },
-        credentials: 'include',
-      });
+      const url = new URL(`${apiConfig.baseUrl}${apiConfig.endpoints.getContrastPairs}`);
+      url.searchParams.append('count', 100); // Fixed count of 100
+      
+      console.log('Fetching contrast pairs');
+      
+      const response = await fetch(url.toString());
+      
       if (response.ok) {
         const data = await response.json();
-        setPairs(data);
+        console.log('Fetched data:', data);
+        
+        // Check if data has the expected structure
+        if (data && data.results && Array.isArray(data.results) && data.results.length > 0) {
+          // Use the results array from the response
+          setPairs(data.results);
+          console.log('Set pairs:', data.results.length, 'items');
+        } else {
+          console.warn('API returned unexpected data structure');
+          setPairs([{ item1: "Example", item2: "Contrast" }]);
+        }
       } else {
         console.error('Error fetching pairs:', await response.text());
+        setHasError(true);
+        setPairs([{ item1: "Example", item2: "Contrast" }]);
       }
     } catch (error) {
       console.error('Error fetching pairs:', error);
+      setHasError(true);
+      setPairs([{ item1: "Example", item2: "Contrast" }]);
+    } finally {
+      setIsLoading(false);
+      setHasFetched(true); // Mark that we've completed a fetch
     }
-  }, [csrfToken]);
+  }, [isLoading, hasFetched]);
 
-  useEffect(() => {
-    fetchPairs();
-  }, [fetchPairs]);
-
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      const key = event.key;
-      if (['1', '2', '3', '4', '5'].includes(key)) {
-        handleRating(parseInt(key));
-      }
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.focus();
-    }
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [currentIndex, pairs]);
-
-  // Custom reset handler that combines timer reset with pairs reset
+  // Custom reset handler that resets everything
   const handleResetRound = useCallback(() => {
     setPairs([]);
-    fetchPairs();
+    setHasFetched(false); // Allow fetching again after reset
     baseHandleResetRound();
-  }, [fetchPairs, baseHandleResetRound]);
+  }, [baseHandleResetRound]);
 
-  const handleRating = async (rating) => {
-    const currentPair = pairs[currentIndex];
+  useEffect(() => {
+    // Only fetch once when the component mounts
+    fetchPairs();
+    
+    return () => {
+      // Cleanup
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Log whenever pairs or currentIndex changes
+  useEffect(() => {
+    console.log('Current pairs state:', pairs.length, 'items, currentIndex:', currentIndex);
+    if (pairs.length > 0 && currentIndex < pairs.length) {
+      console.log('Current pair:', pairs[currentIndex]);
+    }
+  }, [pairs, currentIndex]);
+
+  // Draw the circular visualization
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+  
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const { width, height } = canvas;
+    if (width <= 0 || height <= 0) return; // Guard against invalid dimensions
+  
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(0, 0, width, height);
+  
+    const centerX = width / 2;
+    // Adjust centerY to account for controls height
+    const centerY = (height - 150) / 2;  
+    const maxRadius = Math.max(10, Math.min(width, height - 100) * 0.45); // Ensure positive radius
+    const time = Date.now() / 15000;
+  
+    const innerColor = `hsla(${(time * 30) % 360}, 50%, 60%, 1)`;
+    const midColor = `hsla(${((time * 30) + 30) % 360}, 50%, 65%, 1)`;
+    const outerColor = `hsla(${((time * 30) + 60) % 360}, 50%, 70%, 1)`;
+  
     try {
-      const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.rateContrastPair}${currentPair.id}/rate/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
-        },
-        body: JSON.stringify({ rating }),
-        credentials: 'include',
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Rating submitted:', data);
-        setHighlightedRating(rating);
-        setShowRatingMessage(true);
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
+      gradient.addColorStop(0, innerColor);
+      gradient.addColorStop(0.5, innerColor);
+      gradient.addColorStop(0.8, midColor);
+      gradient.addColorStop(1, outerColor);
+    
+      ctx.beginPath();
+      const radiusOffset = Math.sin(time * 2) * 2;
+      ctx.arc(centerX, centerY, maxRadius + radiusOffset, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    
+      ctx.fillStyle = 'black';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+    
+      // Check if we have pairs and a valid current index
+      if (pairs.length > 0 && currentIndex < pairs.length) {
+        // Format the contrast pair text
+        const currentPair = pairs[currentIndex];
         
-        setPairs(prevPairs => {
-          const updatedPairs = [...prevPairs];
-          updatedPairs[currentIndex] = { ...updatedPairs[currentIndex], rating: rating };
-          return updatedPairs;
-        });
+        // Make sure we're accessing the right properties
+        const item1 = currentPair?.item1 || "Item1";
+        const item2 = currentPair?.item2 || "Item2";
         
-        setTimeout(() => {
-          setHighlightedRating(null);
-          setShowRatingMessage(false);
-          getNextItem();
-        }, 300);
-      } else {
-        console.error('Error submitting rating:', await response.text());
+        const displayText = `${item1} vs ${item2}`;
+        
+        // Format text to fit properly in the circle
+        let formattedText = displayText;
+        if (displayText.length > 20) {
+          // Split into multiple lines if it's too long
+          const words = displayText.split(' ');
+          let lines = [];
+          let currentLine = '';
+          
+          for (let word of words) {
+            if ((currentLine + ' ' + word).length > 16) {
+              lines.push(currentLine);
+              currentLine = word;
+            } else {
+              currentLine = currentLine ? `${currentLine} ${word}` : word;
+            }
+          }
+          
+          if (currentLine) {
+            lines.push(currentLine);
+          }
+          
+          formattedText = lines.join('\n');
+        }
+        
+        const lines = formattedText.split('\n');
+        
+        if (lines.length === 1) {
+          let fontSize = maxRadius / 2.5;
+          ctx.font = `bold ${fontSize}px Arial`;
+          
+          let textWidth = ctx.measureText(formattedText).width;
+          if (textWidth > maxRadius * 1.5) {
+            fontSize *= (maxRadius * 1.5) / textWidth;
+            ctx.font = `bold ${fontSize}px Arial`;
+          }
+          
+          ctx.fillText(formattedText, centerX, centerY);
+        } else {
+          let fontSize = maxRadius / (1.5 + lines.length * 0.5);
+          ctx.font = `bold ${fontSize}px Arial`;
+          
+          const lineHeight = fontSize * 1.2;
+          const totalHeight = lineHeight * lines.length;
+          const startY = centerY - (totalHeight / 2) + (lineHeight / 2);
+          
+          lines.forEach((line, index) => {
+            const y = startY + (index * lineHeight);
+            ctx.fillText(line, centerX, y);
+          });
+        }
+      } else if (isLoading) {
+        // Draw loading text if data is being fetched
+        ctx.font = `bold ${maxRadius / 6}px Arial`;
+        ctx.fillText("Loading...", centerX, centerY);
+      } else if (hasError) {
+        // Draw error text if there was a problem fetching data
+        ctx.font = `bold ${maxRadius / 8}px Arial`;
+        ctx.fillText("Error loading contrast pairs", centerX, centerY);
+      } else if (pairs.length === 0) {
+        // Draw a default message if no pairs are available
+        ctx.font = `bold ${maxRadius / 6}px Arial`;
+        ctx.fillText("No contrast pairs found", centerX, centerY);
       }
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      console.error('Error drawing canvas:', error);
     }
-  };
+  
+    animationRef.current = requestAnimationFrame(draw);
+  }, [currentIndex, pairs, isLoading, hasError]);
 
-  const handleAddTag = async (tag) => {
-    const currentPair = pairs[currentIndex];
-    try {
-      const response = await fetch(`${apiConfig.baseUrl}${apiConfig.endpoints.addTagToContrastPair}${currentPair.id}/add_tag/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
-        },
-        body: JSON.stringify({ tag }),
-        credentials: 'include',
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Tag added:', data);
-      } else {
-        console.error('Error adding tag:', await response.text());
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || isControlWindow) return;
+
+    const resizeCanvas = () => {
+      // Set a minimum size to prevent canvas errors
+      canvas.width = Math.max(100, window.innerWidth);
+      canvas.height = Math.max(100, window.innerHeight - (isFullScreen ? 0 : 100));
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    draw();
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
       }
-    } catch (error) {
-      console.error('Error adding tag:', error);
-    }
-  };
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, [draw, isControlWindow, isFullScreen]);
 
   // Render control buttons for fullscreen and control panel
   const renderControlButtons = () => (
@@ -234,87 +321,7 @@ function ContrastingMode() {
       >
         {!isControlWindow && (
           <>
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              height: '100%',
-              padding: '20px'
-            }}>
-              {pairs.length > 0 && currentIndex < pairs.length && (
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  maxWidth: '800px',
-                  border: '2px solid white',
-                  borderRadius: '10px',
-                  padding: '20px',
-                  backgroundColor: 'rgba(0,0,0,0.7)',
-                  color: 'white',
-                  fontSize: '24px',
-                  textAlign: 'center',
-                  marginBottom: '20px'
-                }}>
-                  <div style={{ marginBottom: '20px' }}>{pairs[currentIndex].item1}</div>
-                  <div style={{ fontSize: '36px', margin: '10px 0' }}>vs</div>
-                  <div>{pairs[currentIndex].item2}</div>
-                </div>
-              )}
-              <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                opacity: isFullScreen ? 0 : 1,
-                transition: 'opacity 0.3s ease-in-out'
-              }}
-              onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
-              onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
-              >
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '10px' }}>
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      onClick={() => handleRating(i + 1)}
-                      style={{
-                        cursor: 'pointer',
-                        color: i < (pairs[currentIndex]?.rating || 0) ? 'yellow' : 'gray',
-                        fontSize: '24px',
-                        marginRight: '5px',
-                        transition: 'transform 0.2s ease-in-out',
-                        transform: highlightedRating === i + 1 ? 'scale(1.2)' : 'scale(1)',
-                      }}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-                {showRatingMessage && (
-                  <div style={{
-                    color: 'green',
-                    fontSize: '14px',
-                    marginTop: '5px',
-                    animation: 'fadeInOut 2s ease-in-out'
-                  }}>
-                    Rating submitted!
-                  </div>
-                )}
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <input
-                    type="text"
-                    placeholder="Add a tag"
-                    onKeyPress={(e) => e.key === 'Enter' && handleAddTag(e.target.value)}
-                    style={{ marginRight: '10px', padding: '5px' }}
-                  />
-                  <button onClick={() => handleAddTag(document.querySelector('input[type="text"]').value)}>
-                    Add Tag
-                  </button>
-                </div>
-              </div>
-            </div>
+            <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />
             {renderControlButtons()}
           </>
         )}
