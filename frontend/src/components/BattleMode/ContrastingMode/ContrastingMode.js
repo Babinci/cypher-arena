@@ -112,42 +112,21 @@ function ContrastingMode() {
     // Format each item individually
     const formatSingleItem = (text) => {
       if (!text) return '';
-      if (text.length <= 12) return text;
-      
+      // Always wrap by words, no truncation or line limit
       const words = text.split(' ');
-      const maxCharsPerLine = text.length > 20 ? 10 : 12;
-      
+      const maxCharsPerLine = 20; // Allow more chars per line for better wrapping
       let lines = [];
       let currentLine = '';
-      
       for (const word of words) {
-        if (word.length > maxCharsPerLine) {
-          if (currentLine) lines.push(currentLine);
-          
-          // Handle very long words
-          for (let i = 0; i < word.length; i += maxCharsPerLine) {
-            lines.push(word.slice(i, i + maxCharsPerLine));
-          }
-          
-          currentLine = '';
-        } else if ((currentLine + ' ' + word).trim().length <= maxCharsPerLine) {
+        if ((currentLine + ' ' + word).trim().length <= maxCharsPerLine) {
           currentLine += (currentLine ? ' ' : '') + word;
         } else {
-          lines.push(currentLine);
+          if (currentLine) lines.push(currentLine);
           currentLine = word;
         }
       }
-      
       if (currentLine) lines.push(currentLine);
-      
-      // Limit to 2 lines maximum per item
-      if (lines.length > 2) {
-        lines = lines.slice(0, 2);
-        if (lines[1].length > maxCharsPerLine - 2) {
-          lines[1] = lines[1].slice(0, maxCharsPerLine - 2) + '..';
-        }
-      }
-      
+      // No line limit, no ellipsis
       return lines.join('\n');
     };
     
