@@ -19,7 +19,7 @@ class Temator(models.Model):
 class ContrastPair(models.Model):
     item1 = models.CharField(max_length=100)
     item2 = models.CharField(max_length=100)
-    rating = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    # rating = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
