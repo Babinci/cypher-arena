@@ -126,7 +126,7 @@ class ContrastPairViewSet(viewsets.ModelViewSet):
         """
         queryset = self.get_queryset().prefetch_related("tags").filter(
             Q(ratings__isnull=True)
-        ).exclude(ratings__rating=1)
+        ).exclude(ratings__rating=1).order_by('?')
         count = int(request.query_params.get("count", 10))
         page = int(request.query_params.get("page", 1))
         start = (page - 1) * count
