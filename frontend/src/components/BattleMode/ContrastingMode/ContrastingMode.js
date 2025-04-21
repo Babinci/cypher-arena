@@ -104,13 +104,59 @@ function ContrastingMode() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Log whenever pairs or currentIndex changes
-  useEffect(() => {
-    console.log('Current pairs state:', pairs.length, 'items, currentIndex:', currentIndex);
-    if (pairs.length > 0 && currentIndex < pairs.length) {
-      console.log('Current pair:', pairs[currentIndex]);
-    }
-  }, [pairs, currentIndex]);
+  // Format a contrast pair to fit in the circle
+  const formatContrastPair = useCallback((item1, item2) => {
+    // Don't combine the items into a single string first
+    // Instead, format each item individually and then arrange them
+    
+    // Format each item individually
+    const formatSingleItem = (text) => {
+      if (!text) return '';
+      if (text.length <= 12) return text;
+      
+      const words = text.split(' ');
+      const maxCharsPerLine = text.length > 20 ? 10 : 12;
+      
+      let lines = [];
+      let currentLine = '';
+      
+      for (const word of words) {
+        if (word.length > maxCharsPerLine) {
+          if (currentLine) lines.push(currentLine);
+          
+          // Handle very long words
+          for (let i = 0; i < word.length; i += maxCharsPerLine) {
+            lines.push(word.slice(i, i + maxCharsPerLine));
+          }
+          
+          currentLine = '';
+        } else if ((currentLine + ' ' + word).trim().length <= maxCharsPerLine) {
+          currentLine += (currentLine ? ' ' : '') + word;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      
+      if (currentLine) lines.push(currentLine);
+      
+      // Limit to 2 lines maximum per item
+      if (lines.length > 2) {
+        lines = lines.slice(0, 2);
+        if (lines[1].length > maxCharsPerLine - 2) {
+          lines[1] = lines[1].slice(0, maxCharsPerLine - 2) + '..';
+        }
+      }
+      
+      return lines.join('\n');
+    };
+    
+    const formattedItem1 = formatSingleItem(item1);
+    const formattedItem2 = formatSingleItem(item2);
+    
+    // Combine with "vs" in the middle
+    return `${formattedItem1}\nvs\n${formattedItem2}`;
+  }, []);
 
   // Draw the circular visualization
   const draw = useCallback(() => {
@@ -163,47 +209,23 @@ function ContrastingMode() {
         const item1 = currentPair?.item1 || "Item1";
         const item2 = currentPair?.item2 || "Item2";
         
-        const displayText = `${item1} vs ${item2}`;
-        
-        // Format text to fit properly in the circle
-        let formattedText = displayText;
-        if (displayText.length > 20) {
-          // Split into multiple lines if it's too long
-          const words = displayText.split(' ');
-          let lines = [];
-          let currentLine = '';
-          
-          for (let word of words) {
-            if ((currentLine + ' ' + word).length > 16) {
-              lines.push(currentLine);
-              currentLine = word;
-            } else {
-              currentLine = currentLine ? `${currentLine} ${word}` : word;
-            }
-          }
-          
-          if (currentLine) {
-            lines.push(currentLine);
-          }
-          
-          formattedText = lines.join('\n');
-        }
-        
+        // Format the items separately and preserve full content
+        const formattedText = formatContrastPair(item1, item2);
         const lines = formattedText.split('\n');
         
         if (lines.length === 1) {
-          let fontSize = maxRadius / 2.5;
+          let fontSize = maxRadius / 4.5; // Even smaller font size
           ctx.font = `bold ${fontSize}px Arial`;
           
           let textWidth = ctx.measureText(formattedText).width;
-          if (textWidth > maxRadius * 1.5) {
-            fontSize *= (maxRadius * 1.5) / textWidth;
+          if (textWidth > maxRadius * 1.3) { // Tighter constraint
+            fontSize *= (maxRadius * 1.3) / textWidth;
             ctx.font = `bold ${fontSize}px Arial`;
           }
           
           ctx.fillText(formattedText, centerX, centerY);
         } else {
-          let fontSize = maxRadius / (1.5 + lines.length * 0.5);
+          let fontSize = maxRadius / (2.5 + lines.length * 0.6); // Even smaller font size for multi-line
           ctx.font = `bold ${fontSize}px Arial`;
           
           const lineHeight = fontSize * 1.2;
@@ -233,7 +255,7 @@ function ContrastingMode() {
     }
   
     animationRef.current = requestAnimationFrame(draw);
-  }, [currentIndex, pairs, isLoading, hasError]);
+  }, [currentIndex, pairs, isLoading, hasError, formatContrastPair]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
