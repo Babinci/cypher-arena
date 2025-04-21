@@ -28,6 +28,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 PERPLEXITY_API_KEY =  env("PERPLEXITY_API_KEY")
+AI_AGENT_SECRET_KEY =  env("AI_AGENT_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = False
 DEBUG = True

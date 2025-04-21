@@ -16,7 +16,7 @@ from .serializers import ContrastPairSerializer, TagSerializer
 from django.db.models import Q
 from django_user_agents.utils import get_user_agent
 import hashlib
-
+from core.settings import AI_AGENT_SECRET_KEY
 
 # Existing soft_mode view for rendering HTML
 def soft_mode(request):
@@ -119,8 +119,8 @@ class ContrastPairViewSet(viewsets.ModelViewSet):
         # queryset = self.get_queryset().prefetch_related("tags").exclude(rating=1)
 
         queryset = self.get_queryset().prefetch_related("tags").filter(
-            Q(rating__isnull=True) 
-        ).exclude(rating=1)
+            Q(ratings__isnull=True) 
+        ).exclude(ratings__rating=1)
         # Get the number of items to return, default to all
         count = int(request.query_params.get("count", queryset.count()))
         # Check if we should return sorted or random results
