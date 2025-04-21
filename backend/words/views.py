@@ -17,6 +17,8 @@ from django.db.models import Q
 from django_user_agents.utils import get_user_agent
 import hashlib
 from core.settings import AI_AGENT_SECRET_KEY
+from rest_framework.permissions import IsAuthenticated
+from core.permissions import IsValidSecretKey
 
 # Existing soft_mode view for rendering HTML
 def soft_mode(request):
@@ -116,23 +118,38 @@ class ContrastPairViewSet(viewsets.ModelViewSet):
     serializer_class = ContrastPairSerializer
 
     def list(self, request):
-        # queryset = self.get_queryset().prefetch_related("tags").exclude(rating=1)
-
+        """
+        List all contrast pairs with optional pagination.
+        Query parameters:
+        - count: number of items per page (default: 10)
+        - page: page number (default: 1)
+        """
         queryset = self.get_queryset().prefetch_related("tags").filter(
-            Q(ratings__isnull=True) 
+            Q(ratings__isnull=True)
         ).exclude(ratings__rating=1)
-        # Get the number of items to return, default to all
-        count = int(request.query_params.get("count", queryset.count()))
-        # Check if we should return sorted or random results
-        sort = request.query_params.get("sort", "random")
-        if sort == "random":
-            # Get random samples
-            pairs = sample(list(queryset), min(count, queryset.count()))
-        else:
-            # Sort by creation date if not random
-            pairs = queryset.order_by("created_at")[:count]
+        count = int(request.query_params.get("count", 10))
+        page = int(request.query_params.get("page", 1))
+        start = (page - 1) * count
+        end = start + count
+        total = queryset.count()
+        pairs = list(queryset[start:end])
         serializer = self.get_serializer(pairs, many=True)
-        return Response(serializer.data)
+        return Response({
+            "results": serializer.data,
+            "total": total,
+            "page": page,
+            "count": count
+        })
+
+    def create(self, request, *args, **kwargs):
+        """
+        Create a new contrast pair. Requires a valid AI_AGENT_SECRET_KEY in the 'X-Secret-Key' header.
+        """
+        self.permission_classes = [IsValidSecretKey]
+        for permission in self.get_permissions():
+            if not permission.has_permission(request, self):
+                return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        return super().create(request, *args, **kwargs)
 
     def _get_user_fingerprint(self, request):
         user_agent = get_user_agent(request)
