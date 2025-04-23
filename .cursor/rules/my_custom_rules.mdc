@@ -3,7 +3,10 @@ description:
 globs: 
 alwaysApply: true
 ---
+### Context7
 
+- "**Always use the context7 MCP server**" to reference documentation for libraries that you need to know more.
+- For the tokens, **start with 5000** but then increase to **20000** if your first search didn't give relevant documentation.
 # Project information
 
 - Relevant project information is in memory-bank directory
