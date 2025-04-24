@@ -19,6 +19,7 @@ from .agent_serializers import (
 )
 import hashlib
 from django_user_agents.utils import get_user_agent
+from collections import OrderedDict # Import OrderedDict
 
 
 # Helper function for fingerprinting (copied from views.py)
@@ -29,17 +30,27 @@ def _get_user_fingerprint(request):
     fingerprint_hash = hashlib.sha256(fingerprint_string.encode('utf-8')).hexdigest()
     return fingerprint_hash
 
-class StandardResultsSetPagination(PageNumberPagination):
+class CustomPagination(PageNumberPagination):
     page_size = 10
-    page_size_query_param = 'count'
+    page_size_query_param = 'count' # Items per page
     max_page_size = 100
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('total', self.page.paginator.count), # Total items across all pages
+            ('page', self.page.number), # Current page number
+            ('count', self.get_page_size(self.request)), # Items on the current page
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('results', data)
+        ]))
 
 # ----------------------
 # Agent: Contrast Pairs
 # ----------------------
 
 class AgentContrastPairListCreateAPIView(APIView):
-    pagination_class = StandardResultsSetPagination
+    pagination_class = CustomPagination
 
     @swagger_auto_schema(
         operation_summary="Get contrast pairs (paginated)",
@@ -186,7 +197,7 @@ class AgentNewsListAPIView(APIView):
 # -------------
 
 class AgentTopicListCreateUpdateAPIView(APIView):
-    pagination_class = StandardResultsSetPagination
+    pagination_class = CustomPagination
 
     @swagger_auto_schema(
         operation_summary="Get topics (paginated)",
