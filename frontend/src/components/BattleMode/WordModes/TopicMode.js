@@ -9,21 +9,37 @@ function TopicMode() {
     
     const words = text.split(' ');
     
-    // Even more restrictive line lengths to ensure text stays within circle
+    // More adaptive line lengths based on text characteristics
     let maxCharsPerLine;
-    if (text.length > 40) {
-      maxCharsPerLine = 10; // Slightly less restrictive for long texts
-    } else if (text.length > 25) {
-      maxCharsPerLine = 12; // Slightly less restrictive
+    
+    // Detect if on mobile (rough estimation - will be refined by BaseBattleVisualizer)
+    const isMobileView = window.innerWidth <= 768;
+    
+    if (isMobileView) {
+      // More restrictive character limits for mobile
+      if (text.length > 40) {
+        maxCharsPerLine = 8; // Very restrictive for long text on mobile
+      } else if (text.length > 25) {
+        maxCharsPerLine = 10; // Restrictive for medium text on mobile
+      } else {
+        maxCharsPerLine = 12; // For shorter text on mobile
+      }
     } else {
-      maxCharsPerLine = 14; // Less restrictive for shorter texts
+      // Desktop character limits (slightly increased from original)
+      if (text.length > 40) {
+        maxCharsPerLine = 12; // For very long text
+      } else if (text.length > 25) {
+        maxCharsPerLine = 14; // For medium text
+      } else {
+        maxCharsPerLine = 16; // For shorter text
+      }
     }
     
     let currentLine = '';
     let formattedLines = [];
     
     for (const word of words) {
-      // Handle long single words
+      // Handle long single words with more aggressive splitting
       if (word.length > maxCharsPerLine) {
         // If there's a current line, push it first
         if (currentLine) {
@@ -31,9 +47,15 @@ function TopicMode() {
           currentLine = '';
         }
         
-        // Split long word into chunks, no hyphens to save space
+        // Split long word into chunks
         for (let i = 0; i < word.length; i += maxCharsPerLine) {
-          formattedLines.push(word.slice(i, i + maxCharsPerLine));
+          const chunk = word.slice(i, i + maxCharsPerLine);
+          // Add hyphen for chunks in the middle (not for last chunk)
+          if (i + maxCharsPerLine < word.length) {
+            formattedLines.push(chunk + "-");
+          } else {
+            formattedLines.push(chunk);
+          }
         }
         continue;
       }
@@ -49,18 +71,25 @@ function TopicMode() {
     
     if (currentLine) formattedLines.push(currentLine);
     
-    // Ensure we don't have too many lines which would cause overflow
-    const maxLines = 3; // Restrict to 3 lines maximum to ensure better vertical centering
+    // Adaptive line count based on device and text length
+    const maxLines = isMobileView ? 4 : 5;
+    
     if (formattedLines.length > maxLines) {
       // Try to combine lines while respecting maxCharsPerLine
-      while (formattedLines.length > maxLines) {
+      let attempts = 0;
+      const maxAttempts = 10; // Prevent infinite loops
+      
+      while (formattedLines.length > maxLines && attempts < maxAttempts) {
         let bestCombineIndex = 0;
         let bestCombinedLength = Infinity;
         
         // Find the best pair of adjacent lines to combine
         for (let i = 0; i < formattedLines.length - 1; i++) {
           const combinedLength = formattedLines[i].length + formattedLines[i + 1].length + 1;
-          if (combinedLength < bestCombinedLength && combinedLength <= maxCharsPerLine + 2) {
+          // Allow slightly longer combined lines to reduce overall line count
+          const lengthThreshold = maxCharsPerLine + (isMobileView ? 2 : 4);
+          
+          if (combinedLength < bestCombinedLength && combinedLength <= lengthThreshold) {
             bestCombinedLength = combinedLength;
             bestCombineIndex = i;
           }
@@ -72,18 +101,18 @@ function TopicMode() {
           formattedLines.splice(bestCombineIndex, 2, combinedLine);
         } else {
           // If we can't combine nicely, we'll have to truncate
-          formattedLines = formattedLines.slice(0, maxLines);
-          const lastLine = formattedLines[maxLines - 1];
-          if (lastLine.length > maxCharsPerLine) {
-            formattedLines[maxLines - 1] = lastLine.slice(0, maxCharsPerLine - 2) + '..';
-          }
+          formattedLines = formattedLines.slice(0, maxLines - 1);
+          formattedLines.push("...");
           break;
         }
+        
+        attempts++;
       }
     }
     
-    // Add extra padding line at the start to move text up in the circle
-    if (formattedLines.length > 1) {
+    // Don't add padding line for mobile views (save vertical space)
+    // Only add padding for desktop with multiple lines
+    if (!isMobileView && formattedLines.length > 1 && formattedLines.length < 4) {
       formattedLines.unshift('');
     }
     
@@ -109,7 +138,7 @@ function TopicMode() {
     <BaseBattleVisualizer
       endpoint={`${apiConfig.baseUrl}${apiConfig.endpoints.getTopic}`}
       fetchFunction={fetchWithTransform}
-      styleConfig={{ fontSizeFactor: 1.5 }}
+      styleConfig={{ fontSizeFactor: 1.3 }} // Reduced from 1.5 for better mobile fit
     />
   );
 }

@@ -1,6 +1,5 @@
 # Project Brief  
 **Cypher Arena - Rap Battle Platform**  
-*Last updated: February 08, 2025* [1]
 
 ## Core Requirements and Goals
 ### Primary Objective

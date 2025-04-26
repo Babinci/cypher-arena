@@ -3,6 +3,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { FullScreen } from 'react-full-screen';
 import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
+import { drawGradientRectangle } from './Gradient_Rectangle';
+import { renderWordText } from './WordTextRenderer';
 
 const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
   const [words, setWords] = useState([]);
@@ -72,68 +74,68 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = '#1a1a1a';
     ctx.fillRect(0, 0, width, height);
-  
-    const centerX = width / 2;
-    // Adjust centerY to account for controls height
-    const centerY = (height - 150) / 2;  // 100px is approximate controls height
-    const maxRadius = Math.min(width, height - 100)* 0.45;  // Increased from 0.35 to 0.45 and accounting for controls
-    const time = Date.now() / 15000;
-  
-    const innerColor = `hsla(${(time * 30) % 360}, 50%, 60%, 1)`;
-    const midColor = `hsla(${((time * 30) + 30) % 360}, 50%, 65%, 1)`;
-    const outerColor = `hsla(${((time * 30) + 60) % 360}, 50%, 70%, 1)`;
-  
-    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
-    gradient.addColorStop(0, innerColor);
-    gradient.addColorStop(0.5, innerColor);
-    gradient.addColorStop(0.8, midColor);
-    gradient.addColorStop(1, outerColor);
-  
-    ctx.beginPath();
-    const radiusOffset = Math.sin(time * 2) * 2;
-    ctx.arc(centerX, centerY, maxRadius + radiusOffset, 0, Math.PI * 2);
-    ctx.fillStyle = gradient;
-    ctx.fill();
-  
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-  
-    const lines = currentWord.split('\n');
     
-    if (lines.length === 1) {
-      let fontSize = maxRadius / 2.5; // Increased from 3 to 2.5 for bigger text
-      console.log("styleConfig", styleConfig);
-      fontSize /= styleConfig?.fontSizeFactor || 1;
-      console.log("fontSize", fontSize);
-      ctx.font = `bold ${fontSize}px Arial`;
-      
-      let textWidth = ctx.measureText(currentWord).width;
-      if (textWidth > maxRadius * 1.5) {
-        fontSize *= (maxRadius * 1.5) / textWidth;
-        ctx.font = `bold ${fontSize}px Arial`;
-      }
-      
-      ctx.fillText(currentWord, centerX, centerY - 10);
+    const availableWidth = width;
+    const availableHeight = height;
+    const topPadding = 20;
+    const isMobileView = availableWidth <= 768;
+    
+    let maxWidth, maxHeight;
+    
+    if (isMobileView) {
+      maxWidth = availableWidth * 0.9;
     } else {
-      let fontSize = maxRadius / (1.5 + lines.length * 0.5); // Adjusted for bigger text
-      console.log("styleConfig", styleConfig);
-      fontSize /= styleConfig?.fontSizeFactor || 1;
-      console.log("fontSize", fontSize);
-      ctx.font = `bold ${fontSize}px Arial`;
-      
-      const lineHeight = fontSize * 1.2;
-      const totalHeight = lineHeight * lines.length;
-      const startY = centerY - (totalHeight / 2) + (lineHeight / 2);
-      
-      lines.forEach((line, index) => {
-        const y = startY + (index * lineHeight);
-        ctx.fillText(line, centerX, y - 10);
-      });
+      maxWidth = Math.min(availableWidth * 0.75, 800);
     }
-  
-    animationRef.current = requestAnimationFrame(draw);
-  }, [currentWord]);
+    
+    maxHeight = availableHeight - (topPadding * 2);
+    maxHeight = Math.max(20, maxHeight);
+    
+    const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
+    
+    const centerX = availableWidth / 2;
+    
+    const time = Date.now() / 15000;
+    const pulseSize = Math.sin(time * 2) * 5;
+    const animatedWidth = maxWidth + pulseSize;
+    let animatedHeight = maxHeight + pulseSize;
+
+    let animatedY = topPadding;
+    animatedHeight = Math.min(animatedHeight, maxHeight);
+    animatedY = Math.max(topPadding, animatedY);
+    
+    const finalCenterY = animatedY + animatedHeight / 2;
+    
+    const animatedX = centerX - animatedWidth / 2;
+
+    // Use the new rectangle drawing function
+    drawGradientRectangle(ctx, {
+      x: animatedX,
+      y: animatedY,
+      width: animatedWidth,
+      height: animatedHeight,
+      borderRadius,
+      time
+    });
+
+    // --- WORD WRAPPING LOGIC MOVED TO WordTextRenderer.js ---
+    renderWordText(ctx, {
+      currentWord,
+      rectangle: {
+        x: animatedX,
+        y: animatedY,
+        width: animatedWidth,
+        height: animatedHeight,
+        centerX,
+        centerY: finalCenterY
+      },
+      isMobileView,
+      styleConfig
+    });
+    // --- END WORD WRAPPING LOGIC ---
+
+    animationRef.current = requestAnimationFrame(() => draw());
+  }, [currentWord, styleConfig, isFullScreen]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -141,12 +143,12 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight - (isFullScreen ? 0 : 100);
+      canvas.height = window.innerHeight;
+      requestAnimationFrame(() => draw());
     };
 
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
-    draw();
 
     return () => {
       cancelAnimationFrame(animationRef.current);
@@ -204,26 +206,40 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
   return (
     <FullScreen handle={fullScreenHandle}>
       <div style={{
-  position: 'relative',
-  width: '100vw',
-  height: '100vh',
-  overflow: 'hidden',
-  backgroundColor: '#1a1a1a',
-  // Add responsive padding
-  padding: window.innerWidth < 768 ? '5px' : '10px'
-}}>
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        backgroundColor: '#1a1a1a'
+      }}>
         {!isControlWindow && (
           <>
-            <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />
+            <div style={{
+              flex: 1,
+              position: 'relative',
+              minHeight: 0,
+              width: '100%'
+            }}>
+              <canvas 
+                ref={canvasRef} 
+                style={{ 
+                  position: 'absolute', 
+                  top: 0, 
+                  left: 0,
+                  width: '100%',
+                  height: '100%'
+                }} 
+              />
+            </div>
             {renderControlButtons()}
           </>
         )}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}>
+        <div 
+          style={{ 
+            flexShrink: 0
+          }}
+        >
           <TimerControls
             timer={timer}
             roundTimer={roundTimer}
