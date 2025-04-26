@@ -12,6 +12,7 @@ function ContrastingMode() {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const containerRef = useRef(null);
+  const [actualControlsHeight, setActualControlsHeight] = useState(100);
 
   // Initialize timer control with pair-specific configuration
   const {
@@ -151,104 +152,156 @@ function ContrastingMode() {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = '#1a1a1a';
     ctx.fillRect(0, 0, width, height);
-  
-    const centerX = width / 2;
-    // Adjust centerY to account for controls height
-    const centerY = (height - 150) / 2;  
-    const maxRadius = Math.max(10, Math.min(width, height - 100) * 0.45); // Ensure positive radius
+    
+    // Define approximate controls height for non-fullscreen mode
+    const controlsApproxHeight = 120; // Increased approximation
+    const availableHeight = height - (isFullScreen ? 0 : controlsApproxHeight);
+    const availableWidth = width;
+    
+    const isMobileView = availableWidth <= 768;
+    
+    // Calculate rectangle dimensions with more padding
+    let maxWidth, maxHeight;
+    if (isMobileView) {
+      maxWidth = availableWidth * 0.9;
+    } else {
+      maxWidth = Math.min(availableWidth * 0.75, 800);
+    }
+    maxHeight = Math.min(availableHeight * 0.85, 600);
+    
+    const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
+    
+    // Center X coordinate
+    const centerX = availableWidth / 2;
+    
+    // Calculate Y positioning
+    const topPadding = 20; // Desired padding from the top edge
+    const idealCenterY = availableHeight / 2;
+
     const time = Date.now() / 15000;
-  
+    const pulseSize = Math.sin(time * 2) * 5;
+    const animatedWidth = maxWidth + pulseSize;
+    let animatedHeight = maxHeight + pulseSize; // Use let for potential adjustment
+
+    // Calculate initial animatedY based on ideal center
+    let animatedY = idealCenterY - animatedHeight / 2;
+
+    // Ensure top padding
+    animatedY = Math.max(topPadding, animatedY);
+
+    // Ensure bottom edge doesn't overlap controls (in non-fullscreen)
+    if (!isFullScreen) {
+      const bottomLimit = availableHeight - topPadding; // Leave padding at bottom too
+      if (animatedY + animatedHeight > bottomLimit) {
+          // Shrink height to fit
+          animatedHeight = bottomLimit - animatedY;
+      }
+    }
+    // Ensure Y is not negative after adjustments
+    animatedY = Math.max(topPadding, animatedY);
+    // Recalculate actual centerY based on final position and height for text
+    const finalCenterY = animatedY + animatedHeight / 2;
+    
+    // Final X position
+    const animatedX = centerX - animatedWidth / 2;
+    
+    // Gradient and drawing logic (using animatedX, animatedY, animatedWidth, animatedHeight)
     const innerColor = `hsla(${(time * 30) % 360}, 50%, 60%, 1)`;
     const midColor = `hsla(${((time * 30) + 30) % 360}, 50%, 65%, 1)`;
     const outerColor = `hsla(${((time * 30) + 60) % 360}, 50%, 70%, 1)`;
+    const gradient = ctx.createLinearGradient(animatedX, animatedY, animatedX + animatedWidth, animatedY + animatedHeight);
+    gradient.addColorStop(0, innerColor);
+    gradient.addColorStop(0.4, innerColor);
+    gradient.addColorStop(0.7, midColor);
+    gradient.addColorStop(1, outerColor);
+    
+    ctx.beginPath();
+    ctx.moveTo(animatedX + borderRadius, animatedY);
+    ctx.lineTo(animatedX + animatedWidth - borderRadius, animatedY);
+    ctx.quadraticCurveTo(animatedX + animatedWidth, animatedY, animatedX + animatedWidth, animatedY + borderRadius);
+    ctx.lineTo(animatedX + animatedWidth, animatedY + animatedHeight - borderRadius);
+    ctx.quadraticCurveTo(animatedX + animatedWidth, animatedY + animatedHeight, animatedX + animatedWidth - borderRadius, animatedY + animatedHeight);
+    ctx.lineTo(animatedX + borderRadius, animatedY + animatedHeight);
+    ctx.quadraticCurveTo(animatedX, animatedY + animatedHeight, animatedX, animatedY + animatedHeight - borderRadius);
+    ctx.lineTo(animatedX, animatedY + borderRadius);
+    ctx.quadraticCurveTo(animatedX, animatedY, animatedX + borderRadius, animatedY);
+    ctx.closePath();
+    ctx.fillStyle = gradient;
+    ctx.fill();
   
-    try {
-      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
-      gradient.addColorStop(0, innerColor);
-      gradient.addColorStop(0.5, innerColor);
-      gradient.addColorStop(0.8, midColor);
-      gradient.addColorStop(1, outerColor);
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     
-      ctx.beginPath();
-      const radiusOffset = Math.sin(time * 2) * 2;
-      ctx.arc(centerX, centerY, maxRadius + radiusOffset, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-    
-      ctx.fillStyle = 'black';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-    
-      // Check if we have pairs and a valid current index
-      if (pairs.length > 0 && currentIndex < pairs.length) {
-        // Format the contrast pair text
-        const currentPair = pairs[currentIndex];
-        
-        // Make sure we're accessing the right properties
-        const item1 = currentPair?.item1 || "Item1";
-        const item2 = currentPair?.item2 || "Item2";
-        
-        // Format the items separately and preserve full content
-        const formattedText = formatContrastPair(item1, item2);
-        const lines = formattedText.split('\n');
-        
-        if (lines.length === 1) {
-          let fontSize = maxRadius / 4.5; // Even smaller font size
+    // Use the finalCenterY for text positioning
+    const textCenterY = finalCenterY;
+
+    if (pairs.length > 0 && currentIndex < pairs.length) {
+      const currentPair = pairs[currentIndex];
+      const item1 = currentPair?.item1 || "Item1";
+      const item2 = currentPair?.item2 || "Item2";
+      const formattedText = formatContrastPair(item1, item2);
+      const lines = formattedText.split('\n');
+      if (lines.length === 1) {
+        let fontSize = Math.min(animatedWidth / 10, animatedHeight / 3);
+        ctx.font = `bold ${fontSize}px Arial`;
+        let textWidth = ctx.measureText(formattedText).width;
+        const maxTextWidth = animatedWidth * 0.85;
+        if (textWidth > maxTextWidth) {
+          fontSize *= maxTextWidth / textWidth;
           ctx.font = `bold ${fontSize}px Arial`;
-          
-          let textWidth = ctx.measureText(formattedText).width;
-          if (textWidth > maxRadius * 1.3) { // Tighter constraint
-            fontSize *= (maxRadius * 1.3) / textWidth;
-            ctx.font = `bold ${fontSize}px Arial`;
-          }
-          
-          ctx.fillText(formattedText, centerX, centerY);
-        } else {
-          let fontSize = maxRadius / (2.5 + lines.length * 0.6); // Even smaller font size for multi-line
-          ctx.font = `bold ${fontSize}px Arial`;
-          
-          const lineHeight = fontSize * 1.2;
-          const totalHeight = lineHeight * lines.length;
-          const startY = centerY - (totalHeight / 2) + (lineHeight / 2);
-          
-          lines.forEach((line, index) => {
-            const y = startY + (index * lineHeight);
-            ctx.fillText(line, centerX, y);
-          });
         }
-      } else if (isLoading) {
-        // Draw loading text if data is being fetched
-        ctx.font = `bold ${maxRadius / 6}px Arial`;
-        ctx.fillText("Loading...", centerX, centerY);
-      } else if (hasError) {
-        // Draw error text if there was a problem fetching data
-        ctx.font = `bold ${maxRadius / 8}px Arial`;
-        ctx.fillText("Error loading contrast pairs", centerX, centerY);
-      } else if (pairs.length === 0) {
-        // Draw a default message if no pairs are available
-        ctx.font = `bold ${maxRadius / 6}px Arial`;
-        ctx.fillText("No contrast pairs found", centerX, centerY);
+        ctx.fillText(formattedText, centerX, textCenterY);
+      } else {
+        let fontSize = Math.min(animatedWidth / 15, animatedHeight / (2.5 + lines.length * 0.7));
+        ctx.font = `bold ${fontSize}px Arial`;
+        const lineHeight = fontSize * 1.2;
+        const totalHeight = lineHeight * lines.length;
+        const startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
+        lines.forEach((line, index) => {
+          const lineWidth = ctx.measureText(line).width;
+          const maxLineWidth = animatedWidth * 0.85;
+          if (lineWidth > maxLineWidth) {
+            const scaleFactor = maxLineWidth / lineWidth;
+            const adjustedSize = fontSize * scaleFactor;
+            ctx.font = `bold ${adjustedSize}px Arial`;
+            ctx.fillText(line, centerX, startY + (index * lineHeight));
+            ctx.font = `bold ${fontSize}px Arial`;
+          } else {
+            ctx.fillText(line, centerX, startY + (index * lineHeight));
+          }
+        });
       }
-    } catch (error) {
-      console.error('Error drawing canvas:', error);
+    } else if (isLoading) {
+      let fontSize = Math.min(animatedWidth / 12, animatedHeight / 5);
+      ctx.font = `bold ${fontSize}px Arial`;
+      ctx.fillText("Loading...", centerX, textCenterY);
+    } else if (hasError) {
+      let fontSize = Math.min(animatedWidth / 15, animatedHeight / 6);
+      ctx.font = `bold ${fontSize}px Arial`;
+      ctx.fillText("Error loading contrast pairs", centerX, textCenterY);
+    } else if (pairs.length === 0) {
+      let fontSize = Math.min(animatedWidth / 12, animatedHeight / 5);
+      ctx.font = `bold ${fontSize}px Arial`;
+      ctx.fillText("No contrast pairs found", centerX, textCenterY);
     }
-  
-    animationRef.current = requestAnimationFrame(draw);
-  }, [currentIndex, pairs, isLoading, hasError, formatContrastPair]);
+    
+    animationRef.current = requestAnimationFrame(() => draw()); 
+  }, [currentIndex, pairs, isLoading, hasError, formatContrastPair, isFullScreen]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || isControlWindow) return;
 
     const resizeCanvas = () => {
-      // Set a minimum size to prevent canvas errors
       canvas.width = Math.max(100, window.innerWidth);
-      canvas.height = Math.max(100, window.innerHeight - (isFullScreen ? 0 : 100));
+      canvas.height = Math.max(100, window.innerHeight);
+      // Trigger initial draw with the new height
+      requestAnimationFrame(() => draw()); // Call draw without height
     };
 
-    resizeCanvas();
+    resizeCanvas(); // Initial size calculation and draw
     window.addEventListener('resize', resizeCanvas);
-    draw();
 
     return () => {
       if (animationRef.current) {
@@ -321,17 +374,26 @@ function ContrastingMode() {
         tabIndex={0}
       >
         {!isControlWindow && (
-          <>
-            <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }} />
+          <div style={{ }}>
+            <canvas 
+              ref={canvasRef} 
+              style={{ 
+                position: 'absolute', 
+                top: 0, 
+                left: 0 
+              }} 
+            />
             {renderControlButtons()}
-          </>
+          </div>
         )}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}>
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+          }}
+        >
           <TimerControls
             timer={timer}
             roundTimer={roundTimer}

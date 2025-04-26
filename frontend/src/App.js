@@ -13,7 +13,7 @@ import { BackButton } from './components/Navigation/Buttons';
 import Account from './components/Account/Account';
 import BattleJudging from './components/BattleJudging/BattleJudging';
 import OrganizeBattle from './components/OrganizeBattle/OrganizeBattle';
-import ContrastingMode from './components/BattleMode/ContrastingMode/ContrastingMode';
+import ContrastingMode from './components/BattleMode/WordModes/ContrastingMode';
 // import SecondWindow from './components/BattleMode/TopicMode/SecondWindow';
 
 function App() {
