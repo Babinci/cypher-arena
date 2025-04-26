@@ -128,109 +128,116 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.closePath();
     ctx.fillStyle = gradient;
     ctx.fill();
-  
-    // --- MODIFICATION START (Enhanced Text Styling) ---
-    // Use a more visually impressive font stack
+
+    // --- WORD WRAPPING LOGIC ---
     const fontFamily = "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif";
-    
-    // Set up text shadows and styling
-    ctx.fillStyle = '#000'; // Initial shadow color
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-  
-    const lines = (currentWord || '').split('\n');
-    
-    const textCenterY = finalCenterY - (animatedHeight * 0.02); // Slightly higher position looks better
-    
+    ctx.fillStyle = '#000';
+
+    // Helper to wrap text to fit max width
+    function wrapText(text, fontSize, maxWidth, maxLines = 5, minFontSize = 14) {
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      const words = text.split(/\s+/);
+      let lines = [];
+      let currentLine = '';
+      let i = 0;
+      while (i < words.length) {
+        let testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
+        let testWidth = ctx.measureText(testLine).width;
+        if (testWidth > maxWidth) {
+          if (currentLine) {
+            lines.push(currentLine);
+            currentLine = '';
+          } else {
+            // Single word too long, need to hyphenate
+            let word = words[i];
+            let part = '';
+            for (let c = 0; c < word.length; c++) {
+              part += word[c];
+              if (ctx.measureText(part + '-').width > maxWidth) {
+                if (part.length > 1) {
+                  lines.push(part.slice(0, -1) + '-');
+                  part = word[c];
+                }
+              }
+            }
+            if (part) currentLine = part;
+            i++;
+            continue;
+          }
+        } else {
+          currentLine = testLine;
+          i++;
+        }
+        if (lines.length >= maxLines) break;
+      }
+      if (currentLine && lines.length < maxLines) lines.push(currentLine);
+      // If still too many lines, try reducing font size
+      if (lines.length > maxLines && fontSize > minFontSize) {
+        return wrapText(text, fontSize - 2, maxWidth, maxLines, minFontSize);
+      }
+      // If still too many lines, ellipsis last line
+      if (lines.length > maxLines) {
+        lines = lines.slice(0, maxLines);
+        let last = lines[maxLines - 1];
+        while (ctx.measureText(last + '...').width > maxWidth && last.length > 0) {
+          last = last.slice(0, -1);
+        }
+        lines[maxLines - 1] = last + '...';
+      }
+      return lines;
+    }
+
+    // Calculate font size
     const vw = window.innerWidth / 100;
     const vh = window.innerHeight / 100;
-    const maxTextWidthSingle = animatedWidth * 0.9;
-    const maxTextWidthMulti = animatedWidth * 0.95;
-    const minFontSize = 22; // Increased minimum font size
+    const minFontSize = isMobileView ? 16 : 22;
+    const maxFontSize = isMobileView ? 120 : 180;
+    let fontSize = isMobileView
+      ? Math.min(
+          animatedWidth / 8,
+          animatedHeight / 3,
+          8 * vw,
+          12 * vh,
+          maxFontSize
+        )
+      : Math.min(
+          animatedWidth / 6,
+          animatedHeight / 2,
+          11 * vw,
+          16 * vh,
+          maxFontSize
+        );
+    fontSize /= styleConfig?.fontSizeFactor || 1;
+    fontSize = Math.max(minFontSize, fontSize);
 
-    if (lines.length === 1) {
-      // Significantly larger base font calculation
-      let fontSize = Math.min(
-        animatedWidth / 6, // Larger divisor for width
-        animatedHeight / 2, // Larger divisor for height
-        11 * vw,  // Boosted vw scaling
-        16 * vh,  // Boosted vh scaling
-        180       // Higher absolute cap
-      );
-      fontSize /= styleConfig?.fontSizeFactor || 1;
-      fontSize = Math.max(minFontSize, fontSize);
+    // Use wrapText to split into lines
+    const maxTextWidth = animatedWidth * 0.9;
+    const maxLines = isMobileView ? 4 : 5;
+    const lines = wrapText(currentWord || '', fontSize, maxTextWidth, maxLines, minFontSize);
 
-      ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      let textWidth = ctx.measureText(currentWord).width;
-      
-      if (textWidth > maxTextWidthSingle) {
-        fontSize *= maxTextWidthSingle / textWidth;
-        fontSize = Math.max(minFontSize, fontSize);
-      }
+    // Recalculate font size if wrapping reduced it
+    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    const lineHeight = fontSize * (isMobileView ? 1.3 : 1.2);
+    const totalHeight = lineHeight * lines.length;
+    const textCenterY = finalCenterY;
+    let startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
 
-      // Apply text with shadow for depth
-      ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      
-      // Draw shadow first
+    // Draw each line with shadow
+    lines.forEach((line, index) => {
       ctx.save();
-      ctx.shadowOffsetX = fontSize * 0.03;
-      ctx.shadowOffsetY = fontSize * 0.03;
-      ctx.shadowBlur = fontSize * 0.07;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-      
-      // Draw the text in a contrasting color that works with all gradients
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.85)'; 
-      ctx.fillText(currentWord, centerX, textCenterY);
-      ctx.restore();
-
-    } else {
-      // Multi-line text styling
-      let fontSize = Math.min(
-        animatedWidth / 7, // Less divisor for width
-        animatedHeight / (1.1 + lines.length * 0.7), // Less aggressive scaling
-        9 * vw,  // Boosted vw scaling
-        13 * vh, // Boosted vh scaling
-        140      // Higher absolute cap for multi-line
-      );
-      fontSize /= styleConfig?.fontSizeFactor || 1;
-      fontSize = Math.max(minFontSize, fontSize);
-
-      // Iterative width checking
-      let needsRescaling = true;
-      while (needsRescaling && fontSize > minFontSize) {
-        needsRescaling = false;
-        ctx.font = `bold ${fontSize}px ${fontFamily}`;
-        for (const line of lines) {
-          if (ctx.measureText(line).width > maxTextWidthMulti) {
-            fontSize *= 0.95;
-            needsRescaling = true;
-            break;
-          }
-        }
-      }
-      fontSize = Math.max(minFontSize, fontSize);
-      
-      // Line positioning calculation
-      const lineHeight = fontSize * 1.2;
-      const totalHeight = lineHeight * lines.length;
-      const startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
-      
-      // Apply shadow and draw each line
-      ctx.save();
-      ctx.shadowOffsetX = fontSize * 0.03;
-      ctx.shadowOffsetY = fontSize * 0.03;
-      ctx.shadowBlur = fontSize * 0.07;
+      ctx.shadowOffsetX = fontSize * (isMobileView ? 0.02 : 0.03);
+      ctx.shadowOffsetY = fontSize * (isMobileView ? 0.02 : 0.03);
+      ctx.shadowBlur = fontSize * (isMobileView ? 0.05 : 0.07);
       ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
       ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
-      
-      lines.forEach((line, index) => {
-        ctx.fillText(line, centerX, startY + (index * lineHeight));
-      });
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+      ctx.fillText(line, centerX, startY + (index * lineHeight));
       ctx.restore();
-    }
-    // --- MODIFICATION END ---
-    
+    });
+    // --- END WORD WRAPPING LOGIC ---
+
     animationRef.current = requestAnimationFrame(() => draw());
   }, [currentWord, styleConfig, isFullScreen]);
 
