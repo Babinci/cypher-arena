@@ -145,36 +145,64 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     
     const textCenterY = finalCenterY;
     
+    const vw = window.innerWidth / 100;
+    const vh = window.innerHeight / 100;
+    const maxTextWidth = animatedWidth * 0.9;
+    const minFontSize = 12;
+
     if (lines.length === 1) {
-      let fontSize = Math.min(animatedWidth / 9, animatedHeight / 2.8);
+      let fontSize = Math.min(
+        animatedWidth / 8,
+        animatedHeight / 2.5,
+        8 * vw,
+        12 * vh,
+        150
+      );
       fontSize /= styleConfig?.fontSizeFactor || 1;
+      fontSize = Math.max(minFontSize, fontSize);
+
       ctx.font = `bold ${fontSize}px Arial`;
       let textWidth = ctx.measureText(currentWord).width;
-      const maxTextWidth = animatedWidth * 0.85;
+      
       if (textWidth > maxTextWidth) {
         fontSize *= maxTextWidth / textWidth;
-        ctx.font = `bold ${fontSize}px Arial`;
+        fontSize = Math.max(minFontSize, fontSize);
       }
-      ctx.fillText(currentWord, centerX, textCenterY);
-    } else {
-      let fontSize = Math.min(animatedWidth / 14, animatedHeight / (1.8 + lines.length));
-      fontSize /= styleConfig?.fontSizeFactor || 1;
       ctx.font = `bold ${fontSize}px Arial`;
+      ctx.fillText(currentWord, centerX, textCenterY);
+
+    } else {
+      let fontSize = Math.min(
+        animatedWidth / 10,
+        animatedHeight / (1.5 + lines.length),
+        6 * vw,
+        9 * vh,
+        100
+      );
+      fontSize /= styleConfig?.fontSizeFactor || 1;
+      fontSize = Math.max(minFontSize, fontSize);
+
+      let needsRescaling = true;
+      while (needsRescaling && fontSize > minFontSize) {
+        needsRescaling = false;
+        ctx.font = `bold ${fontSize}px Arial`;
+        for (const line of lines) {
+          if (ctx.measureText(line).width > maxTextWidth) {
+            fontSize *= 0.95;
+            needsRescaling = true;
+            break;
+          }
+        }
+      }
+      fontSize = Math.max(minFontSize, fontSize);
+      ctx.font = `bold ${fontSize}px Arial`;
+
       const lineHeight = fontSize * 1.2;
       const totalHeight = lineHeight * lines.length;
       const startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
+      
       lines.forEach((line, index) => {
-        const lineWidth = ctx.measureText(line).width;
-        const maxLineWidth = animatedWidth * 0.85;
-        if (lineWidth > maxLineWidth) {
-          const scaleFactor = maxLineWidth / lineWidth;
-          const adjustedSize = fontSize * scaleFactor;
-          ctx.font = `bold ${adjustedSize}px Arial`;
-          ctx.fillText(line, centerX, startY + (index * lineHeight));
-          ctx.font = `bold ${fontSize}px Arial`;
-        } else {
-          ctx.fillText(line, centerX, startY + (index * lineHeight));
-        }
+        ctx.fillText(line, centerX, startY + (index * lineHeight));
       });
     }
     

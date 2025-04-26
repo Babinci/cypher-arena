@@ -24,6 +24,14 @@
 | 22-inch PC Monitor    | ~1920 x 1080 px         |
 | 13-inch Laptop        | ~1920 x 1080 px         |
 
+## Devices font size research
+Device Type	Minimum Font Size	Recommended Font Size
+Projector	18-24 points (body text)	30-40 points (body), 60+ points (titles)
+Mobile	14-16 pixels/points (body)	16-20 pixels (body), 20-28 pixels (titles)
+Desktop	14-16 pixels (body)	16-24 pixels (body), 35-50 pixels (titles)
+
+
+
 ## What Works Well
 
 - **Images Mode:**
@@ -35,17 +43,18 @@
 
 - **Words Mode:**
   - Uses a static circle with the word displayed.
-  - Problem: Sometimes words go outside the circle in Contrasting Mode.
+  - Problem: Sometimes words go outside the circle in Contrasting Mode. ###solution- rectangle
   - Problem: Words are not always properly vertically placed in Topics Mode.
 
 - **General:**
-  - All word-based modes (Word Mode, Topics Mode, Contrasting Mode) use a circle with a placed word.
+  - All word-based modes (Word Mode, Topics Mode, Contrasting Mode) use a circle with a placed word. (changed ro rectangle)
   - **Open Question:** Should we reconsider/brainstorm changing from the circle? The challenge is to present the word well on all needed devices.  IMPORTANT UPDATE: I AM CURRENTLY DEVELOPING WITH RECTANGLE INSTEAD OF CIRCLE
 
 ## Open Questions / To Be Decided
 
 - Should the word display remain in a circle, or should we explore alternative layouts for better cross-device compatibility?
 - What are the minimum and recommended font sizes for words/topics on each device type (projector, mobile, desktop)?
+      - topics have to be clearly seen- they are from small words to longer vs like  "Cebulak all inclusive vs Organizator wakacji w równoległych wszechświatach"
 - Should there be a "test display" or preview mode for organizers to check visibility before starting a battle?
 - Are there accessibility requirements (contrast, color blindness, etc.) for word and image display?
 - Should we support dynamic resizing or responsive scaling for all display elements?
