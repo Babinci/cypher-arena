@@ -42,17 +42,15 @@ Desktop	14-16 pixels (body)	16-24 pixels (body), 35-50 pixels (titles)
 ## Current Issues
 
 - **Words Mode:**
-  - Uses a static circle with the word displayed.
-  - Problem: Sometimes words go outside the circle in Contrasting Mode. ###solution- rectangle
+  - Uses a static rectangle with the word displayed.
+
   - Problem: Words are not always properly vertically placed in Topics Mode.
 
 - **General:**
-  - All word-based modes (Word Mode, Topics Mode, Contrasting Mode) use a circle with a placed word. (changed ro rectangle)
-  - **Open Question:** Should we reconsider/brainstorm changing from the circle? The challenge is to present the word well on all needed devices.  IMPORTANT UPDATE: I AM CURRENTLY DEVELOPING WITH RECTANGLE INSTEAD OF CIRCLE
+  - All word-based modes (Word Mode, Topics Mode, Contrasting Mode) use a rectangle with a placed word.
 
 ## Open Questions / To Be Decided
 
-- Should the word display remain in a circle, or should we explore alternative layouts for better cross-device compatibility?
 - What are the minimum and recommended font sizes for words/topics on each device type (projector, mobile, desktop)?
       - topics have to be clearly seen- they are from small words to longer vs like  "Cebulak all inclusive vs Organizator wakacji w równoległych wszechświatach"
 - Should there be a "test display" or preview mode for organizers to check visibility before starting a battle?
