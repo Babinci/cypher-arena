@@ -73,15 +73,9 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.fillStyle = '#1a1a1a';
     ctx.fillRect(0, 0, width, height);
     
-    const controlsApproxHeight = 120;
-    const topPadding = 20;
-    
-    const effectiveHeight = isFullScreen ? height : height - controlsApproxHeight;
-    const effectiveTopPadding = isFullScreen ? 0 : topPadding;
-    const availableHeight = Math.max(0, effectiveHeight - effectiveTopPadding);
-    
     const availableWidth = width;
-    
+    const availableHeight = height;
+    const topPadding = 20;
     const isMobileView = availableWidth <= 768;
     
     let maxWidth, maxHeight;
@@ -92,8 +86,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       maxWidth = Math.min(availableWidth * 0.75, 800);
     }
     
-    const heightFactor = isFullScreen ? 0.98 : 0.85;
-    maxHeight = Math.min(availableHeight * heightFactor, isFullScreen ? height : 600);
+    maxHeight = availableHeight - (topPadding * 2);
+    maxHeight = Math.max(20, maxHeight);
     
     const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
     
@@ -104,12 +98,10 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const animatedWidth = maxWidth + pulseSize;
     let animatedHeight = maxHeight + pulseSize;
 
-    let animatedY = effectiveTopPadding;
-
-    const maximumAllowedHeight = availableHeight;
-    animatedHeight = Math.min(animatedHeight, maximumAllowedHeight);
-
-    animatedY = Math.max(effectiveTopPadding, animatedY);
+    let animatedY = topPadding;
+    animatedHeight = Math.min(animatedHeight, maxHeight);
+    animatedY = Math.max(topPadding, animatedY);
+    
     const finalCenterY = animatedY + animatedHeight / 2;
     
     const animatedX = centerX - animatedWidth / 2;
@@ -137,57 +129,79 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.fillStyle = gradient;
     ctx.fill();
   
-    ctx.fillStyle = 'black';
+    // --- MODIFICATION START (Enhanced Text Styling) ---
+    // Use a more visually impressive font stack
+    const fontFamily = "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif";
+    
+    // Set up text shadows and styling
+    ctx.fillStyle = '#000'; // Initial shadow color
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
   
     const lines = (currentWord || '').split('\n');
     
-    const textCenterY = finalCenterY;
+    const textCenterY = finalCenterY - (animatedHeight * 0.02); // Slightly higher position looks better
     
     const vw = window.innerWidth / 100;
     const vh = window.innerHeight / 100;
-    const maxTextWidth = animatedWidth * 0.9;
-    const minFontSize = 12;
+    const maxTextWidthSingle = animatedWidth * 0.9;
+    const maxTextWidthMulti = animatedWidth * 0.95;
+    const minFontSize = 22; // Increased minimum font size
 
     if (lines.length === 1) {
+      // Significantly larger base font calculation
       let fontSize = Math.min(
-        animatedWidth / 8,
-        animatedHeight / 2.5,
-        8 * vw,
-        12 * vh,
-        150
+        animatedWidth / 6, // Larger divisor for width
+        animatedHeight / 2, // Larger divisor for height
+        11 * vw,  // Boosted vw scaling
+        16 * vh,  // Boosted vh scaling
+        180       // Higher absolute cap
       );
       fontSize /= styleConfig?.fontSizeFactor || 1;
       fontSize = Math.max(minFontSize, fontSize);
 
-      ctx.font = `bold ${fontSize}px Arial`;
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
       let textWidth = ctx.measureText(currentWord).width;
       
-      if (textWidth > maxTextWidth) {
-        fontSize *= maxTextWidth / textWidth;
+      if (textWidth > maxTextWidthSingle) {
+        fontSize *= maxTextWidthSingle / textWidth;
         fontSize = Math.max(minFontSize, fontSize);
       }
-      ctx.font = `bold ${fontSize}px Arial`;
+
+      // Apply text with shadow for depth
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      
+      // Draw shadow first
+      ctx.save();
+      ctx.shadowOffsetX = fontSize * 0.03;
+      ctx.shadowOffsetY = fontSize * 0.03;
+      ctx.shadowBlur = fontSize * 0.07;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      
+      // Draw the text in a contrasting color that works with all gradients
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.85)'; 
       ctx.fillText(currentWord, centerX, textCenterY);
+      ctx.restore();
 
     } else {
+      // Multi-line text styling
       let fontSize = Math.min(
-        animatedWidth / 10,
-        animatedHeight / (1.5 + lines.length),
-        6 * vw,
-        9 * vh,
-        100
+        animatedWidth / 7, // Less divisor for width
+        animatedHeight / (1.1 + lines.length * 0.7), // Less aggressive scaling
+        9 * vw,  // Boosted vw scaling
+        13 * vh, // Boosted vh scaling
+        140      // Higher absolute cap for multi-line
       );
       fontSize /= styleConfig?.fontSizeFactor || 1;
       fontSize = Math.max(minFontSize, fontSize);
 
+      // Iterative width checking
       let needsRescaling = true;
       while (needsRescaling && fontSize > minFontSize) {
         needsRescaling = false;
-        ctx.font = `bold ${fontSize}px Arial`;
+        ctx.font = `bold ${fontSize}px ${fontFamily}`;
         for (const line of lines) {
-          if (ctx.measureText(line).width > maxTextWidth) {
+          if (ctx.measureText(line).width > maxTextWidthMulti) {
             fontSize *= 0.95;
             needsRescaling = true;
             break;
@@ -195,16 +209,27 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         }
       }
       fontSize = Math.max(minFontSize, fontSize);
-      ctx.font = `bold ${fontSize}px Arial`;
-
+      
+      // Line positioning calculation
       const lineHeight = fontSize * 1.2;
       const totalHeight = lineHeight * lines.length;
       const startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
       
+      // Apply shadow and draw each line
+      ctx.save();
+      ctx.shadowOffsetX = fontSize * 0.03;
+      ctx.shadowOffsetY = fontSize * 0.03;
+      ctx.shadowBlur = fontSize * 0.07;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+      
       lines.forEach((line, index) => {
         ctx.fillText(line, centerX, startY + (index * lineHeight));
       });
+      ctx.restore();
     }
+    // --- MODIFICATION END ---
     
     animationRef.current = requestAnimationFrame(() => draw());
   }, [currentWord, styleConfig, isFullScreen]);
@@ -278,7 +303,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
   return (
     <FullScreen handle={fullScreenHandle}>
       <div style={{
-        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
@@ -286,23 +312,29 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       }}>
         {!isControlWindow && (
           <>
-            <canvas 
-              ref={canvasRef} 
-              style={{ 
-                position: 'absolute', 
-                top: 0, 
-                left: 0 
-              }} 
-            />
+            <div style={{
+              flex: 1,
+              position: 'relative',
+              minHeight: 0,
+              width: '100%'
+            }}>
+              <canvas 
+                ref={canvasRef} 
+                style={{ 
+                  position: 'absolute', 
+                  top: 0, 
+                  left: 0,
+                  width: '100%',
+                  height: '100%'
+                }} 
+              />
+            </div>
             {renderControlButtons()}
           </>
         )}
         <div 
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
+          style={{ 
+            flexShrink: 0
           }}
         >
           <TimerControls
