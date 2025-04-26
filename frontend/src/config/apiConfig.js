@@ -1,5 +1,5 @@
 const apiConfig = {
-  baseUrl: 'https://cypher-arena.com/api/',
+  baseUrl: '/api/',
   endpoints: {
     getRandomWord: 'words/get_random_word/',
     getTopic: 'words/get_topics/',
