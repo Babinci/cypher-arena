@@ -34,16 +34,13 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   const isContrastMode = currentWord && currentWord.includes('###VS###');
   if (isContrastMode) {
     const [item1, item2] = currentWord.split('###VS###');
-    const maxTextWidth = width * 0.85;
+    const maxTextWidth = width * 0.99;
     const minFontSize = isMobileView ? 16 : 22;
     const maxFontSize = isMobileView ? 110 : 160;
     let fontSize = Math.min(width / 9, maxFontSize);
     fontSize = Math.max(minFontSize, fontSize);
-    const item1FontSize = fitFontSizeToWidth(item1.trim(), fontSize, maxTextWidth);
-    const item2FontSize = fitFontSizeToWidth(item2.trim(), fontSize, maxTextWidth);
-    fontSize = Math.min(item1FontSize, item2FontSize);
-    const vsFontSize = Math.max(fontSize * 1.2, fontSize + 4);
-    function wrapText(text, fontSize, maxWidth, maxLines = 3) {
+    // Enhanced: always wrap long phrases to next line for better readability
+    function wrapTextEnhanced(text, fontSize, maxWidth, maxLines = 3, maxCharsPerLine = 18) {
       ctx.font = `bold ${fontSize}px ${fontFamily}`;
       const words = text.trim().split(/\s+/);
       let lines = [];
@@ -51,27 +48,51 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
       for (let i = 0; i < words.length; i++) {
         let testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
         let testWidth = ctx.measureText(testLine).width;
-        if (testWidth > maxWidth) {
-          lines.push(currentLine);
-          currentLine = words[i];
+        // Check if adding this word would exceed pixel width or character count
+        if (testWidth > maxWidth || testLine.length > maxCharsPerLine) {
+          if (currentLine) {
+            lines.push(currentLine);
+            currentLine = words[i];
+          } else {
+            // Single word too long, force break
+            let word = words[i];
+            let part = '';
+            for (let c = 0; c < word.length; c++) {
+              part += word[c];
+              if (ctx.measureText(part + '-').width > maxWidth || part.length > maxCharsPerLine) {
+                if (part.length > 1) {
+                  lines.push(part.slice(0, -1) + '-');
+                  part = word[c];
+                }
+              }
+            }
+            if (part) currentLine = part;
+          }
         } else {
           currentLine = testLine;
         }
+        if (lines.length >= maxLines) break;
       }
-      if (currentLine) lines.push(currentLine);
+      if (currentLine && lines.length < maxLines) lines.push(currentLine);
       if (lines.length > maxLines) {
         lines = lines.slice(0, maxLines);
         let last = lines[maxLines - 1];
-        if (ctx.measureText(last + '...').width <= maxWidth) {
-          lines[maxLines - 1] = last + '...';
+        while (ctx.measureText(last + '...').width > maxWidth && last.length > 0) {
+          last = last.slice(0, -1);
         }
+        lines[maxLines - 1] = last + '...';
       }
       return lines;
     }
+    const item1FontSize = fitFontSizeToWidth(item1.trim(), fontSize, maxTextWidth);
+    const item2FontSize = fitFontSizeToWidth(item2.trim(), fontSize, maxTextWidth);
+    fontSize = Math.min(item1FontSize, item2FontSize);
+    const vsFontSize = Math.max(fontSize * 1.2, fontSize + 4);
     const lineHeight = fontSize * 1.3;
     const vsLineHeight = vsFontSize * 1.5;
-    const item1Lines = wrapText(item1, fontSize, maxTextWidth, 3);
-    const item2Lines = wrapText(item2, fontSize, maxTextWidth, 3);
+    // Use enhanced wrapping for both items, with char threshold
+    const item1Lines = wrapTextEnhanced(item1, fontSize, maxTextWidth, 3, 18);
+    const item2Lines = wrapTextEnhanced(item2, fontSize, maxTextWidth, 3, 18);
     const item1Height = item1Lines.length * lineHeight;
     const item2Height = item2Lines.length * lineHeight;
     const vsHeight = vsLineHeight;
@@ -168,7 +189,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   const maxFontSize = isMobileView ? 120 : 180;
   let fontSize = Math.min(width / 8, maxFontSize);
   fontSize = Math.max(minFontSize, fontSize);
-  const maxTextWidth = width * 0.9;
+  const maxTextWidth = width * 0.99;
   const maxLines = isMobileView ? 4 : 5;
   let lines = wrapText(currentWord || '', fontSize, maxTextWidth, maxLines, minFontSize);
   let widest = 0;
