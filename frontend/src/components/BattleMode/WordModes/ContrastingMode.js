@@ -3,16 +3,13 @@ import apiConfig from '../../../config/apiConfig';
 import BaseBattleVisualizer from './BaseBattleVisualizer';
 
 const formatContrastingText = (pair) => {
-  // Check if we're likely on a mobile device
-  const isMobileView = window.innerWidth <= 768;
-  
-  // Insert blank lines for better spacing on desktop
-  if (!isMobileView) {
-    return `${pair.item1}\n\nvs\n\n${pair.item2}`;
-  } else {
-    // More compact format for mobile
-    return `${pair.item1}\nvs\n${pair.item2}`;
-  }
+  // Create a special format for vs that will be handled differently in rendering
+  // We'll use a special marker "###VS###" that our renderer will recognize
+  return {
+    item1: pair.item1,
+    item2: pair.item2,
+    formatted: `${pair.item1}\n###VS###\n${pair.item2}`
+  };
 };
 
 const fetchContrastPairs = async (endpoint) => {
@@ -21,10 +18,17 @@ const fetchContrastPairs = async (endpoint) => {
   
   if (data && data.results && Array.isArray(data.results)) {
     return {
-      words: data.results.map(pair => formatContrastingText(pair))
+      words: data.results.map(pair => formatContrastingText(pair).formatted),
+      // Pass the original pairs as well for custom rendering
+      originalPairs: data.results.map(pair => formatContrastingText(pair)),
+      isContrastMode: true
     };
   }
-  return { words: ["Example\nvs\nContrast"] };
+  return { 
+    words: ["Example\n###VS###\nContrast"],
+    originalPairs: [{ item1: "Example", item2: "Contrast", formatted: "Example\n###VS###\nContrast" }],
+    isContrastMode: true
+  };
 };
 
 function ContrastingMode() {
@@ -32,7 +36,10 @@ function ContrastingMode() {
     <BaseBattleVisualizer
       endpoint={`${apiConfig.baseUrl}${apiConfig.endpoints.getContrastPairs}?count=100`}
       fetchFunction={fetchContrastPairs}
-      styleConfig={{ fontSizeFactor: 1.1 }} // Reduced from 1.2 for better mobile display
+      styleConfig={{ 
+        fontSizeFactor: 1.1,
+        isContrastMode: true  // Flag to indicate this is contrast mode 
+      }} 
     />
   );
 }

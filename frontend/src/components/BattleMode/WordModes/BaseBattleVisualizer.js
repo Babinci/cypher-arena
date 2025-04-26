@@ -135,107 +135,239 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#000';
 
-    // Helper to wrap text to fit max width
-    function wrapText(text, fontSize, maxWidth, maxLines = 5, minFontSize = 14) {
-      ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      const words = text.split(/\s+/);
-      let lines = [];
-      let currentLine = '';
-      let i = 0;
-      while (i < words.length) {
-        let testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
-        let testWidth = ctx.measureText(testLine).width;
-        if (testWidth > maxWidth) {
-          if (currentLine) {
+    // Special handling for contrast mode with "vs" separator
+    const isContrastMode = currentWord && currentWord.includes('###VS###');
+    
+    if (isContrastMode) {
+      // Split the content around our special VS marker
+      const [item1, item2] = currentWord.split('###VS###');
+      
+      // Calculate font sizes - slightly smaller than regular to fit both items
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const minFontSize = isMobileView ? 16 : 22;
+      const maxFontSize = isMobileView ? 110 : 160;
+      
+      let fontSize = isMobileView
+        ? Math.min(
+            animatedWidth / 9,
+            animatedHeight / 4,
+            7 * vw,
+            11 * vh,
+            maxFontSize
+          )
+        : Math.min(
+            animatedWidth / 7,
+            animatedHeight / 3,
+            10 * vw,
+            15 * vh,
+            maxFontSize
+          );
+      
+      fontSize /= styleConfig?.fontSizeFactor || 1;
+      fontSize = Math.max(minFontSize, fontSize);
+      
+      // Setup for VS text (which should be larger and distinct)
+      const vsFontSize = fontSize * 1.2; // Make "vs" slightly larger
+      
+      // Helper function to wrap and fit text
+      function wrapText(text, fontSize, maxWidth, maxLines = 3) {
+        ctx.font = `bold ${fontSize}px ${fontFamily}`;
+        const words = text.trim().split(/\s+/);
+        let lines = [];
+        let currentLine = '';
+        
+        for (let i = 0; i < words.length; i++) {
+          let testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
+          let testWidth = ctx.measureText(testLine).width;
+          
+          if (testWidth > maxWidth) {
             lines.push(currentLine);
-            currentLine = '';
+            currentLine = words[i];
           } else {
-            // Single word too long, need to hyphenate
-            let word = words[i];
-            let part = '';
-            for (let c = 0; c < word.length; c++) {
-              part += word[c];
-              if (ctx.measureText(part + '-').width > maxWidth) {
-                if (part.length > 1) {
-                  lines.push(part.slice(0, -1) + '-');
-                  part = word[c];
+            currentLine = testLine;
+          }
+        }
+        
+        if (currentLine) lines.push(currentLine);
+        
+        // If we have too many lines, combine some or truncate
+        if (lines.length > maxLines) {
+          lines = lines.slice(0, maxLines);
+          let last = lines[maxLines - 1];
+          if (ctx.measureText(last + '...').width <= maxWidth) {
+            lines[maxLines - 1] = last + '...';
+          }
+        }
+        
+        return lines;
+      }
+      
+      // Calculate maximum text width (slightly narrower than the box)
+      const maxTextWidth = animatedWidth * 0.85;
+      
+      // Calculate line height based on font size
+      const lineHeight = fontSize * 1.3;
+      const vsLineHeight = vsFontSize * 1.5; // Give more space to VS
+      
+      // Wrap both items
+      const item1Lines = wrapText(item1, fontSize, maxTextWidth, 3);
+      const item2Lines = wrapText(item2, fontSize, maxTextWidth, 3);
+      
+      // Calculate total height needed
+      const item1Height = item1Lines.length * lineHeight;
+      const item2Height = item2Lines.length * lineHeight;
+      const vsHeight = vsLineHeight;
+      const totalHeight = item1Height + vsHeight + item2Height;
+      
+      // Start drawing from the top of the calculated space
+      let currentY = finalCenterY - (totalHeight / 2);
+      
+      // Draw item1
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      item1Lines.forEach(line => {
+        ctx.save();
+        ctx.shadowOffsetX = fontSize * 0.03;
+        ctx.shadowOffsetY = fontSize * 0.03;
+        ctx.shadowBlur = fontSize * 0.07;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+        ctx.fillText(line, centerX, currentY);
+        ctx.restore();
+        currentY += lineHeight;
+      });
+      
+      // Draw "vs" with a different style
+      ctx.save();
+      ctx.font = `bold ${vsFontSize}px ${fontFamily}`;
+      ctx.shadowOffsetX = vsFontSize * 0.03;
+      ctx.shadowOffsetY = vsFontSize * 0.03;
+      ctx.shadowBlur = vsFontSize * 0.1;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+      // Use a different color for "vs" to make it stand out
+      ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+      ctx.fillText("vs", centerX, currentY);
+      ctx.restore();
+      
+      currentY += vsLineHeight;
+      
+      // Draw item2
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+      item2Lines.forEach(line => {
+        ctx.save();
+        ctx.shadowOffsetX = fontSize * 0.03;
+        ctx.shadowOffsetY = fontSize * 0.03;
+        ctx.shadowBlur = fontSize * 0.07;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+        ctx.fillText(line, centerX, currentY);
+        ctx.restore();
+        currentY += lineHeight;
+      });
+    } else {
+      // Original text handling for non-contrast mode
+      // Helper to wrap text to fit max width
+      function wrapText(text, fontSize, maxWidth, maxLines = 5, minFontSize = 14) {
+        ctx.font = `bold ${fontSize}px ${fontFamily}`;
+        const words = text.split(/\s+/);
+        let lines = [];
+        let currentLine = '';
+        let i = 0;
+        while (i < words.length) {
+          let testLine = currentLine ? currentLine + ' ' + words[i] : words[i];
+          let testWidth = ctx.measureText(testLine).width;
+          if (testWidth > maxWidth) {
+            if (currentLine) {
+              lines.push(currentLine);
+              currentLine = '';
+            } else {
+              // Single word too long, need to hyphenate
+              let word = words[i];
+              let part = '';
+              for (let c = 0; c < word.length; c++) {
+                part += word[c];
+                if (ctx.measureText(part + '-').width > maxWidth) {
+                  if (part.length > 1) {
+                    lines.push(part.slice(0, -1) + '-');
+                    part = word[c];
+                  }
                 }
               }
+              if (part) currentLine = part;
+              i++;
+              continue;
             }
-            if (part) currentLine = part;
+          } else {
+            currentLine = testLine;
             i++;
-            continue;
           }
-        } else {
-          currentLine = testLine;
-          i++;
+          if (lines.length >= maxLines) break;
         }
-        if (lines.length >= maxLines) break;
-      }
-      if (currentLine && lines.length < maxLines) lines.push(currentLine);
-      // If still too many lines, try reducing font size
-      if (lines.length > maxLines && fontSize > minFontSize) {
-        return wrapText(text, fontSize - 2, maxWidth, maxLines, minFontSize);
-      }
-      // If still too many lines, ellipsis last line
-      if (lines.length > maxLines) {
-        lines = lines.slice(0, maxLines);
-        let last = lines[maxLines - 1];
-        while (ctx.measureText(last + '...').width > maxWidth && last.length > 0) {
-          last = last.slice(0, -1);
+        if (currentLine && lines.length < maxLines) lines.push(currentLine);
+        // If still too many lines, try reducing font size
+        if (lines.length > maxLines && fontSize > minFontSize) {
+          return wrapText(text, fontSize - 2, maxWidth, maxLines, minFontSize);
         }
-        lines[maxLines - 1] = last + '...';
+        // If still too many lines, ellipsis last line
+        if (lines.length > maxLines) {
+          lines = lines.slice(0, maxLines);
+          let last = lines[maxLines - 1];
+          while (ctx.measureText(last + '...').width > maxWidth && last.length > 0) {
+            last = last.slice(0, -1);
+          }
+          lines[maxLines - 1] = last + '...';
+        }
+        return lines;
       }
-      return lines;
-    }
 
-    // Calculate font size
-    const vw = window.innerWidth / 100;
-    const vh = window.innerHeight / 100;
-    const minFontSize = isMobileView ? 16 : 22;
-    const maxFontSize = isMobileView ? 120 : 180;
-    let fontSize = isMobileView
-      ? Math.min(
-          animatedWidth / 8,
-          animatedHeight / 3,
-          8 * vw,
-          12 * vh,
-          maxFontSize
-        )
-      : Math.min(
-          animatedWidth / 6,
-          animatedHeight / 2,
-          11 * vw,
-          16 * vh,
-          maxFontSize
-        );
-    fontSize /= styleConfig?.fontSizeFactor || 1;
-    fontSize = Math.max(minFontSize, fontSize);
+      // Calculate font size
+      const vw = window.innerWidth / 100;
+      const vh = window.innerHeight / 100;
+      const minFontSize = isMobileView ? 16 : 22;
+      const maxFontSize = isMobileView ? 120 : 180;
+      let fontSize = isMobileView
+        ? Math.min(
+            animatedWidth / 8,
+            animatedHeight / 3,
+            8 * vw,
+            12 * vh,
+            maxFontSize
+          )
+        : Math.min(
+            animatedWidth / 6,
+            animatedHeight / 2,
+            11 * vw,
+            16 * vh,
+            maxFontSize
+          );
+      fontSize /= styleConfig?.fontSizeFactor || 1;
+      fontSize = Math.max(minFontSize, fontSize);
 
-    // Use wrapText to split into lines
-    const maxTextWidth = animatedWidth * 0.9;
-    const maxLines = isMobileView ? 4 : 5;
-    const lines = wrapText(currentWord || '', fontSize, maxTextWidth, maxLines, minFontSize);
+      // Use wrapText to split into lines
+      const maxTextWidth = animatedWidth * 0.9;
+      const maxLines = isMobileView ? 4 : 5;
+      const lines = wrapText(currentWord || '', fontSize, maxTextWidth, maxLines, minFontSize);
 
-    // Recalculate font size if wrapping reduced it
-    ctx.font = `bold ${fontSize}px ${fontFamily}`;
-    const lineHeight = fontSize * (isMobileView ? 1.3 : 1.2);
-    const totalHeight = lineHeight * lines.length;
-    const textCenterY = finalCenterY;
-    let startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
-
-    // Draw each line with shadow
-    lines.forEach((line, index) => {
-      ctx.save();
-      ctx.shadowOffsetX = fontSize * (isMobileView ? 0.02 : 0.03);
-      ctx.shadowOffsetY = fontSize * (isMobileView ? 0.02 : 0.03);
-      ctx.shadowBlur = fontSize * (isMobileView ? 0.05 : 0.07);
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      // Recalculate font size if wrapping reduced it
       ctx.font = `bold ${fontSize}px ${fontFamily}`;
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-      ctx.fillText(line, centerX, startY + (index * lineHeight));
-      ctx.restore();
-    });
+      const lineHeight = fontSize * (isMobileView ? 1.3 : 1.2);
+      const totalHeight = lineHeight * lines.length;
+      const textCenterY = finalCenterY;
+      let startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
+
+      // Draw each line with shadow
+      lines.forEach((line, index) => {
+        ctx.save();
+        ctx.shadowOffsetX = fontSize * (isMobileView ? 0.02 : 0.03);
+        ctx.shadowOffsetY = fontSize * (isMobileView ? 0.02 : 0.03);
+        ctx.shadowBlur = fontSize * (isMobileView ? 0.05 : 0.07);
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.font = `bold ${fontSize}px ${fontFamily}`;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+        ctx.fillText(line, centerX, startY + (index * lineHeight));
+        ctx.restore();
+      });
+    }
     // --- END WORD WRAPPING LOGIC ---
 
     animationRef.current = requestAnimationFrame(() => draw());
