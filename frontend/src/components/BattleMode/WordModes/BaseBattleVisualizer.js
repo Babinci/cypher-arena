@@ -74,7 +74,12 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.fillRect(0, 0, width, height);
     
     const controlsApproxHeight = 120;
-    const availableHeight = height - (isFullScreen ? 0 : controlsApproxHeight);
+    const topPadding = 20;
+    
+    const effectiveHeight = isFullScreen ? height : height - controlsApproxHeight;
+    const effectiveTopPadding = isFullScreen ? 0 : topPadding;
+    const availableHeight = Math.max(0, effectiveHeight - effectiveTopPadding);
+    
     const availableWidth = width;
     
     const isMobileView = availableWidth <= 768;
@@ -87,25 +92,24 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       maxWidth = Math.min(availableWidth * 0.75, 800);
     }
     
-    maxHeight = Math.min(availableHeight * 0.85, 600);
+    const heightFactor = isFullScreen ? 0.98 : 0.85;
+    maxHeight = Math.min(availableHeight * heightFactor, isFullScreen ? height : 600);
     
     const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
     
     const centerX = availableWidth / 2;
     
-    const topPadding = 20;
-
     const time = Date.now() / 15000;
     const pulseSize = Math.sin(time * 2) * 5;
     const animatedWidth = maxWidth + pulseSize;
     let animatedHeight = maxHeight + pulseSize;
 
-    let animatedY = topPadding;
+    let animatedY = effectiveTopPadding;
 
-    const maximumAllowedHeight = availableHeight - topPadding;
+    const maximumAllowedHeight = availableHeight;
     animatedHeight = Math.min(animatedHeight, maximumAllowedHeight);
 
-    animatedY = Math.max(topPadding, animatedY);
+    animatedY = Math.max(effectiveTopPadding, animatedY);
     const finalCenterY = animatedY + animatedHeight / 2;
     
     const animatedX = centerX - animatedWidth / 2;
@@ -142,7 +146,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const textCenterY = finalCenterY;
     
     if (lines.length === 1) {
-      let fontSize = Math.min(animatedWidth / 10, animatedHeight / 3);
+      let fontSize = Math.min(animatedWidth / 9, animatedHeight / 2.8);
       fontSize /= styleConfig?.fontSizeFactor || 1;
       ctx.font = `bold ${fontSize}px Arial`;
       let textWidth = ctx.measureText(currentWord).width;
@@ -153,7 +157,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       }
       ctx.fillText(currentWord, centerX, textCenterY);
     } else {
-      let fontSize = Math.min(animatedWidth / 15, animatedHeight / (2 + lines.length));
+      let fontSize = Math.min(animatedWidth / 14, animatedHeight / (1.8 + lines.length));
       fontSize /= styleConfig?.fontSizeFactor || 1;
       ctx.font = `bold ${fontSize}px Arial`;
       const lineHeight = fontSize * 1.2;
