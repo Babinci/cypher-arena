@@ -73,3 +73,5 @@
    - iOS development
    - Cross-platform features
    **Status: To Do**
+2. Implement embeddings for RAG (Retrieval-Augmented Generation) in topic mode and contrastive mode (for future advanced search and retrieval features).
+   **Status: Low Priority, Future Work**
