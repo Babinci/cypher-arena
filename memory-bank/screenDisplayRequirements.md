@@ -69,3 +69,8 @@ Desktop	14-16 pixels (body)	16-24 pixels (body), 35-50 pixels (titles)
 - **Acceptance Criteria:**
   - Clear, testable criteria for "display is good enough" on each device.
 
+
+## Rectangle
+
+i want rectangle to be within full height in fullscreen
+and  without full screen- i want it to be down to timer
