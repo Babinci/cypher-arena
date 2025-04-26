@@ -144,7 +144,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
   
-    const lines = currentWord.split('\n');
+    const lines = (currentWord || '').split('\n');
     
     const textCenterY = finalCenterY;
     
