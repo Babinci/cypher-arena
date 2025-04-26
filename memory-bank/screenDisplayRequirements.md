@@ -40,7 +40,7 @@
 
 - **General:**
   - All word-based modes (Word Mode, Topics Mode, Contrasting Mode) use a circle with a placed word.
-  - **Open Question:** Should we reconsider/brainstorm changing from the circle? The challenge is to present the word well on all needed devices.
+  - **Open Question:** Should we reconsider/brainstorm changing from the circle? The challenge is to present the word well on all needed devices.  IMPORTANT UPDATE: I AM CURRENTLY DEVELOPING WITH RECTANGLE INSTEAD OF CIRCLE
 
 ## Open Questions / To Be Decided
 

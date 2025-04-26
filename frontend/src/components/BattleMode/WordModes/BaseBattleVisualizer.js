@@ -94,23 +94,16 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const centerX = availableWidth / 2;
     
     const topPadding = 20;
-    const idealCenterY = availableHeight / 2;
 
     const time = Date.now() / 15000;
     const pulseSize = Math.sin(time * 2) * 5;
     const animatedWidth = maxWidth + pulseSize;
     let animatedHeight = maxHeight + pulseSize;
 
-    let animatedY = idealCenterY - animatedHeight / 2;
+    let animatedY = topPadding;
 
-    animatedY = Math.max(topPadding, animatedY);
-
-    if (!isFullScreen) {
-      const bottomLimit = availableHeight - topPadding;
-      if (animatedY + animatedHeight > bottomLimit) {
-        animatedHeight = bottomLimit - animatedY;
-      }
-    }
+    const maximumAllowedHeight = availableHeight - topPadding;
+    animatedHeight = Math.min(animatedHeight, maximumAllowedHeight);
 
     animatedY = Math.max(topPadding, animatedY);
     const finalCenterY = animatedY + animatedHeight / 2;
