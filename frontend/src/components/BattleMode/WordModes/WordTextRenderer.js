@@ -82,7 +82,9 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     }
     // --- END RE-INSERTED wrapTextEnhanced ---
 
-    let fontSize = Math.min(width / 9, maxFontSize);
+    // ADJUSTED: Consider height in initial estimate
+    let initialFontSizeEstimate = Math.min(width / 9, height / 6); // Rough estimate: ~5 lines total + spacing
+    let fontSize = Math.min(initialFontSizeEstimate, maxFontSize);
     fontSize = Math.max(minFontSize, fontSize);
     
     // Initial height fitting logic (adjusting bestFontSize)
@@ -92,9 +94,11 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
       // Wrap text for both items
       const item1LinesTemp = wrapTextEnhanced(item1, bestFontSize, maxTextWidth, 3, 18);
       const item2LinesTemp = wrapTextEnhanced(item2, bestFontSize, maxTextWidth, 3, 18);
-      const lineHeightTemp = bestFontSize * 1.3;
+      // ADJUSTED: Use smaller line height multiplier for mobile
+      const lineHeightTemp = bestFontSize * (isMobileView ? 1.15 : 1.3);
       const vsFontSizeTemp = Math.max(bestFontSize * 1.2, bestFontSize + 4);
-      const vsLineHeightTemp = vsFontSizeTemp * 1.5;
+      // ADJUSTED: Use smaller line height multiplier for mobile
+      const vsLineHeightTemp = vsFontSizeTemp * (isMobileView ? 1.3 : 1.5);
       const totalHeightTemp = (item1LinesTemp.length * lineHeightTemp) + vsLineHeightTemp + (item2LinesTemp.length * lineHeightTemp);
       if (totalHeightTemp <= height * 0.98) {
         fits = true;
@@ -106,8 +110,8 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     
     // Declare with LET now, as they will be modified in the width check loop
     let vsFontSize = Math.max(fontSize * 1.2, fontSize + 4);
-    let lineHeight = fontSize * 1.3;
-    let vsLineHeight = vsFontSize * 1.5;
+    let lineHeight = fontSize * (isMobileView ? 1.15 : 1.3);
+    let vsLineHeight = vsFontSize * (isMobileView ? 1.3 : 1.5);
     let item1Lines = wrapTextEnhanced(item1, fontSize, maxTextWidth, 3, 18);
     let item2Lines = wrapTextEnhanced(item2, fontSize, maxTextWidth, 3, 18);
 
@@ -126,7 +130,8 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
       fontSize -= 1;
       // Recalculate dependent sizes and re-wrap - NO const
       vsFontSize = Math.max(fontSize * 1.2, fontSize + 4);
-      lineHeight = fontSize * 1.3;
+      // ADJUSTED: Use smaller line height multiplier for mobile
+      lineHeight = fontSize * (isMobileView ? 1.15 : 1.3);
       item1Lines = wrapTextEnhanced(item1, fontSize, maxTextWidth, 3, 18);
       item2Lines = wrapTextEnhanced(item2, fontSize, maxTextWidth, 3, 18);
       widestContrast = 0;
@@ -141,8 +146,10 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     }
     // Update final sizes after potential width adjustment - NO const
     vsFontSize = Math.max(fontSize * 1.2, fontSize + 4);
-    lineHeight = fontSize * 1.3;
-    vsLineHeight = vsFontSize * 1.5;
+    // ADJUSTED: Use smaller line height multiplier for mobile
+    lineHeight = fontSize * (isMobileView ? 1.15 : 1.3);
+    // ADJUSTED: Use smaller line height multiplier for mobile
+    vsLineHeight = vsFontSize * (isMobileView ? 1.3 : 1.5);
     // Re-wrap just in case - NO const
     item1Lines = wrapTextEnhanced(item1, fontSize, maxTextWidth, 3, 18);
     item2Lines = wrapTextEnhanced(item2, fontSize, maxTextWidth, 3, 18);
@@ -243,7 +250,9 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   }
   const minFontSize = isMobileView ? 16 : 22;
   const maxFontSize = isMobileView ? 120 : 180;
-  let fontSize = Math.min(width / 8, maxFontSize);
+  // ADJUSTED: Consider height in initial estimate
+  let initialFontSizeEstimate = Math.min(width / 8, height / 5); // Rough estimate: ~4 lines + spacing
+  let fontSize = Math.min(initialFontSizeEstimate, maxFontSize);
   fontSize = Math.max(minFontSize, fontSize);
   const maxTextWidth = width * 0.99;
   const maxLines = isMobileView ? 4 : 5;
@@ -251,7 +260,8 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   let fits = false;
   while (!fits && bestFontSize > minFontSize) {
     let lines = wrapText(currentWord || '', bestFontSize, maxTextWidth, maxLines, minFontSize);
-    const lineHeight = bestFontSize * (isMobileView ? 1.3 : 1.2);
+    // ADJUSTED: Use smaller line height multiplier for mobile
+    const lineHeight = bestFontSize * (isMobileView ? 1.15 : 1.2);
     const totalHeight = lineHeight * lines.length;
     if (totalHeight <= height * 0.98) {
       fits = true;
@@ -283,7 +293,8 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   }
   // --- END RE-ADD FINAL WIDTH CHECK ---
 
-  const lineHeight = fontSize * (isMobileView ? 1.3 : 1.2);
+  // ADJUSTED: Use smaller line height multiplier for mobile
+  const lineHeight = fontSize * (isMobileView ? 1.15 : 1.2);
   const totalHeight = lineHeight * lines.length;
   const textCenterY = centerY;
   let startY = textCenterY - (totalHeight / 2) + (lineHeight / 2);
