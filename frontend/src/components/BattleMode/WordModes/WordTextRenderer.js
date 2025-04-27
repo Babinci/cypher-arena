@@ -16,7 +16,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   const fontFamily = "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif";
   const minFontSize = isMobileView ? 16 : 22; // Minimum reasonable font size
   const maxFontSizeNormal = isMobileView ? 120 : 180; // Max font size for normal mode
-  const maxFontSizeContrast = isMobileView ? 110 : 160; // Max font size for contrast mode
+  const maxFontSizeContrast = isMobileView ? 90 : 140; // Reduced from 110/160 for better mobile/desktop appearance
   const maxTextWidthFactor = 0.98; // Use 98% of rectangle width for text to avoid touching edges
   const maxHeightFactor = 0.98; // Use 98% of rectangle height for text
   const maxLinesNormal = isMobileView ? 4 : 5;
@@ -135,10 +135,10 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
 
       // Check width constraint (widest line overall)
       let widestLine = 0;
-      ctx.font = `bold ${currentFontSize}px ${fontFamily}`;
+      ctx.font = `${currentFontSize}px ${fontFamily}`; // Remove bold for contrast items
       item1Lines.forEach(line => widestLine = Math.max(widestLine, ctx.measureText(line).width));
       item2Lines.forEach(line => widestLine = Math.max(widestLine, ctx.measureText(line).width));
-      ctx.font = `bold ${currentVsFontSize}px ${fontFamily}`;
+      ctx.font = `${currentVsFontSize}px ${fontFamily}`; // Remove bold for VS
       widestLine = Math.max(widestLine, ctx.measureText('vs').width); // Check 'vs' width
 
       if (widestLine > maxTextWidth) {
@@ -165,49 +165,52 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
 
     // --- Drawing Contrast Mode ---
     let currentY = centerY - (finalTotalHeight / 2) + (finalLineHeight / 2); // Start Y adjusted for baseline
+    // Slightly reduce spacing between items for compactness
+    const itemSpacing = finalLineHeight * 0.95;
 
     // Draw Item 1
-    ctx.font = `bold ${finalFontSize}px ${fontFamily}`;
+    ctx.font = `${finalFontSize}px ${fontFamily}`; // Remove bold
+    // Note: Canvas does not support letterSpacing directly. For future: implement manual letter spacing if needed.
     finalItem1Lines.forEach(line => {
       ctx.save();
-      // Apply subtle shadow
-      ctx.shadowOffsetX = finalFontSize * 0.03;
-      ctx.shadowOffsetY = finalFontSize * 0.03;
-      ctx.shadowBlur = finalFontSize * 0.07;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)'; // Slightly transparent black
-      ctx.fillText(line, centerX, currentY);
-      ctx.restore();
-      currentY += finalLineHeight;
-    });
-
-    // Draw VS (adjusted Y position to be centered in its own line height)
-    currentY -= finalLineHeight / 2; // Move back half item line height
-    currentY += finalVsLineHeight / 2; // Move forward half vs line height
-    ctx.save();
-    ctx.font = `bold ${finalVsFontSize}px ${fontFamily}`;
-    ctx.shadowOffsetX = finalVsFontSize * 0.03;
-    ctx.shadowOffsetY = finalVsFontSize * 0.03;
-    ctx.shadowBlur = finalVsFontSize * 0.1;
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-    ctx.fillStyle = 'rgba(0, 0, 0, 1)'; // Solid black for VS
-    ctx.fillText('vs', centerX, currentY);
-    ctx.restore();
-    currentY += finalVsLineHeight / 2; // Move forward half vs line height
-    currentY += finalLineHeight / 2; // Move forward half item line height for item 2 start
-
-    // Draw Item 2
-    ctx.font = `bold ${finalFontSize}px ${fontFamily}`;
-    finalItem2Lines.forEach(line => {
-      ctx.save();
-      ctx.shadowOffsetX = finalFontSize * 0.03;
-      ctx.shadowOffsetY = finalFontSize * 0.03;
-      ctx.shadowBlur = finalFontSize * 0.07;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      // Apply lighter shadow
+      ctx.shadowOffsetX = finalFontSize * 0.02;
+      ctx.shadowOffsetY = finalFontSize * 0.02;
+      ctx.shadowBlur = finalFontSize * 0.05;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)'; // More transparent shadow
       ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
       ctx.fillText(line, centerX, currentY);
       ctx.restore();
-      currentY += finalLineHeight;
+      currentY += itemSpacing;
+    });
+
+    // Draw VS (adjusted Y position to be centered in its own line height)
+    currentY -= itemSpacing / 2; // Move back half item line height
+    currentY += finalVsLineHeight / 2; // Move forward half vs line height
+    ctx.save();
+    ctx.font = `${finalVsFontSize}px ${fontFamily}`; // Remove bold
+    ctx.shadowOffsetX = finalVsFontSize * 0.02;
+    ctx.shadowOffsetY = finalVsFontSize * 0.02;
+    ctx.shadowBlur = finalVsFontSize * 0.05;
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+    ctx.fillText('vs', centerX, currentY);
+    ctx.restore();
+    currentY += finalVsLineHeight / 2; // Move forward half vs line height
+    currentY += itemSpacing / 2; // Move forward half item line height for item 2 start
+
+    // Draw Item 2
+    ctx.font = `${finalFontSize}px ${fontFamily}`; // Remove bold
+    finalItem2Lines.forEach(line => {
+      ctx.save();
+      ctx.shadowOffsetX = finalFontSize * 0.02;
+      ctx.shadowOffsetY = finalFontSize * 0.02;
+      ctx.shadowBlur = finalFontSize * 0.05;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+      ctx.fillText(line, centerX, currentY);
+      ctx.restore();
+      currentY += itemSpacing;
     });
 
     return; // End contrast mode rendering
