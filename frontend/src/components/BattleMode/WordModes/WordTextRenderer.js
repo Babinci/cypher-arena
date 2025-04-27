@@ -16,7 +16,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   const fontFamily = "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif";
   const minFontSize = isMobileView ? 16 : 22; // Minimum reasonable font size
   const maxFontSizeNormal = isMobileView ? 120 : 180; // Max font size for normal mode
-  const maxFontSizeContrast = isMobileView ? 90 : 140; // Reduced from 110/160 for better mobile/desktop appearance
+  const maxFontSizeContrast = isMobileView ? 70 : 110; // Further reduced for more compact contrast mode
   const maxTextWidthFactor = 0.98; // Use 98% of rectangle width for text to avoid touching edges
   const maxHeightFactor = 0.98; // Use 98% of rectangle height for text
   const maxLinesNormal = isMobileView ? 4 : 5;
