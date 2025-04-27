@@ -54,11 +54,12 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
             lines.push(currentLine);
             currentLine = words[i];
           } else {
-            // Single word too long, force break
+            // Single word too long, force break by both pixel width and char count
             let word = words[i];
             let part = '';
             for (let c = 0; c < word.length; c++) {
               part += word[c];
+              // Check both pixel width and char count for the chunk
               if (ctx.measureText(part + '-').width > maxWidth || part.length > maxCharsPerLine) {
                 if (part.length > 1) {
                   lines.push(part.slice(0, -1) + '-');
