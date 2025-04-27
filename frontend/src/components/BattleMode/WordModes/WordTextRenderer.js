@@ -12,12 +12,6 @@
  */
 export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styleConfig }) {
   // --- ADD LOGS HERE ---
-  console.log('[WordTextRenderer] Received Rectangle:', {
-    width: rectangle.width.toFixed(2),
-    height: rectangle.height.toFixed(2),
-    aspectRatio: (rectangle.width / rectangle.height).toFixed(2),
-    isMobileView
-  });
   // --- END LOGS ---
 
   const { width, height, centerX, centerY } = rectangle;

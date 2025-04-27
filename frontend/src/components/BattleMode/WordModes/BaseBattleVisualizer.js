@@ -91,12 +91,6 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     maxHeight = availableHeight - (topPadding * 2);
     maxHeight = Math.max(20, maxHeight);
     
-    console.log('[BaseBattleVisualizer] Dimensions:', {
-      availableWidth, availableHeight, isMobileView,
-      maxWidth: maxWidth.toFixed(2), 
-      maxHeight: maxHeight.toFixed(2)
-    });
-    
     const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
     
     const centerX = availableWidth / 2;
@@ -109,12 +103,6 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     let animatedY = topPadding;
     animatedHeight = Math.min(animatedHeight, maxHeight);
     animatedY = Math.max(topPadding, animatedY);
-    
-    console.log('[BaseBattleVisualizer] Animated Rect:', {
-      animatedWidth: animatedWidth.toFixed(2), 
-      animatedHeight: animatedHeight.toFixed(2),
-      aspectRatio: (animatedWidth / animatedHeight).toFixed(2)
-    });
     
     const finalCenterY = animatedY + animatedHeight / 2;
     
