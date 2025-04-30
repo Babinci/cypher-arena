@@ -6,7 +6,7 @@ class WordsAdmin(admin.ModelAdmin):
     list_display = ('name', 'occurrence', 'speech_part')
 
 class ContrastPairAdmin(admin.ModelAdmin):
-    list_display = ('item1', 'item2', 'rating')
+    list_display = ('item1', 'item2', )
 
 
 class CypherArenaPerplexityDeepResearchAdmin(admin.ModelAdmin):
