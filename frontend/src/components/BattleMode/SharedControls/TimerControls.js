@@ -1,5 +1,5 @@
 // components/SharedControls/TimerControls.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // TimerControls: A reusable component that renders the control panel UI
 // Props:
@@ -28,147 +28,204 @@ export const TimerControls = ({
   handleResetRound,
   isControlWindow,
   isFullScreen,
-}) => (
-  // Main control panel container
-  // Note: overflow behavior differs between control window and main window
-  // Control window shows full content, main window scrolls
-  <div
-    className="control-panel"
-    style={{
-      width: '100%',
-      overflowY: isControlWindow ? 'visible' : 'auto',
-      padding: '10px',
-      boxSizing: 'border-box',
-      height: 'auto',
-      background: 'rgba(0,0,0,0.5)',
-      color: 'white',
-      position: isFullScreen ? 'fixed' : 'static',
-      bottom: 0,
-      left: 0,
-      transition: 'opacity 0.3s ease-in-out',
-      opacity: isFullScreen ? 0 : 1,
-      // Add mobile-specific styles
-    }}
-    onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
-    onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+}) => {
+  // Add mobile detection
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isExpanded, setIsExpanded] = useState(!isMobile); // Collapsed by default on mobile
 
-    
-  >
-    {/* Control window title */}
-    {isControlWindow && (
-      <h2 style={{
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Mobile-optimized compact styles
+  const mobileStyles = {
+    controlPanel: {
+      padding: '5px',
+      height: isMobile ? 'auto' : 'auto',
+      maxHeight: isMobile && !isExpanded ? '40px' : 'none',
+      overflow: 'hidden',
+      transition: 'max-height 0.3s ease-in-out',
+    },
+    timerInfo: {
+      fontSize: isMobile ? '12px' : '14px',
+      marginBottom: isMobile ? '10px' : '20px',
+    },
+    button: {
+      padding: isMobile ? '6px 10px' : '10px 20px',
+      fontSize: isMobile ? '12px' : '14px',
+    }
+  };
+
+  return (
+    <div
+      className="control-panel"
+      style={{
+        width: '100%',
+        overflowY: isControlWindow ? 'visible' : 'auto',
+        padding: isMobile ? '5px' : '10px',
+        boxSizing: 'border-box',
+        height: 'auto',
+        background: 'rgba(0,0,0,0.5)',
+        color: 'white',
+        position: isFullScreen ? 'fixed' : 'static',
+        bottom: 0,
+        left: 0,
+        transition: 'opacity 0.3s ease-in-out',
+        opacity: isFullScreen ? 0 : 1,
+        ...mobileStyles.controlPanel
+      }}
+      onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
+      onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
+    >
+      {/* Control window title */}
+      {isControlWindow && (
+        <h2 style={{
+          textAlign: 'center',
+          marginBottom: '20px',
+          fontSize: '24px'
+        }}>
+          Control Panel
+        </h2>
+      )}
+
+      {/* Mobile toggle button */}
+      {isMobile && !isControlWindow && (
+        <div 
+          onClick={() => setIsExpanded(!isExpanded)}
+          style={{
+            textAlign: 'center',
+            cursor: 'pointer',
+            padding: '5px',
+            borderBottom: isExpanded ? '1px solid rgba(255,255,255,0.2)' : 'none'
+          }}
+        >
+          {isExpanded ? 'Collapse Controls ▲' : 'Expand Controls ▼'}
+        </div>
+      )}
+     
+      {/* Timer display section - always visible */}
+      <div style={{ 
+        marginBottom: isMobile ? '10px' : '20px', 
         textAlign: 'center',
-        marginBottom: '20px',
-        fontSize: '24px'
+        fontSize: isMobile ? '12px' : '14px'
       }}>
-        Control Panel
-      </h2>
-    )}
-   
-    {/* Timer display section */}
-    <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-      <div className="timer">Timer: {timer} seconds</div>
-      <div>Interval: {changeInterval} seconds</div>
-      <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
-    </div>
+        <div className="timer">Timer: {timer} seconds</div>
+        {(isExpanded || !isMobile || isControlWindow) && (
+          <>
+            <div>Interval: {changeInterval} seconds</div>
+            <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
+          </>
+        )}
+      </div>
 
-    {/* Round duration slider */}
-    <div style={{ marginBottom: '20px' }}>
-      <input
-        type="range"
-        min="10"
-        max="300"
-        value={roundDuration === Infinity ? 300 : roundDuration}
-        onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-        style={{
-          width: '100%',
-          marginBottom: '10px',
-          accentColor: '#4CAF50'
-        }}
-      />
-    </div>
+      {/* Rest of controls - only visible when expanded on mobile */}
+      {(isExpanded || !isMobile || isControlWindow) && (
+        <>
+          {/* Round duration slider */}
+          <div style={{ marginBottom: isMobile ? '10px' : '20px' }}>
+            <input
+              type="range"
+              min="10"
+              max="300"
+              value={roundDuration === Infinity ? 300 : roundDuration}
+              onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
+              style={{
+                width: '100%',
+                marginBottom: '10px',
+                accentColor: '#4CAF50'
+              }}
+            />
+          </div>
 
-    {/* Control buttons */}
-    <div style={{
-      display: 'flex',
-      justifyContent: 'space-around',
-      flexWrap: 'wrap',
-      gap: '10px'
-    }}>
-      {/* Next Item button */}
-      <button
-        onClick={getNextItem}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#FFD700',
-          color: 'black',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        Next Item
-      </button>
-      
-      {/* Decrease Interval button */}
-      <button
-        onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#FFD700',
-          color: 'black',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        Decrease Interval
-      </button>
-      
-      {/* Increase Interval button */}
-      <button
-        onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#FFD700',
-          color: 'black',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        Increase Interval
-      </button>
-      
-      {/* Pause/Resume button */}
-      <button
-        onClick={toggleActive}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#FFD700',
-          color: 'black',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        {isActive ? 'Pause' : 'Resume'}
-      </button>
-      
-      {/* Reset Round button */}
-      <button
-        onClick={handleResetRound}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#FFD700',
-          color: 'black',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-      >
-        Reset Round
-      </button>
+          {/* Control buttons */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            flexWrap: 'wrap',
+            gap: isMobile ? '5px' : '10px'
+          }}>
+            {/* Button styling - smaller on mobile */}
+            <button
+              onClick={getNextItem}
+              style={{
+                padding: isMobile ? '6px 10px' : '10px 20px',
+                backgroundColor: '#FFD700',
+                color: 'black',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: isMobile ? '12px' : '14px'
+              }}
+            >
+              Next Item
+            </button>
+            
+            <button
+              onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
+              style={{
+                padding: isMobile ? '6px 10px' : '10px 20px',
+                backgroundColor: '#FFD700',
+                color: 'black',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: isMobile ? '12px' : '14px'
+              }}
+            >
+              Decrease Interval
+            </button>
+            
+            <button
+              onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
+              style={{
+                padding: isMobile ? '6px 10px' : '10px 20px',
+                backgroundColor: '#FFD700',
+                color: 'black',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: isMobile ? '12px' : '14px'
+              }}
+            >
+              Increase Interval
+            </button>
+            
+            <button
+              onClick={toggleActive}
+              style={{
+                padding: isMobile ? '6px 10px' : '10px 20px',
+                backgroundColor: '#FFD700',
+                color: 'black',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: isMobile ? '12px' : '14px'
+              }}
+            >
+              {isActive ? 'Pause' : 'Resume'}
+            </button>
+            
+            <button
+              onClick={handleResetRound}
+              style={{
+                padding: isMobile ? '6px 10px' : '10px 20px',
+                backgroundColor: '#FFD700',
+                color: 'black',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: isMobile ? '12px' : '14px'
+              }}
+            >
+              Reset Round
+            </button>
+          </div>
+        </>
+      )}
     </div>
-  </div>
-);
+  );
+};
