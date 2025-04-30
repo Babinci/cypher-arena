@@ -1,5 +1,5 @@
 const apiConfig = {
-  baseUrl: '/api/',
+  baseUrl: process.env.REACT_APP_API_BASE_URL,
   endpoints: {
     getRandomWord: 'words/get_random_word/',
     getTopic: 'words/get_topics/',
