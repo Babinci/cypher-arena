@@ -13,4 +13,4 @@ class ContrastPairSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContrastPair
-        fields = ["id", "item1", "item2", "tags", "ratings"]
+        fields = ["id", "item1", "item2", "tags", "ratings", "vector_embedding"]

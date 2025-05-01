@@ -18,6 +18,7 @@ router.register(r'contrast-pairs', views.ContrastPairViewSet)
 agent_urlpatterns = [
     path('contrast-pairs/', agent_views.AgentContrastPairListCreateAPIView.as_view(), name='agent-contrast-pair-list-create'),
     path('contrast-pairs/rate/', agent_views.AgentContrastPairBatchRateAPIView.as_view(), name='agent-contrast-pair-batch-rate'),
+    path('contrast-pairs/update/', agent_views.AgentContrastPairBatchUpdateAPIView.as_view(), name='agent-contrast-pair-batch-update'),
     path('news/', agent_views.AgentNewsListAPIView.as_view(), name='agent-news-list'),
     path('topics/', agent_views.AgentTopicListCreateUpdateAPIView.as_view(), name='agent-topic-list-create-update'),
 ]

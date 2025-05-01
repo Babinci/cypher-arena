@@ -30,3 +30,10 @@ PATCH
 
 POST 
 /words/agent/news/  <-- to insert for CypherArenaPerplexityDeepResearch model
+
+
+
+### Important!
+
+
+all that routes- we are modyfing them within agent_urlpatterns in  backend/words/urls.py
