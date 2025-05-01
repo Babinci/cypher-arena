@@ -4,6 +4,22 @@
 
 ---
 
+## Authentication
+
+All requests to the AI Agent API endpoints require authentication via a custom HTTP header.
+
+- **Header Name:** `X-AGENT-TOKEN`
+- **Value:** A secret token provided to authorized agents. This token is configured on the server-side (via Django settings or environment variables).
+
+**Example Header:**
+```
+X-AGENT-TOKEN: your_secret_agent_token_here
+```
+
+Requests without this header or with an invalid token will receive a `403 Forbidden` response.
+
+---
+
 ## 1. Contrast Pairs
 
 Endpoints for managing and retrieving contrastive pairs.

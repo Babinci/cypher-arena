@@ -20,6 +20,7 @@ from .agent_serializers import (
     AgentNewsInputSerializer,
     AgentNewsBatchCreateSerializer
 )
+from .permissions import AgentTokenPermission
 import hashlib
 from django_user_agents.utils import get_user_agent
 from collections import OrderedDict # Import OrderedDict
@@ -54,6 +55,7 @@ class CustomPagination(PageNumberPagination):
 # ----------------------
 
 class AgentContrastPairListCreateAPIView(APIView):
+    permission_classes = [AgentTokenPermission]
     pagination_class = CustomPagination
 
     @swagger_auto_schema(
@@ -134,6 +136,7 @@ class AgentContrastPairListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AgentContrastPairBatchRateAPIView(APIView):
+    permission_classes = [AgentTokenPermission]
     @swagger_auto_schema(
         operation_summary="Batch rate contrast pairs",
         operation_description="Rate multiple contrast pairs in a single request. Each rating must include the pair ID and a rating value (1-5).",
@@ -182,6 +185,7 @@ class AgentContrastPairBatchRateAPIView(APIView):
 # -----------
 
 class AgentNewsListAPIView(APIView):
+    permission_classes = [AgentTokenPermission]
     @swagger_auto_schema(
         operation_summary="Get news",
         operation_description="""
@@ -259,6 +263,7 @@ class AgentNewsListAPIView(APIView):
 # -------------
 
 class AgentTopicListCreateUpdateAPIView(APIView):
+    permission_classes = [AgentTokenPermission]
     pagination_class = CustomPagination
 
     @swagger_auto_schema(
@@ -418,6 +423,7 @@ class AgentTopicListCreateUpdateAPIView(APIView):
 # ++++++++++++++
 
 class AgentContrastPairBatchUpdateAPIView(APIView):
+    permission_classes = [AgentTokenPermission]
     @swagger_auto_schema(
         operation_summary="Batch update contrast pairs",
         operation_description="Update multiple contrast pairs in a single request. Each update must include the pair ID and fields to update (item1, item2, vector_embedding).",

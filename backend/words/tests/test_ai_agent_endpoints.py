@@ -4,6 +4,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from ..models import ContrastPair, Temator, CypherArenaPerplexityDeepResearch, ContrastPairRating
 from datetime import datetime, timedelta
+from django.conf import settings
 import json
 import base64
 
@@ -44,6 +45,11 @@ class AgentEndpointsTestCase(TestCase):
             news_source="news"
         )
 
+        # Store the expected token from settings
+        cls.expected_token = settings.AI_AGENT_SECRET_KEY
+        if not cls.expected_token:
+            raise ValueError("AI_AGENT_SECRET_KEY not set in Django settings for testing.")
+
     def setUp(self):
         self.client = APIClient()
         # URLs
@@ -52,11 +58,55 @@ class AgentEndpointsTestCase(TestCase):
         self.contrast_pairs_update_url = reverse('agent:agent-contrast-pair-batch-update')
         self.news_url = reverse('agent:agent-news-list')
         self.topics_url = reverse('agent:agent-topic-list-create-update')
+        # Define agent headers
+        self.agent_headers = {'HTTP_X_AGENT_TOKEN': self.expected_token}
+        self.invalid_headers = {'HTTP_X_AGENT_TOKEN': 'wrongtoken'}
+
+    # --- Authentication Tests ---
+    def test_auth_contrast_pairs_get_no_token(self):
+        response = self.client.get(self.contrast_pairs_url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_contrast_pairs_get_invalid_token(self):
+        response = self.client.get(self.contrast_pairs_url, **self.invalid_headers)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_contrast_pairs_post_no_token(self):
+        response = self.client.post(self.contrast_pairs_url, data={}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_contrast_pairs_rate_post_no_token(self):
+        response = self.client.post(self.contrast_pairs_rate_url, data={}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_contrast_pairs_update_patch_no_token(self):
+        response = self.client.patch(self.contrast_pairs_update_url, data={}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_news_get_no_token(self):
+        response = self.client.get(self.news_url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_news_post_no_token(self):
+        response = self.client.post(self.news_url, data={}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_topics_get_no_token(self):
+        response = self.client.get(self.topics_url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_topics_post_no_token(self):
+        response = self.client.post(self.topics_url, data={}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_auth_topics_patch_no_token(self):
+        response = self.client.patch(self.topics_url, data={}, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     # Contrast Pairs
     def test_get_contrast_pairs_paginated(self):
         """Test GET /agent/contrast-pairs/ returns paginated results."""
-        response = self.client.get(self.contrast_pairs_url, {'page': 1, 'count': 2})
+        response = self.client.get(self.contrast_pairs_url, {'page': 1, 'count': 2}, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(len(data.get('results', [])), 2)
@@ -66,7 +116,7 @@ class AgentEndpointsTestCase(TestCase):
 
     def test_get_contrast_pairs_with_embedding(self):
         """Test GET /agent/contrast-pairs/ includes embedding when requested."""
-        response = self.client.get(self.contrast_pairs_url, {'vector_embedding': 'true'})
+        response = self.client.get(self.contrast_pairs_url, {'vector_embedding': 'true'}, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         found_embedding = False
@@ -81,7 +131,7 @@ class AgentEndpointsTestCase(TestCase):
 
     def test_get_contrast_pairs_without_embedding(self):
         """Test GET /agent/contrast-pairs/ excludes embedding by default."""
-        response = self.client.get(self.contrast_pairs_url)
+        response = self.client.get(self.contrast_pairs_url, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         for pair in data['results']:
@@ -90,13 +140,13 @@ class AgentEndpointsTestCase(TestCase):
     def test_get_contrast_pairs_random(self):
         """Test GET /agent/contrast-pairs/ returns random order when requested."""
         # Get ordered results first
-        response_ordered = self.client.get(self.contrast_pairs_url)
+        response_ordered = self.client.get(self.contrast_pairs_url, **self.agent_headers)
         ordered_ids = [p['id'] for p in response_ordered.json()['results']]
 
         # Get random results (run a few times to increase chance of different order)
         is_different = False
         for _ in range(5): # Try a few times
-            response_random = self.client.get(self.contrast_pairs_url, {'random': 'true'})
+            response_random = self.client.get(self.contrast_pairs_url, {'random': 'true'}, **self.agent_headers)
             random_ids = [p['id'] for p in response_random.json()['results']]
             if ordered_ids != random_ids:
                 is_different = True
@@ -107,7 +157,7 @@ class AgentEndpointsTestCase(TestCase):
     def test_get_contrast_pairs_empty(self):
         """Test GET /agent/contrast-pairs/ returns empty list if no pairs exist."""
         ContrastPair.objects.all().delete() # Ensure no pairs exist
-        response = self.client.get(self.contrast_pairs_url)
+        response = self.client.get(self.contrast_pairs_url, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(len(data.get('results', [])), 0)
@@ -121,7 +171,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'item1': 'day', 'item2': 'night'}
             ]
         }
-        response = self.client.post(self.contrast_pairs_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.contrast_pairs_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(ContrastPair.objects.filter(item1='sun', item2='moon').exists())
         self.assertTrue(ContrastPair.objects.filter(item1='day', item2='night').exists())
@@ -135,7 +185,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'item1': 'test', 'item2': 'again'}
             ]
         }
-        response = self.client.post(self.contrast_pairs_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.contrast_pairs_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(ContrastPair.objects.count(), 4) # Should not create any
 
@@ -147,7 +197,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'pair_id': self.pair2.id, 'rating': 1}
             ]
         }
-        response = self.client.post(self.contrast_pairs_rate_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.contrast_pairs_rate_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Assuming user_fingerprint is handled or mocked in view logic
         # self.assertEqual(ContrastPairRating.objects.filter(contrast_pair=self.pair1, rating=5).count(), 1)
@@ -161,7 +211,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'pair_id': 999, 'rating': 3} # Non-existent pair_id
             ]
         }
-        response = self.client.post(self.contrast_pairs_rate_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.contrast_pairs_rate_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(ContrastPairRating.objects.count(), 0)
 
@@ -175,7 +225,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'id': self.pair_with_embedding.id, 'vector_embedding': ''} # Clear embedding
             ]
         }
-        response = self.client.patch(self.contrast_pairs_update_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.patch(self.contrast_pairs_update_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.pair1.refresh_from_db()
         self.pair2.refresh_from_db()
@@ -194,7 +244,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'id': self.pair2.id, 'vector_embedding': 'not base64 $$$$'} # Invalid embedding
             ]
         }
-        response = self.client.patch(self.contrast_pairs_update_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.patch(self.contrast_pairs_update_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.pair1.refresh_from_db()
         self.assertEqual(self.pair1.item1, 'apple') # Should be unchanged
@@ -208,7 +258,7 @@ class AgentEndpointsTestCase(TestCase):
             'start_time': start_time,
             'end_time': end_time,
             'news_type': 'tech'
-        })
+        }, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(len(data), 1)
@@ -222,13 +272,13 @@ class AgentEndpointsTestCase(TestCase):
             'start_time': start_time,
             'end_time': end_time,
             'news_type': 'politics'
-        })
+        }, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()), 0)
 
     def test_get_news_no_dates(self):
         """Test GET /agent/news/ returns all news when no dates are provided."""
-        response = self.client.get(self.news_url)
+        response = self.client.get(self.news_url, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()), 2) # Should return all created news
 
@@ -237,9 +287,9 @@ class AgentEndpointsTestCase(TestCase):
         response = self.client.get(self.news_url, {
             'start_time': 'invalid-date',
             'end_time': datetime.now().isoformat()
-        })
+        }, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        response = self.client.get(self.news_url, {'start_time': datetime.now().isoformat()}) # Only one date provided
+        response = self.client.get(self.news_url, {'start_time': datetime.now().isoformat()}, **self.agent_headers) # Only one date provided
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_news_batch_create_valid(self):
@@ -261,7 +311,7 @@ class AgentEndpointsTestCase(TestCase):
                 }
             ]
         }
-        response = self.client.post(self.news_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.news_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(CypherArenaPerplexityDeepResearch.objects.count(), 4) # 2 initial + 2 new
         self.assertTrue(CypherArenaPerplexityDeepResearch.objects.filter(news_source='politics').exists())
@@ -277,14 +327,14 @@ class AgentEndpointsTestCase(TestCase):
                 }
             ]
         }
-        response = self.client.post(self.news_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.news_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(CypherArenaPerplexityDeepResearch.objects.count(), 2) # Should not create any
 
     # Topics
     def test_get_topics_paginated_and_filtered(self):
         """Test GET /agent/topics/ returns paginated and filtered topics."""
-        response = self.client.get(self.topics_url, {'page': 1, 'count': 2, 'source': 'manual'})
+        response = self.client.get(self.topics_url, {'page': 1, 'count': 2, 'source': 'manual'}, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         self.assertEqual(len(data.get('results', [])), 2)
@@ -293,7 +343,7 @@ class AgentEndpointsTestCase(TestCase):
 
     def test_get_topics_with_embedding(self):
         """Test GET /agent/topics/ includes embedding when requested."""
-        response = self.client.get(self.topics_url, {'vector_embedding': 'true'})
+        response = self.client.get(self.topics_url, {'vector_embedding': 'true'}, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         found_embedding = False
@@ -306,7 +356,7 @@ class AgentEndpointsTestCase(TestCase):
 
     def test_get_topics_without_embedding(self):
         """Test GET /agent/topics/ excludes embedding when requested."""
-        response = self.client.get(self.topics_url, {'vector_embedding': 'false'})
+        response = self.client.get(self.topics_url, {'vector_embedding': 'false'}, **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
         for topic in data['results']:
@@ -314,12 +364,12 @@ class AgentEndpointsTestCase(TestCase):
 
     def test_get_topics_random(self):
         """Test GET /agent/topics/ returns random order when requested."""
-        response_ordered = self.client.get(self.topics_url)
+        response_ordered = self.client.get(self.topics_url, **self.agent_headers)
         ordered_ids = [t['id'] for t in response_ordered.json()['results']]
 
         is_different = False
         for _ in range(5): # Try a few times
-            response_random = self.client.get(self.topics_url, {'random': 'true'})
+            response_random = self.client.get(self.topics_url, {'random': 'true'}, **self.agent_headers)
             random_ids = [t['id'] for t in response_random.json()['results']]
             if ordered_ids != random_ids:
                 is_different = True
@@ -334,7 +384,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'name': 'Geography', 'source': 'generated'}
             ]
         }
-        response = self.client.post(self.topics_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.topics_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Temator.objects.filter(name='History').exists())
         self.assertTrue(Temator.objects.filter(name='Geography').exists())
@@ -348,7 +398,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'name': 'Valid Topic', 'source': 'manual'}
             ]
         }
-        response = self.client.post(self.topics_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.post(self.topics_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Temator.objects.count(), 4) # Should not create any
 
@@ -362,7 +412,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'id': self.topic_with_embedding.id, 'vector_embedding': ''} # Clear embedding
             ]
         }
-        response = self.client.patch(self.topics_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.patch(self.topics_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.topic1.refresh_from_db()
         self.topic2.refresh_from_db()
@@ -381,7 +431,7 @@ class AgentEndpointsTestCase(TestCase):
                 {'id': self.topic2.id, 'vector_embedding': 'not base64 $$$$'} # Invalid embedding
             ]
         }
-        response = self.client.patch(self.topics_url, data=json.dumps(payload), content_type='application/json')
+        response = self.client.patch(self.topics_url, data=json.dumps(payload), content_type='application/json', **self.agent_headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         # Ensure original data is unchanged
         self.topic1.refresh_from_db()
