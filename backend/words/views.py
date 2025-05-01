@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from django.db.models import F
 from random import sample
 from .models import ContrastPair, ContrastTag, ContrastPairRating
-from .serializers import ContrastPairSerializer, TagSerializer
+from .serializers import ContrastPairSerializer2, TagSerializer
 from django.db.models import Q
 from django_user_agents.utils import get_user_agent
 import hashlib
@@ -115,7 +115,7 @@ class RandomWordAPIView(APIView):
 # Create your views here.
 class ContrastPairViewSet(viewsets.ModelViewSet):
     queryset = ContrastPair.objects.all()
-    serializer_class = ContrastPairSerializer
+    serializer_class = ContrastPairSerializer2
 
     def list(self, request):
         """
