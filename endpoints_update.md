@@ -1,4 +1,4 @@
-endpoints to modify:
+## endpoints to modify:
 
 GET
 /words/agent/contrast-pairs/   - increase max count in pagination to 2000 and add optional ?random=true&vector_embedding=true
@@ -19,7 +19,9 @@ GET
 PATCH
 /words/agent/topics/  <--- i also want to be able to update  vector_embedding
 
-endpoint to add: 
+
+
+## endpoint to add: 
 
 
 PATCH  
