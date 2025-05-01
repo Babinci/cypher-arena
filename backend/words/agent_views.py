@@ -372,12 +372,10 @@ class AgentTopicListCreateUpdateAPIView(APIView):
             try:
                 with transaction.atomic():
                     for update_data in updates_data:
-                        print(f"[DEBUG] Processing topic update: {update_data}") # DEBUG
                         topic_id = update_data['id']
                         # Explicitly pop id, handle embedding separately
                         update_fields = {k: v for k, v in update_data.items() if k not in ['id', 'vector_embedding']}
                         vector_embedding_str = update_data.get('vector_embedding')
-                        print(f"[DEBUG] Topic {topic_id} - Embedding string: {vector_embedding_str}") # DEBUG
 
                         try:
                             topic = Temator.objects.get(pk=topic_id)
@@ -394,7 +392,6 @@ class AgentTopicListCreateUpdateAPIView(APIView):
                                     else:
                                         topic.vector_embedding = base64.b64decode(vector_embedding_str)
                                 except (TypeError, base64.binascii.Error) as decode_error:
-                                    print(f"[DEBUG] Topic {topic_id} - Decode Error: {decode_error}") # DEBUG
                                     errors.append(f"Error decoding vector_embedding for topic {topic_id}: {decode_error}")
                                     continue # Skip saving this topic if embedding is invalid
 
@@ -402,15 +399,12 @@ class AgentTopicListCreateUpdateAPIView(APIView):
                             updated_count += 1
                             updated_ids.append(topic_id)
                         except Temator.DoesNotExist:
-                            print(f"[DEBUG] Topic {topic_id} - DoesNotExist Error") # DEBUG
                             errors.append(f"Temator with id {topic_id} does not exist.")
                         except Exception as e:
-                            print(f"[DEBUG] Topic {topic_id} - General Error: {e}") # DEBUG
                             errors.append(f"Error updating topic {topic_id}: {str(e)}")
 
                 if errors:
                     # If any errors occurred, return 400
-                    print(f"[DEBUG] Final Errors: {errors}") # DEBUG
                     return Response({"errors": errors, "updated_count": updated_count, "updated_ids": updated_ids}, status=status.HTTP_400_BAD_REQUEST)
 
                 return Response({"status": "batch update successful", "updated_count": updated_count, "updated_ids": updated_ids}, status=status.HTTP_200_OK)
@@ -442,12 +436,10 @@ class AgentContrastPairBatchUpdateAPIView(APIView):
             try:
                 with transaction.atomic():
                     for update_data in updates_data:
-                        print(f"[DEBUG] Processing pair update: {update_data}") # DEBUG
                         pair_id = update_data['id']
                         # Explicitly pop id, handle embedding separately
                         update_fields = {k: v for k, v in update_data.items() if k not in ['id', 'vector_embedding']}
                         vector_embedding_str = update_data.get('vector_embedding')
-                        print(f"[DEBUG] Pair {pair_id} - Embedding string: {vector_embedding_str}") # DEBUG
 
                         try:
                             pair = ContrastPair.objects.get(pk=pair_id)
@@ -464,7 +456,6 @@ class AgentContrastPairBatchUpdateAPIView(APIView):
                                     else:
                                         pair.vector_embedding = base64.b64decode(vector_embedding_str)
                                 except (TypeError, base64.binascii.Error) as decode_error:
-                                    print(f"[DEBUG] Pair {pair_id} - Decode Error: {decode_error}") # DEBUG
                                     errors.append(f"Error decoding vector_embedding for pair {pair_id}: {decode_error}")
                                     continue # Skip saving this pair if embedding is invalid
 
@@ -472,15 +463,12 @@ class AgentContrastPairBatchUpdateAPIView(APIView):
                             updated_count += 1
                             updated_ids.append(pair_id)
                         except ContrastPair.DoesNotExist:
-                            print(f"[DEBUG] Pair {pair_id} - DoesNotExist Error") # DEBUG
                             errors.append(f"ContrastPair with id {pair_id} does not exist.")
                         except Exception as e:
-                            print(f"[DEBUG] Pair {pair_id} - General Error: {e}") # DEBUG
                             errors.append(f"Error updating pair {pair_id}: {str(e)}")
 
                 if errors:
                     # If any errors occurred, return 400
-                    print(f"[DEBUG] Final Errors: {errors}") # DEBUG
                     return Response({"errors": errors, "updated_count": updated_count, "updated_ids": updated_ids}, status=status.HTTP_400_BAD_REQUEST)
 
                 return Response({"status": "batch update successful", "updated_count": updated_count, "updated_ids": updated_ids}, status=status.HTTP_200_OK)
