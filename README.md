@@ -12,7 +12,7 @@ Cypher Arena is live at https://cypher-arena.com/. Currently, there is word mode
 
 **About word mode**: There is a large (~200,000) database of Polish words, which are then grouped by occurrence and linguistic type.
 **About image mode**: There is a large open-source image library, which is used. There are >2000 unique categories of images, to supply maximum diversity of topics, in about 7GB of data on the production server.
-**About contrastive mode**: This mode provides AI-generated pairs for contrasting freestyle.
+**About contrastive mode**: This mode provides AI-generated pairs for contrasting freestyle- ~20000 pairs.
 **About topic mode**: This mode provides more than 60000 topics generated in an agentic RAG process.
 
 ## Logo
