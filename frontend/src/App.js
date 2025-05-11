@@ -8,6 +8,7 @@ import Home from './components/Home/Home';
 import WordMode from './components/BattleMode/WordModes/WordMode';
 import TopicMode from './components/BattleMode/WordModes/TopicMode';
 import ImagesMode from './components/BattleMode/ImagesMode/ImagesMode';
+import BeatsMode from './components/BattleMode/BeatsMode/BeatsMode';
 import ReportFeedback from './components/UserManagement/ReportFeedback';
 import { BackButton } from './components/Navigation/Buttons';
 import Account from './components/Account/Account';
@@ -26,6 +27,7 @@ function App() {
           <Route path="/word-mode" element={<WordMode />} />
           <Route path="/topic-mode" element={<TopicMode />} />
           <Route path="/image-mode" element={<ImagesMode />} />
+          <Route path="/beats-mode" element={<BeatsMode />} />
           <Route path="/report-feedback" element={<ReportFeedback />} />
           <Route path="/account" element={<Account />} />
           <Route path="/battle-judging" element={<BattleJudging />} />
