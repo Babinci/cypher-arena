@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import apiConfig from '../../config/apiConfig';
+import useTranslation from '../../config/useTranslation';
 
 function ReportFeedback() {
   const [nickname, setNickname] = useState('');
   const [feedback, setFeedback] = useState('');
   const [message, setMessage] = useState('');
   const [csrfToken, setCsrfToken] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Function to get CSRF token from cookies
@@ -38,7 +40,7 @@ function ReportFeedback() {
         credentials: 'include', // This is important for including cookies in the request
       });
       if (response.ok) {
-        setMessage('Feedback submitted successfully!');
+        setMessage(t('feedbackSuccess'));
         setNickname('');
         setFeedback('');
       } else {
@@ -46,16 +48,16 @@ function ReportFeedback() {
         setMessage(`Failed to submit feedback. ${errorData.detail || 'Please try again.'}`);
       }
     } catch (error) {
-      setMessage('An error occurred. Please try again later.');
+      setMessage(t('feedbackError'));
     }
   };
 
   return (
     <div>
-      <h2>Report Feedback</h2>
+      <h2>{t('reportFeedback')}</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="nickname">Nickname (max 100 characters):</label>
+          <label htmlFor="nickname">{t('nickname')}</label>
           <input
             type="text"
             id="nickname"
@@ -66,7 +68,7 @@ function ReportFeedback() {
           />
         </div>
         <div>
-          <label htmlFor="feedback">Feedback (max 2000 characters):</label>
+          <label htmlFor="feedback">{t('feedbackText')}</label>
           <textarea
             id="feedback"
             value={feedback}
@@ -75,7 +77,7 @@ function ReportFeedback() {
             required
           />
         </div>
-        <button type="submit">Submit Feedback</button>
+        <button type="submit">{t('submitFeedback')}</button>
       </form>
       {message && <p>{message}</p>}
     </div>

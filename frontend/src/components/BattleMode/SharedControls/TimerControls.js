@@ -1,5 +1,6 @@
 // components/SharedControls/TimerControls.js
 import React, { useState, useEffect } from 'react';
+import useTranslation from '../../../config/useTranslation';
 
 // TimerControls: A reusable component that renders the control panel UI
 // Props:
@@ -29,6 +30,9 @@ export const TimerControls = ({
   isControlWindow,
   isFullScreen,
 }) => {
+  // Get translation function
+  const { t } = useTranslation();
+  
   // Add mobile detection
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isExpanded, setIsExpanded] = useState(!isMobile); // Collapsed by default on mobile
@@ -88,7 +92,7 @@ export const TimerControls = ({
           marginBottom: '20px',
           fontSize: '24px'
         }}>
-          Control Panel
+          {t('openControlPanel')}
         </h2>
       )}
 
@@ -113,11 +117,11 @@ export const TimerControls = ({
         textAlign: 'center',
         fontSize: isMobile ? '12px' : '14px'
       }}>
-        <div className="timer">Timer: {timer} seconds</div>
+        <div className="timer">{t('timer')}: {timer} seconds</div>
         {(isExpanded || !isMobile || isControlWindow) && (
           <>
-            <div>Interval: {changeInterval} seconds</div>
-            <div>Round Duration: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
+            <div>{t('interval')}: {changeInterval} seconds</div>
+            <div>{t('roundDuration')}: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
           </>
         )}
       </div>
@@ -161,7 +165,7 @@ export const TimerControls = ({
                 fontSize: isMobile ? '12px' : '14px'
               }}
             >
-              Next Item
+              {t('nextItem')}
             </button>
             
             <button
@@ -176,7 +180,7 @@ export const TimerControls = ({
                 fontSize: isMobile ? '12px' : '14px'
               }}
             >
-              Decrease Interval
+              {t('decreaseInterval')}
             </button>
             
             <button
@@ -191,7 +195,7 @@ export const TimerControls = ({
                 fontSize: isMobile ? '12px' : '14px'
               }}
             >
-              Increase Interval
+              {t('increaseInterval')}
             </button>
             
             <button
@@ -206,7 +210,7 @@ export const TimerControls = ({
                 fontSize: isMobile ? '12px' : '14px'
               }}
             >
-              {isActive ? 'Pause' : 'Resume'}
+              {isActive ? t('pause') : t('resume')}
             </button>
             
             <button
@@ -221,7 +225,7 @@ export const TimerControls = ({
                 fontSize: isMobile ? '12px' : '14px'
               }}
             >
-              Reset Round
+              {t('resetRound')}
             </button>
           </div>
         </>

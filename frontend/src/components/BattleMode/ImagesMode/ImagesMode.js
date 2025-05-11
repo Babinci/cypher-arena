@@ -4,6 +4,7 @@ import { FullScreen } from 'react-full-screen';
 import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import apiConfig from '../../../config/apiConfig';
+import useTranslation from '../../../config/useTranslation';
 import ImagePreloader from './ImagePreloader';
 import { getImage } from './indexedDBUtils';
 
@@ -12,6 +13,7 @@ function ImagesMode() {
   const [images, setImages] = useState([]);
   const [nextPage, setNextPage] = useState(null);
   const [imagesPreloaded, setImagesPreloaded] = useState(false);
+  const { t } = useTranslation();
 
   // Initialize timer control with image-specific configuration
   const {
@@ -146,7 +148,7 @@ function ImagesMode() {
           width: '100%'
         }}
       >
-        Open Control Panel
+        {t('openControlPanel')}
       </button>
       <button
         onClick={toggleFullScreen}
@@ -161,7 +163,7 @@ function ImagesMode() {
           width: '100%'
         }}
       >
-        {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+        {isFullScreen ? t('exitFullScreen') : t('enterFullScreen')}
       </button>
     </div>
   );

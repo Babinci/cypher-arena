@@ -5,12 +5,14 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import { drawGradientRectangle } from './Gradient_Rectangle';
 import { renderWordText } from './WordTextRenderer';
+import useTranslation from '../../../config/useTranslation';
 
 const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+  const { t } = useTranslation();
 
   const {
     timer,
@@ -183,7 +185,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
           width: '100%'
         }}
       >
-        Open Control Panel
+        {t('openControlPanel')}
       </button>
       <button
         onClick={toggleFullScreen}
@@ -198,7 +200,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
           width: '100%'
         }}
       >
-        {isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+        {isFullScreen ? t('exitFullScreen') : t('enterFullScreen')}
       </button>
     </div>
   );
