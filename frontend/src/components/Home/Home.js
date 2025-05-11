@@ -40,13 +40,14 @@ function Home() {
         <button onClick={() => navigate('/image-mode')}>{t('imagesMode')}</button>
         <button onClick={() => navigate('/contrasting-mode')}>{t('contrastingMode')}</button>
         <button onClick={() => navigate('/topic-mode')}>{t('topicMode')}</button>
-        
+        <button onClick={() => navigate('/beats-mode')}>{t('beats')}</button>
+
         {/* <h2>Tryb Ocenianie Walki</h2> */}
         {/* <button onClick={() => navigate('/battle-judging')}>Ocenianie Pojedynczej Walki</button> */}
-        
+
         {/* <h2>Tryb Zorganizuj Bitwę</h2> */}
         {/* <button onClick={() => navigate('/organize-battle')}>Zorganizuj Bitwę</button> */}
-        
+
         <button onClick={() => navigate('/report-feedback')}>{t('giveFeedback')}</button>
       </div>
     </div>

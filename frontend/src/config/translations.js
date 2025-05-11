@@ -27,6 +27,14 @@ const translations = {
     contrastingMode: "Rap Avatar Duel",
     topicMode: "Topic Generator",
     giveFeedback: "Give Feedback!",
+    beats: "Beats",
+    spotifyLoginNote: "Note: You'll need to allow third-party cookies in your browser settings and be logged into Spotify to play full tracks. Otherwise, only 30-second previews will be available.",
+    openInSpotify: "Open in Spotify",
+
+    // Beats Mode
+    beatsModeTitle: "Freestyle Beats",
+    beatsModeDescription: "Use these beats for your freestyle practice sessions.",
+    thirdPartyCookiesWarning: "Note: You'll need to allow third-party cookies in your browser settings and be logged into Spotify to play full tracks. Otherwise, only 30-second previews will be available.",
     
     // Exit fullscreen
     exitFullScreen: "Exit Full Screen",
@@ -65,6 +73,14 @@ const translations = {
     contrastingMode: "Rap Avatar Duel",
     topicMode: "Temator",
     giveFeedback: "Daj Feedback!",
+    beats: "Beaty",
+    spotifyLoginNote: "Uwaga: Aby odtwarzać pełne utwory, musisz zezwolić na pliki cookie stron trzecich w ustawieniach przeglądarki i być zalogowanym do Spotify. W przeciwnym razie dostępne będą tylko 30-sekundowe fragmenty.",
+    openInSpotify: "Otwórz w Spotify",
+
+    // Beats Mode
+    beatsModeTitle: "Beaty Freestyle",
+    beatsModeDescription: "Użyj tych beatów do swoich sesji freestyle.",
+    thirdPartyCookiesWarning: "Uwaga: Aby odtwarzać pełne utwory, musisz zezwolić na pliki cookie stron trzecich w ustawieniach przeglądarki i być zalogowanym do Spotify. W przeciwnym razie dostępne będą tylko 30-sekundowe fragmenty.",
     
     // Exit fullscreen
     exitFullScreen: "Wyłącz Pełny Ekran",
