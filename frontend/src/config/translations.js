@@ -34,11 +34,11 @@ const translations = {
   pl: {
     // Control panel related
     openControlPanel: "Otwórz Panel Sterowania",
-    enterFullScreen: "Pełny Ekran",
-    back: "Powrót",
+    enterFullScreen: "Full Ekran",
+    back: "Wróć",
     
     // Timer related
-    timer: "Czasomierz",
+    timer: "Stoper",
     interval: "Interwał",
     roundDuration: "Czas Rundy",
     
