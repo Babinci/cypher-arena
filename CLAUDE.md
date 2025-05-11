@@ -20,10 +20,6 @@ Cypher Arena is a platform for freestyle rap battles, designed to provide variou
 - Celery for asynchronous tasks
 - Core functionality split across modules (words, images_mode, user_management)
 
-
-
-
-
 ## Development Environment Setup
 
 ### Backend Setup

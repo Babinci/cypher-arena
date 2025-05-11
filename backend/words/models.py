@@ -6,7 +6,7 @@ class Word(models.Model):
     name = models.CharField(max_length=255, unique=True)
     occurrence = models.PositiveIntegerField()
     speech_part = models.CharField(null=True, max_length=1024)
-
+    
     def __str__(self):
         return self.name
 
@@ -14,14 +14,14 @@ class Word(models.Model):
 class Temator(models.Model):
     name = models.CharField(max_length=511, unique=True)
     source = models.CharField(max_length=100, default='standard')
-
+    vector_embedding = models.BinaryField(null=True, blank=True)
 
 class ContrastPair(models.Model):
     item1 = models.CharField(max_length=100)
     item2 = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    vector_embedding = models.BinaryField(null=True, blank=True)
     def __str__(self):
         return f"{self.item1} vs {self.item2}"
 
