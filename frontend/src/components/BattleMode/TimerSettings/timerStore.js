@@ -108,9 +108,9 @@ const useTimerStore = create()(
 
     return {
       // Timer state
-      timer: 15,
+      timer: 35,
       roundTimer: 90,
-      changeInterval: 15,
+      changeInterval: 35,
       roundDuration: Infinity,
       isActive: true,
       currentIndex: 0,

@@ -32,7 +32,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     openControlWindow,
     toggleFullScreen,
   } = useTimerControl({
-    defaultInterval: 10,
+    defaultInterval: 35,
     defaultRoundDuration: 90,
     defaultIsActive: true,
     itemCount: words.length,

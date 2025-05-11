@@ -4,7 +4,7 @@
 -- placement of word circle words
    - brainstorming circle
    - browser tab icon and cypher arena text
-   - some timer text internationalization
+   - ✅ Complete UI internationalization (English and Polish)
    - server bitwer connection
       - youtubers judges bitwer battles statistics
    - users types (judge, player, freestyle peace, battle organizer)
@@ -26,9 +26,12 @@
 3. **Frontend Updates**
    - Remove unnecessary routes to simplify the user interface.
    - Refine timer UX for a smoother experience during battles.
+   - ✅ Implemented multilingual support system with translations for all UI elements
+   - ✅ Added language switcher on main page with Polish as default
    
    ### Challenges
-   - This is to be done.
+   - Continue expanding translations for any new features added to the application.
+   - Ensure consistent language usage across all components.
 
 ## Next Steps
 - Finalize server migration and deploy the live application.

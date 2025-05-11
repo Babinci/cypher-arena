@@ -34,7 +34,7 @@ function ImagesMode() {
     openControlWindow,
     toggleFullScreen,
   } = useTimerControl({
-    defaultInterval: 15,
+    defaultInterval: 35,
     defaultRoundDuration: 90,
     defaultIsActive: true,
     itemCount: images.length,
