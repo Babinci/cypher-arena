@@ -29,7 +29,15 @@ const translations = {
     giveFeedback: "Give Feedback!",
     
     // Exit fullscreen
-    exitFullScreen: "Exit Full Screen"
+    exitFullScreen: "Exit Full Screen",
+    
+    // Feedback page
+    reportFeedback: "Report Feedback",
+    nickname: "Nickname (max 100 characters):",
+    feedbackText: "Feedback (max 2000 characters):",
+    submitFeedback: "Submit Feedback",
+    feedbackSuccess: "Feedback submitted successfully!",
+    feedbackError: "An error occurred. Please try again later."
   },
   pl: {
     // Control panel related
@@ -59,7 +67,15 @@ const translations = {
     giveFeedback: "Daj Feedback!",
     
     // Exit fullscreen
-    exitFullScreen: "Wyłącz Pełny Ekran"
+    exitFullScreen: "Wyłącz Pełny Ekran",
+    
+    // Feedback page
+    reportFeedback: "Wyślij Feedback na temat aplikacji, błędów, sugestii, pomysłów itp.",
+    nickname: "Ksywa:",
+    feedbackText: "Twoja opinia (maks. 2000 znaków):",
+    submitFeedback: "Wyślij Opinię",
+    feedbackSuccess: "Opinia wysłana pomyślnie!",
+    feedbackError: "Wystąpił błąd. Spróbuj ponownie później."
   }
 };
 
