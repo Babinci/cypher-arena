@@ -8,6 +8,7 @@
    - Second window support
    - Basic round management
    - Content display
+   - Multilingual support (English and Polish)
 
 2. Celery integration for news search
 3. Practice Modes
@@ -21,6 +22,7 @@
    - Initial deployment
    - Database implementation
    - API endpoints
+   - Translation system with language switching
 
 ## What's Left to Build
 
