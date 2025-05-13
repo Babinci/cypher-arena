@@ -6,3 +6,5 @@ the challenge is they can vary
 - in  frontend/src/components/BattleMode/WordModes/TopicMode.js i can have 5 words topics, 
 - in frontend/src/components/BattleMode/WordModes/ContrastingMode.js i can have 4 words vs 4 words pairs
 and some words can be longer
+
+we should follow user stories from  memory-bank/screenDisplayRequirements.md
