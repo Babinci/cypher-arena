@@ -13,7 +13,7 @@
 export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styleConfig }) {
 
   // --- CONSTANTS ---
-  const fontFamily = "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif";
+  const fontFamily = "'Oswald', 'Impact', sans-serif"; // Bold, condensed font ideal for rap battles
 
   // Set minimum font sizes based on device requirements (from screenDisplayRequirements.md)
   // Projector: 30-40px (body), Mobile: 16-20px, Desktop: 16-24px
@@ -48,7 +48,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   // --- Shared Wrap Function ---
   // Enhanced wrapText function to handle edge cases better
   function wrapText(text, fontSize, currentMaxWidth, currentMaxLines, charBreak = true) {
-    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    ctx.font = `700 ${fontSize}px ${fontFamily}`; // Use consistent weight (700) for measuring
     const words = text ? text.trim().split(/(\s+)/) : []; // Keep spaces as separate elements
     let lines = [];
     let currentLine = '';
@@ -143,10 +143,10 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
 
       // Check width constraint (widest line overall)
       let widestLine = 0;
-      ctx.font = `${currentFontSize}px ${fontFamily}`; // Remove bold for contrast items
+      ctx.font = `700 ${currentFontSize}px ${fontFamily}`; // Use bold weight (700) for contrast items
       item1Lines.forEach(line => widestLine = Math.max(widestLine, ctx.measureText(line).width));
       item2Lines.forEach(line => widestLine = Math.max(widestLine, ctx.measureText(line).width));
-      ctx.font = `${currentVsFontSize}px ${fontFamily}`; // Remove bold for VS
+      ctx.font = `700 ${currentVsFontSize}px ${fontFamily}`; // Use bold weight (700) for VS
       widestLine = Math.max(widestLine, ctx.measureText('vs').width); // Check 'vs' width
 
       if (widestLine > maxTextWidth) {
@@ -177,7 +177,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     const itemSpacing = finalLineHeight * 0.95;
 
     // Draw Item 1
-    ctx.font = `${finalFontSize}px ${fontFamily}`; // Remove bold
+    ctx.font = `700 ${finalFontSize}px ${fontFamily}`; // Use bold weight (700)
     // Note: Canvas does not support letterSpacing directly. For future: implement manual letter spacing if needed.
     finalItem1Lines.forEach(line => {
       ctx.save();
@@ -196,7 +196,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     currentY -= itemSpacing / 2; // Move back half item line height
     currentY += finalVsLineHeight / 2; // Move forward half vs line height
     ctx.save();
-    ctx.font = `${finalVsFontSize}px ${fontFamily}`; // Remove bold
+    ctx.font = `700 ${finalVsFontSize}px ${fontFamily}`; // Use bold weight (700)
     ctx.shadowOffsetX = finalVsFontSize * 0.02;
     ctx.shadowOffsetY = finalVsFontSize * 0.02;
     ctx.shadowBlur = finalVsFontSize * 0.05;
@@ -208,7 +208,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     currentY += itemSpacing / 2; // Move forward half item line height for item 2 start
 
     // Draw Item 2
-    ctx.font = `${finalFontSize}px ${fontFamily}`; // Remove bold
+    ctx.font = `700 ${finalFontSize}px ${fontFamily}`; // Use bold weight (700)
     finalItem2Lines.forEach(line => {
       ctx.save();
       ctx.shadowOffsetX = finalFontSize * 0.02;
@@ -263,7 +263,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
     // --- Drawing Normal Mode ----
     const startY = centerY - (finalTotalHeight / 2) + (finalLineHeight / 2); // Adjust start Y for middle baseline
 
-    ctx.font = `bold ${finalFontSize}px ${fontFamily}`;
+    ctx.font = `700 ${finalFontSize}px ${fontFamily}`; // Use bold weight (700) instead of "bold"
     finalLines.forEach((line, index) => {
       ctx.save();
       // Adjusted shadow based on font size and view
