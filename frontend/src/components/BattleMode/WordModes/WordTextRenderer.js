@@ -13,6 +13,7 @@
 export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styleConfig }) {
 
   // --- CONSTANTS ---
+  // Oswald is a condensed font perfect for freestyle rap battles
   const fontFamily = "'Oswald', 'Impact', sans-serif"; // Bold, condensed font ideal for rap battles
 
   // Set minimum font sizes based on device requirements (from screenDisplayRequirements.md)
