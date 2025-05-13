@@ -1,11 +1,8 @@
-i want to have spotify tab in main page- to play beats;
-from one playlist: 
+i am thinking of font sizes in frontend frontend/src/components/BattleMode/WordModes  ;
 
-
-i have this embed from spotify
-
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5JyZOh3sXa75Lsm8kyS1rI?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-
-
-make it embed in website 
+the problem is i need one consistent font across all modes that will be nicely displayed within rectangle;
+the challenge is they can vary
+- in frontend/src/components/BattleMode/WordModes/WordMode.js  i can have small 3 character word,
+- in  frontend/src/components/BattleMode/WordModes/TopicMode.js i can have 5 words topics, 
+- in frontend/src/components/BattleMode/WordModes/ContrastingMode.js i can have 4 words vs 4 words pairs
+and some words can be longer
