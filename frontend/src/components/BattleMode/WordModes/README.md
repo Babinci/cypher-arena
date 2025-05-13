@@ -1,4 +1,4 @@
-# Word Modes Components
+# Word Modes Components with Oswald Font
 
 This directory contains various battle modes that display words, topics, and contrasting items for freestyle rap battles.
 
