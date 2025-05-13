@@ -14,12 +14,20 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
 
   // --- CONSTANTS ---
   const fontFamily = "'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif";
+
+  // Set minimum font sizes based on device requirements (from screenDisplayRequirements.md)
+  // Projector: 30-40px (body), Mobile: 16-20px, Desktop: 16-24px
   const minFontSize = isMobileView ? 16 : 22; // Minimum reasonable font size
-  const maxFontSizeNormal = isMobileView ? 70 : 110; // Match contrast mode for compact font in all modes
-  const maxFontSizeContrast = isMobileView ? 70 : 110; // Further reduced for more compact contrast mode
+
+  // Unified maximum font sizes across all modes
+  // Using slightly reduced values for consistent appearance
+  const maxFontSize = isMobileView ? 60 : 100; // Universal max size for all modes
+
   const maxTextWidthFactor = 0.98; // Use 98% of rectangle width for text to avoid touching edges
   const maxHeightFactor = 0.98; // Use 98% of rectangle height for text
-  const maxLinesNormal = isMobileView ? 4 : 5;
+
+  // Consistent line limits across all modes, adjusted by content type
+  const maxLinesNormal = isMobileView ? 4 : 5; // Single words or topics
   const maxLinesContrast = 3; // Max lines per item in contrast mode
 
   // Line height multipliers - ADJUSTED FOR BETTER PROPORTIONS
@@ -124,7 +132,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
 
     // Find optimal font size
     let bestFontSize = minFontSize;
-    for (let currentFontSize = maxFontSizeContrast; currentFontSize >= minFontSize; currentFontSize -= 1) {
+    for (let currentFontSize = maxFontSize; currentFontSize >= minFontSize; currentFontSize -= 1) {
       const currentLineHeight = currentFontSize * lineHeightMultiplierContrastItem;
       const currentVsFontSize = Math.max(currentFontSize * 1.2, currentFontSize + 4); // VS size relative to item font size
       const currentVsLineHeight = currentVsFontSize * lineHeightMultiplierContrastVS;
@@ -222,7 +230,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView, styl
   if (currentWord) {
       // Find optimal font size
     let bestFontSize = minFontSize;
-    for (let currentFontSize = maxFontSizeNormal; currentFontSize >= minFontSize; currentFontSize -= 1) {
+    for (let currentFontSize = maxFontSize; currentFontSize >= minFontSize; currentFontSize -= 1) {
       const currentLineHeight = currentFontSize * lineHeightMultiplierNormal;
 
       // Wrap text
