@@ -137,6 +137,9 @@ The project uses a configuration file (`config.json`) for deployment settings. T
 3. For image-heavy features, leverage the IndexedDB caching system
 4. Backend features should follow the Django REST Framework patterns
 
+## Memories
+
+- When making frontend changes, user has launched frontend server and handles running that from terminal
 
 ## Memory Bank Structure
 
