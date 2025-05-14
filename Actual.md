@@ -16,8 +16,8 @@ I propose you  to:
 - make plan of changes to implement fully ux designer feedback
 
 when making changes:
-you can use playwrigth mcp tools to see all changes while doing that (i have running frontend server at http://localhost:3000/)
-    - keep in mind that timer should be very clearly visible and functional, yet to have maximal 10 percent of the screen height
+- keep in mind that timer should be very clearly visible and functional, yet to have maximal 15 percent of the screen height
+- keep in mind that current words proportions in  frontend/src/components/BattleMode/WordModes are perfect- dont change them
 
 we can make these parts of timer: 
 <timer_parts>
@@ -27,3 +27,5 @@ Czas Rundy: Infinity
 </timer_parts>
 in one line- that would save some screen height
 
+
+generally, i need also first site, landing page to be completely astonishing- for now it is the most amateur looking
