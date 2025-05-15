@@ -85,10 +85,11 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     
     let maxWidth, maxHeight;
     
-    // Set rectangle to use most of the screen
+    // Set rectangle to use more of the screen height - make it taller
     // This should match the area used by text
     maxWidth = Math.min(availableWidth * 0.9, 1200);  
-    maxHeight = Math.min(availableHeight * 0.8, 800);
+    // Increased height from 0.8 to 0.85 for a taller rectangle
+    maxHeight = Math.min(availableHeight * 0.85, 900);
     
     const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
     
@@ -102,8 +103,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const animatedWidth = maxWidth + pulseSize;
     let animatedHeight = maxHeight + pulseSize;
 
-    // Position rectangle with topPadding like in original code
-    const topPadding = 20;
+    // Position rectangle with less topPadding for better vertical centering
+    const topPadding = 15; // Reduced from 20
     let animatedY = topPadding;
     animatedHeight = Math.min(animatedHeight, maxHeight);
     animatedY = Math.max(topPadding, animatedY);
@@ -111,6 +112,22 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const finalCenterY = animatedY + animatedHeight / 2;
     
     const animatedX = centerX - animatedWidth / 2;
+    
+    // Use a ref to track if we've already logged this info
+    if (!window.hasLoggedRectangleInfo) {
+      // Only log once
+      console.log("=== RECTANGLE PLACEMENT INFO (ONE-TIME) ===");
+      console.log("Rectangle Placement (% of screen):");
+      console.log(`- Top border: ${(animatedY / availableHeight * 100).toFixed(1)}%`);
+      console.log(`- Bottom border: ${((animatedY + animatedHeight) / availableHeight * 100).toFixed(1)}%`);
+      console.log(`- Left border: ${(animatedX / availableWidth * 100).toFixed(1)}%`);
+      console.log(`- Right border: ${((animatedX + animatedWidth) / availableWidth * 100).toFixed(1)}%`);
+      console.log(`- Width: ${(animatedWidth / availableWidth * 100).toFixed(1)}% of screen width`);
+      console.log(`- Height: ${(animatedHeight / availableHeight * 100).toFixed(1)}% of screen height`);
+      
+      // Mark that we've logged this info
+      window.hasLoggedRectangleInfo = true;
+    }
 
     // Use the new rectangle drawing function
     drawGradientRectangle(ctx, {
@@ -251,26 +268,22 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
             {renderControlButtons()}
           </>
         )}
-        <div 
-          style={{ 
-            flexShrink: 0
-          }}
-        >
-          <TimerControls
-            timer={timer}
-            roundTimer={roundTimer}
-            changeInterval={changeInterval}
-            roundDuration={roundDuration}
-            isActive={isActive}
-            handleRoundDurationChange={handleRoundDurationChange}
-            getNextItem={getNextItem}
-            handleIntervalChange={handleIntervalChange}
-            toggleActive={toggleActive}
-            handleResetRound={handleResetRound}
-            isControlWindow={isControlWindow}
-            isFullScreen={isFullScreen}
-          />
-        </div>
+        
+        {/* Timer controls now float above content instead of being in flex layout */}
+        <TimerControls
+          timer={timer}
+          roundTimer={roundTimer}
+          changeInterval={changeInterval}
+          roundDuration={roundDuration}
+          isActive={isActive}
+          handleRoundDurationChange={handleRoundDurationChange}
+          getNextItem={getNextItem}
+          handleIntervalChange={handleIntervalChange}
+          toggleActive={toggleActive}
+          handleResetRound={handleResetRound}
+          isControlWindow={isControlWindow}
+          isFullScreen={isFullScreen}
+        />
       </div>
     </FullScreen>
   );

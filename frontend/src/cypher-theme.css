@@ -7,9 +7,9 @@
 /* Root variables for theming */
 :root {
   /* Spotify-inspired background colors */
-  --bg-deep: #121212;
-  --bg-medium: #181818;
-  --bg-light: #282828;
+  --bg-deep: #131313; /* 3% brighter */
+  --bg-medium: #191919; /* 3% brighter */
+  --bg-light: #292929; /* 3% brighter */
   
   /* Spotify-inspired accent colors */
   --accent-primary: #1DB954; /* Spotify green */
@@ -93,7 +93,7 @@ button {
   font-family: var(--font-display);
   font-weight: 600;
   text-transform: uppercase;
-  background: var(--bg-light); /* Tidal uses darker buttons */
+  background: #222222; /* 4% darker than original */
   color: white;
   border: none;
   border-radius: 4px; /* Tidal uses more square buttons */
@@ -120,7 +120,7 @@ button::after {
 
 button:hover {
   transform: translateY(-1px);
-  background: #333333; /* Tidal's slightly lighter hover state */
+  background: #2a2a2a; /* Darker but still visible on hover */
   box-shadow: none;
 }
 
@@ -162,7 +162,12 @@ input:focus, select:focus, textarea:focus {
   justify-content: center;
   align-items: center;
   overflow: hidden; /* Keep overflowing elements hidden */
-  background-color: var(--bg-deep);
+  background-color: #171717; /* Slightly brighter than var(--bg-deep) */
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(60, 60, 60, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(60, 60, 60, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(60, 60, 60, 0.08) 0%, transparent 30%),
+    radial-gradient(circle at 70% 20%, rgba(60, 60, 60, 0.08) 0%, transparent 30%);
 }
 
 .home-content {
@@ -223,7 +228,7 @@ input:focus, select:focus, textarea:focus {
   letter-spacing: 0.05em;
   margin: 0;
   transition: all 0.2s ease;
-  background-color: #333333; /* Tidal button color */
+  background-color: #222222; /* 4% darker for better contrast */
   color: white;
   border-radius: 4px; /* Tidal square buttons */
   position: relative;
@@ -302,7 +307,7 @@ input:focus, select:focus, textarea:focus {
   animation: spotlightPulse 8s ease-in-out infinite;
 }
 
-/* Spotify-inspired visual elements */
+/* Fractal-inspired visual elements */
 .visual-elements {
   position: absolute;
   top: 0;
@@ -312,6 +317,45 @@ input:focus, select:focus, textarea:focus {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+}
+
+/* Subtle fractal elements */
+.visual-elements::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='none' stroke='rgba(100, 100, 100, 0.05)' stroke-width='0.5' d='M40,30 C50,50 20,70 30,90 C40,70 60,50 70,30 C60,50 30,70 20,50 C30,30 60,10 70,30 M30,20 C40,40 10,60 20,80 C30,60 50,40 60,20 C50,40 20,60 10,40 C20,20 50,0 60,20'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  filter: blur(1px);
+  background-size: 600px 600px;
+  transform-origin: center;
+  animation: slowRotate 120s linear infinite;
+}
+
+.visual-elements::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='none' stroke='rgba(40, 200, 100, 0.03)' stroke-width='0.5' d='M25,25 Q40,20 50,35 T75,55 Q65,70 50,65 T25,45 Q35,30 50,25 T75,40 Q70,60 50,70 T20,45'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  filter: blur(2px);
+  background-size: 800px 800px;
+  transform-origin: center;
+  animation: slowRotate 180s linear infinite reverse;
+}
+
+@keyframes slowRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
 .record-circle {
@@ -419,7 +463,7 @@ input:focus, select:focus, textarea:focus {
   padding: 10px 18px;
   margin: 5px;
   font-size: 0.9rem;
-  background: #333333; /* Tidal button color */
+  background: #222222; /* 4% darker for better contrast */
   min-width: auto;
   border-radius: 4px; /* Tidal square buttons */
   color: white;
@@ -479,35 +523,101 @@ input:focus, select:focus, textarea:focus {
   border-radius: 50px;
 }
 
-/* Tidal-style slider */
+/* Timer slider - improved visibility */
 input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
-  height: 2px; /* Thinner track for Tidal */
-  border-radius: 0; /* Tidal has flat sliders */
-  background: #4A4A4A; /* Tidal slider track color */
+  height: 6px; /* Thicker track for better visibility */
+  border-radius: 3px; /* Slightly rounded track */
+  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
   outline: none;
-  margin: 15px 0;
+  margin: 20px 0; /* More vertical space */
+  box-shadow: 0 0 5px rgba(29, 185, 84, 0.3); /* Subtle glow */
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 2px; /* Square-ish thumb for Tidal */
-  background: var(--accent-primary); /* Tidal uses colored thumb */
+  width: 20px; /* Larger thumb */
+  height: 20px; /* Larger thumb */
+  border-radius: 4px; /* Square-ish thumb with rounded corners */
+  background: var(--accent-primary); /* Main brand color */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: none;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+  border: 2px solid rgba(255, 255, 255, 0.8); /* White border for contrast */
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
   background: var(--accent-secondary);
+  box-shadow: 0 0 12px rgba(29, 185, 84, 0.6); /* Enhanced glow on hover */
+}
+
+/* Mozilla Firefox styles */
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--accent-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 /* Visualizer enhancements */
 canvas {
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}
+
+/* Green slider for timer - matching the reference image */
+.green-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background-color: rgba(40, 40, 40, 0.5) !important;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.green-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--accent-primary);
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.green-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--accent-primary);
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Create the green progress bar effect */
+.green-slider::-webkit-slider-runnable-track {
+  background: var(--accent-primary);
+  height: 10px;
+  border-radius: 5px;
+}
+
+.green-slider::-moz-range-progress {
+  background-color: var(--accent-primary);
+  height: 10px;
+  border-radius: 5px;
 }

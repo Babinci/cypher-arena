@@ -140,6 +140,7 @@ The project uses a configuration file (`config.json`) for deployment settings. T
 ## Memories
 
 - When making frontend changes, user has launched frontend server and handles running that from terminal
+- Keep in mind memory-bank patterns for frontend development
 
 ## Memory Bank Structure
 
@@ -202,3 +203,4 @@ Create additional files/folders within memory-bank/ when they help organize:
 - API documentation
 - Testing strategies
 - Deployment procedures
+```

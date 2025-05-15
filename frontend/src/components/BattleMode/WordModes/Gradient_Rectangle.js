@@ -47,10 +47,15 @@ export function drawGradientRectangle(ctx, { x, y, width, height, borderRadius, 
   ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
   ctx.fill();
   
-  // Add Spotify green accent border that pulses with time
+  // Add stronger, more visible border
   const pulseIntensity = Math.sin(time * 4) * 0.4 + 0.6; // Value between 0.2 and 1
-  ctx.strokeStyle = `rgba(29, 185, 84, ${pulseIntensity * 0.9})`;
-  ctx.lineWidth = Math.max(width, height) * 0.01; // Slightly thinner border for Spotify style
+  ctx.strokeStyle = `rgba(29, 185, 84, ${pulseIntensity * 0.95})`; // Increased opacity for better visibility
+  ctx.lineWidth = Math.max(width, height) * 0.02; // Doubled border thickness for better visibility
+  ctx.stroke();
+  
+  // Add second, outer border for depth
+  ctx.strokeStyle = `rgba(29, 185, 84, ${pulseIntensity * 0.4})`;
+  ctx.lineWidth = Math.max(width, height) * 0.03;
   ctx.stroke();
   
   // Add spotlight effect

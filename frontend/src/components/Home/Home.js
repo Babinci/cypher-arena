@@ -35,7 +35,7 @@ function Home() {
             padding: '8px 15px',
             borderRadius: '4px',
             cursor: 'pointer',
-            background: '#333333',
+            background: '#222222',
             color: 'white',
             border: 'none',
             fontFamily: 'var(--font-display)',
@@ -114,10 +114,46 @@ function Home() {
         </div>
       </div>
       
-      {/* Visual elements for hip-hop aesthetic */}
+      {/* Visual elements with fractal aesthetic */}
       <div className="visual-elements">
         <div className="record-circle"></div>
         <div className="record-circle secondary"></div>
+        <div className="fractal-orb" style={{
+          position: 'absolute',
+          width: '400px',
+          height: '400px',
+          top: '10%',
+          right: '-150px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(30, 30, 30, 0.1) 0%, transparent 70%)',
+          filter: 'blur(20px)',
+          opacity: '0.4',
+          animation: 'pulse 15s ease-in-out infinite alternate'
+        }}></div>
+        <div className="fractal-orb" style={{
+          position: 'absolute',
+          width: '300px',
+          height: '300px',
+          bottom: '5%',
+          left: '-100px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(40, 40, 40, 0.1) 0%, transparent 70%)',
+          filter: 'blur(15px)',
+          opacity: '0.3',
+          animation: 'pulse 12s ease-in-out infinite alternate-reverse'
+        }}></div>
+        <div className="fractal-orb" style={{
+          position: 'absolute',
+          width: '200px',
+          height: '200px',
+          top: '70%',
+          right: '20%',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(60, 60, 60, 0.1) 0%, transparent 70%)',
+          filter: 'blur(10px)',
+          opacity: '0.3',
+          animation: 'pulse 18s ease-in-out infinite alternate'
+        }}></div>
       </div>
     </div>
   );

@@ -19,7 +19,10 @@ import ContrastingMode from './components/BattleMode/WordModes/ContrastingMode';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ 
+      v7_startTransition: true,
+      v7_relativeSplatPath: true
+    }}>
       <div className="App" >
         <BackButton />
         <Routes>
