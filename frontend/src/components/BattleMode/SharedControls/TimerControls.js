@@ -173,7 +173,7 @@ export const TimerControls = ({
               color: 'white',
               textAlign: 'center',
               position: 'absolute',
-              left: '20%',
+              left: '30%',  /* Moved from 20% to 30% as requested */
               transform: 'translateX(-50%)',
             }}>
               {t('interval')}: {changeInterval}s
@@ -190,7 +190,7 @@ export const TimerControls = ({
               color: 'white',
               textAlign: 'center',
               position: 'absolute',
-              right: '20%',
+              right: '30%',  /* Moved from 20% to 30% as requested (= 70% from left) */
               transform: 'translateX(50%)',
             }}>
               {t('roundTime')}: {roundDuration === Infinity ? '∞' : `${roundTimer}s`}
