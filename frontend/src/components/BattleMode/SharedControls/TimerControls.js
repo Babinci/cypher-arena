@@ -34,6 +34,7 @@ export const TimerControls = ({
     const slider = document.querySelector('.green-slider');
     const intervalBadge = document.querySelector('.interval-badge');
     const roundTimeBadge = document.querySelector('.roundtime-badge');
+    const mainTimer = timerDisplay?.querySelector('div:first-child');
     
     // Calculate positions in percentages
     if (timerPanel) {
@@ -49,10 +50,18 @@ export const TimerControls = ({
       console.log(`- Timer panel height: ${(timerRect.height / windowHeight * 100).toFixed(1)}%`);
       console.log(`- Timer panel width: ${(timerRect.width / windowWidth * 100).toFixed(1)}%`);
       
+      // Log timer display positions (top and bottom borders)
       if (timerDisplay) {
         const displayRect = timerDisplay.getBoundingClientRect();
         console.log(`- Timer display top: ${(displayRect.top / windowHeight * 100).toFixed(1)}%`);
+        console.log(`- Timer display bottom: ${(displayRect.bottom / windowHeight * 100).toFixed(1)}%`);
         console.log(`- Timer display height: ${(displayRect.height / windowHeight * 100).toFixed(1)}%`);
+        
+        // Log main timer bottom border
+        if (mainTimer) {
+          const mainTimerRect = mainTimer.getBoundingClientRect();
+          console.log(`- Main timer bottom border: ${(mainTimerRect.bottom / windowHeight * 100).toFixed(1)}%`);
+        }
       }
       
       // Log interval and round time badge positions
@@ -60,17 +69,21 @@ export const TimerControls = ({
         const intervalRect = intervalBadge.getBoundingClientRect();
         console.log(`- Interval badge horizontal center: ${(intervalRect.left + intervalRect.width/2) / windowWidth * 100}%`);
         console.log(`- Interval badge width: ${intervalRect.width / windowWidth * 100}%`);
+        console.log(`- Interval badge bottom border: ${(intervalRect.bottom / windowHeight * 100).toFixed(1)}%`);
       }
       
       if (roundTimeBadge) {
         const roundTimeRect = roundTimeBadge.getBoundingClientRect();
         console.log(`- Round time badge horizontal center: ${(roundTimeRect.left + roundTimeRect.width/2) / windowWidth * 100}%`);
         console.log(`- Round time badge width: ${roundTimeRect.width / windowWidth * 100}%`);
+        console.log(`- Round time badge bottom border: ${(roundTimeRect.bottom / windowHeight * 100).toFixed(1)}%`);
       }
       
+      // Log slider position - top and bottom borders
       if (slider) {
         const sliderRect = slider.getBoundingClientRect();
-        console.log(`- Slider position: ${(sliderRect.top / windowHeight * 100).toFixed(1)}%`);
+        console.log(`- Slider top border: ${(sliderRect.top / windowHeight * 100).toFixed(1)}%`);
+        console.log(`- Slider bottom border: ${(sliderRect.bottom / windowHeight * 100).toFixed(1)}%`);
       }
       
       // If we have buttons, log their positions
@@ -135,12 +148,12 @@ export const TimerControls = ({
           className="timer-display"
           style={{
           position: 'relative',
+          height: 'calc(94vh - 80px)', /* Increased from 90vh to 94vh (4% more) */
+          marginBottom: '0',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '15px',
-          height: '60px',
+          justifyContent: 'flex-end', /* Align content to bottom */
         }}>
           {/* Main Timer centered */}
           <div style={{
@@ -150,17 +163,20 @@ export const TimerControls = ({
             color: isActive ? 'var(--accent-primary)' : 'white',
             textAlign: 'center',
             textShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+            marginBottom: '0', /* Ensure the timer sits at the bottom of its container */
+            paddingBottom: '5px',
           }}>
             {timer}
           </div>
 
           {/* Interval and Round Time as floating badges */}
           <div style={{
-            display: 'flex',
             width: '100%',
-            justifyContent: 'space-between',
             position: 'absolute',
-            top: '10px',
+            bottom: '0', /* Align to bottom */
+            left: '0',
+            right: '0',
+            pointerEvents: 'none', /* Ensures clicks pass through to elements below */
           }}>
             {/* Left badge - Interval */}
             <div 
@@ -173,8 +189,16 @@ export const TimerControls = ({
               color: 'white',
               textAlign: 'center',
               position: 'absolute',
-              left: '30%',  /* Moved from 20% to 30% as requested */
+              left: '30%',
+              bottom: '0', /* Align to bottom */
               transform: 'translateX(-50%)',
+              width: '100px', /* Fixed width instead of percentage */
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '40px', /* Fixed height */
+              pointerEvents: 'auto', /* Make the badge clickable */
+              zIndex: 10,
             }}>
               {t('interval')}: {changeInterval}s
             </div>
@@ -190,8 +214,16 @@ export const TimerControls = ({
               color: 'white',
               textAlign: 'center',
               position: 'absolute',
-              right: '30%',  /* Moved from 20% to 30% as requested (= 70% from left) */
+              right: '30%',
+              bottom: '0', /* Align to bottom */
               transform: 'translateX(50%)',
+              width: '105px', /* Fixed width instead of percentage */
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '40px', /* Fixed height */
+              pointerEvents: 'auto', /* Make the badge clickable */
+              zIndex: 10,
             }}>
               {t('roundTime')}: {roundDuration === Infinity ? '∞' : `${roundTimer}s`}
             </div>
@@ -200,9 +232,10 @@ export const TimerControls = ({
         
         {/* Round duration slider - styled like the green progress bar in the reference */}
         <div style={{ 
-          marginBottom: '15px',
+          marginTop: '10px', /* Reduced spacing to account for the lower elements */
+          marginBottom: '10px',
           width: '90%',
-          margin: '0 auto 15px auto',
+          margin: '10px auto 10px auto',
         }}>
           <input
             type="range"
