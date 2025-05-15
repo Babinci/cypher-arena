@@ -1,6 +1,7 @@
 // components/SharedControls/TimerControls.js
 import React, { useState, useEffect } from 'react';
 import useTranslation from '../../../config/useTranslation';
+import '../../../cypher-theme.css';
 
 // TimerControls: A reusable component that renders the control panel UI
 // Props:
@@ -45,25 +46,6 @@ export const TimerControls = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Mobile-optimized compact styles
-  const mobileStyles = {
-    controlPanel: {
-      padding: '5px',
-      height: isMobile ? 'auto' : 'auto',
-      maxHeight: isMobile && !isExpanded ? '40px' : 'none',
-      overflow: 'hidden',
-      transition: 'max-height 0.3s ease-in-out',
-    },
-    timerInfo: {
-      fontSize: isMobile ? '12px' : '14px',
-      marginBottom: isMobile ? '10px' : '20px',
-    },
-    button: {
-      padding: isMobile ? '6px 10px' : '10px 20px',
-      fontSize: isMobile ? '12px' : '14px',
-    }
-  };
-
   return (
     <div
       className="control-panel"
@@ -73,14 +55,13 @@ export const TimerControls = ({
         padding: isMobile ? '5px' : '10px',
         boxSizing: 'border-box',
         height: 'auto',
-        background: 'rgba(0,0,0,0.5)',
-        color: 'white',
+        maxHeight: isMobile && !isExpanded ? '40px' : '15vh', // Maximum 15% of screen height
+        overflow: 'hidden',
         position: isFullScreen ? 'fixed' : 'static',
         bottom: 0,
         left: 0,
-        transition: 'opacity 0.3s ease-in-out',
-        opacity: isFullScreen ? 0 : 1,
-        ...mobileStyles.controlPanel
+        transition: 'opacity 0.3s ease-in-out, max-height 0.3s ease-in-out',
+        opacity: isFullScreen ? 0 : 1
       }}
       onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
       onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0')}
@@ -104,44 +85,79 @@ export const TimerControls = ({
             textAlign: 'center',
             cursor: 'pointer',
             padding: '5px',
+            fontFamily: 'var(--font-display)',
+            textTransform: 'uppercase',
+            fontWeight: '600',
+            fontSize: '14px',
+            letterSpacing: '0.02em',
+            color: 'var(--accent-primary)',
             borderBottom: isExpanded ? '1px solid rgba(255,255,255,0.2)' : 'none'
           }}
         >
-          {isExpanded ? 'Collapse Controls ▲' : 'Expand Controls ▼'}
+          {isExpanded ? t('collapseControls') + ' ▲' : t('expandControls') + ' ▼'}
         </div>
       )}
      
       {/* Timer display section - always visible */}
-      <div style={{ 
-        marginBottom: isMobile ? '10px' : '20px', 
-        textAlign: 'center',
-        fontSize: isMobile ? '12px' : '14px'
+      <div className="timer-display" style={{ 
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        marginBottom: isMobile ? '8px' : '12px'
       }}>
-        <div className="timer">{t('timer')}: {timer} seconds</div>
-        {(isExpanded || !isMobile || isControlWindow) && (
+        <div style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: isMobile ? '14px' : '16px',
+          fontWeight: '600',
+          borderRadius: '4px',
+          padding: '2px 8px',
+          backgroundColor: 'var(--accent-primary)',
+          color: 'var(--bg-deep)'
+        }}>
+          {t('timer')}: {timer} {t('seconds')}
+        </div>
+        
+        {(!isMobile || isExpanded || isControlWindow) ? (
           <>
-            <div>{t('interval')}: {changeInterval} seconds</div>
-            <div>{t('roundDuration')}: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} seconds`}</div>
+            <div style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: isMobile ? '14px' : '16px',
+              fontWeight: '600',
+              borderRadius: '4px',
+              padding: '2px 8px',
+              backgroundColor: 'var(--bg-light)',
+              color: 'white'
+            }}>
+              {t('interval')}: {changeInterval} {t('seconds')}
+            </div>
+            
+            <div style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: isMobile ? '14px' : '16px',
+              fontWeight: '600',
+              borderRadius: '4px',
+              padding: '2px 8px',
+              backgroundColor: 'var(--bg-light)',
+              color: 'white'
+            }}>
+              {t('roundDuration')}: {roundDuration === Infinity ? 'Infinity' : `${roundTimer} ${t('seconds')}`}
+            </div>
           </>
-        )}
+        ) : null}
       </div>
 
       {/* Rest of controls - only visible when expanded on mobile */}
       {(isExpanded || !isMobile || isControlWindow) && (
         <>
           {/* Round duration slider */}
-          <div style={{ marginBottom: isMobile ? '10px' : '20px' }}>
+          <div style={{ marginBottom: isMobile ? '8px' : '10px' }}>
             <input
               type="range"
               min="10"
               max="300"
               value={roundDuration === Infinity ? 300 : roundDuration}
               onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-              style={{
-                width: '100%',
-                marginBottom: '10px',
-                accentColor: '#4CAF50'
-              }}
             />
           </div>
 
@@ -150,80 +166,39 @@ export const TimerControls = ({
             display: 'flex',
             justifyContent: 'space-around',
             flexWrap: 'wrap',
-            gap: isMobile ? '5px' : '10px'
+            gap: isMobile ? '5px' : '8px'
           }}>
-            {/* Button styling - smaller on mobile */}
-            <button
-              onClick={getNextItem}
-              style={{
-                padding: isMobile ? '6px 10px' : '10px 20px',
-                backgroundColor: '#FFD700',
-                color: 'black',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: isMobile ? '12px' : '14px'
-              }}
-            >
+            <button onClick={getNextItem} className="control-btn">
               {t('nextItem')}
             </button>
             
-            <button
+            <button 
               onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
-              style={{
-                padding: isMobile ? '6px 10px' : '10px 20px',
-                backgroundColor: '#FFD700',
-                color: 'black',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: isMobile ? '12px' : '14px'
-              }}
+              className="control-btn"
             >
               {t('decreaseInterval')}
             </button>
             
-            <button
+            <button 
               onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
-              style={{
-                padding: isMobile ? '6px 10px' : '10px 20px',
-                backgroundColor: '#FFD700',
-                color: 'black',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: isMobile ? '12px' : '14px'
-              }}
+              className="control-btn"
             >
               {t('increaseInterval')}
             </button>
             
-            <button
+            <button 
               onClick={toggleActive}
+              className="control-btn"
               style={{
-                padding: isMobile ? '6px 10px' : '10px 20px',
-                backgroundColor: '#FFD700',
-                color: 'black',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: isMobile ? '12px' : '14px'
+                backgroundColor: isActive ? 'var(--accent-tertiary)' : 'var(--accent-primary)'
               }}
             >
               {isActive ? t('pause') : t('resume')}
             </button>
             
-            <button
+            <button 
               onClick={handleResetRound}
-              style={{
-                padding: isMobile ? '6px 10px' : '10px 20px',
-                backgroundColor: '#FFD700',
-                color: 'black',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: isMobile ? '12px' : '14px'
-              }}
+              className="control-btn"
             >
               {t('resetRound')}
             </button>

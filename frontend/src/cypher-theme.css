@@ -1,0 +1,513 @@
+/* cypher-theme.css - Spotify-inspired theme for Cypher Arena */
+
+/* Import Oswald font in different weights */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Root variables for theming */
+:root {
+  /* Spotify-inspired background colors */
+  --bg-deep: #121212;
+  --bg-medium: #181818;
+  --bg-light: #282828;
+  
+  /* Spotify-inspired accent colors */
+  --accent-primary: #1DB954; /* Spotify green */
+  --accent-secondary: #1ED760; /* Lighter green */
+  --accent-tertiary: #FC5658; /* Red for emphasis */
+  
+  /* Typography */
+  --font-display: 'Oswald', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  
+  /* Gradients */
+  --gradient-main: linear-gradient(135deg, var(--bg-deep), var(--bg-medium));
+  --gradient-accent: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  --gradient-button: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  
+  /* Shadows & Effects */
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-hard: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --overlay-light: rgba(255, 255, 255, 0.1);
+  --noise-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Global styles */
+body {
+  font-family: var(--font-body);
+  background: var(--gradient-main);
+  color: white;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--noise-texture);
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.animate-bg {
+  background-size: 400% 400%;
+  animation: gradientBackground 15s ease infinite;
+}
+
+@keyframes gradientBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Typography styling */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 4rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.8rem;
+}
+
+/* Button styling - Tidal style */
+button {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--bg-light); /* Tidal uses darker buttons */
+  color: white;
+  border: none;
+  border-radius: 4px; /* Tidal uses more square buttons */
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none; /* Tidal has flatter buttons */
+  position: relative;
+  overflow: hidden;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: width 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background: #333333; /* Tidal's slightly lighter hover state */
+  box-shadow: none;
+}
+
+button:hover::after {
+  width: 100%;
+}
+
+button:active {
+  transform: translateY(1px);
+  background: #383838;
+}
+
+/* Form controls - Spotify-inspired */
+input, select, textarea {
+  font-family: var(--font-body);
+  background: var(--bg-light);
+  border: 1px solid var(--overlay-light);
+  border-radius: 4px;
+  color: white;
+  padding: 10px 16px;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.3);
+}
+
+/* Home page styling - Spotify-inspired clean design */
+.home {
+  padding: 0;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Keep overflowing elements hidden */
+  background-color: var(--bg-deep);
+}
+
+.home-content {
+  position: relative;
+  z-index: 5;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.logo-container {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.site-title {
+  position: relative;
+  display: inline-block;
+  font-size: 6rem;
+  margin-bottom: 0.5rem;
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.site-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background: var(--accent-primary);
+  border-radius: 2px;
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+}
+
+.battle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.battle-mode-btn {
+  min-width: 220px;
+  padding: 15px 30px;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  margin: 0;
+  transition: all 0.2s ease;
+  background-color: #333333; /* Tidal button color */
+  color: white;
+  border-radius: 4px; /* Tidal square buttons */
+  position: relative;
+}
+
+.battle-mode-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: width 0.3s ease;
+}
+
+.battle-mode-btn:hover {
+  transform: translateY(-1px);
+  background: #3F3F3F;
+  box-shadow: none;
+}
+
+.battle-mode-btn:hover::after {
+  width: 100%;
+}
+
+.feedback-section {
+  margin-top: 40px;
+}
+
+.feedback-btn {
+  min-width: 200px;
+  margin-top: 20px;
+  background: transparent;
+  border: 1px solid #555555; /* Tidal subtle border */
+  color: white;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.feedback-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: width 0.3s ease;
+}
+
+.feedback-btn:hover {
+  border-color: #777777;
+}
+
+.feedback-btn:hover::after {
+  width: 100%;
+}
+
+/* Spotify-inspired spotlight */
+.battle-stage-spotlight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(29, 185, 84, 0.15) 0%,
+    rgba(30, 215, 96, 0.05) 35%,
+    transparent 70%
+  );
+  z-index: 1;
+  pointer-events: none;
+  animation: spotlightPulse 8s ease-in-out infinite;
+}
+
+/* Spotify-inspired visual elements */
+.visual-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.record-circle {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--bg-deep) 0%,
+    var(--bg-deep) 20%,
+    rgba(29, 185, 84, 0.2) 21%,
+    var(--bg-deep) 22%,
+    var(--bg-deep) 30%,
+    rgba(29, 185, 84, 0.2) 31%,
+    var(--bg-deep) 32%,
+    var(--bg-deep) 40%,
+    rgba(29, 185, 84, 0.2) 41%,
+    var(--bg-deep) 42%,
+    var(--bg-deep) 100%
+  );
+  border: 2px solid rgba(29, 185, 84, 0.3);
+  box-shadow: 0 0 30px rgba(29, 185, 84, 0.1);
+  top: -50px;
+  right: -50px;
+  opacity: 0.7;
+  animation: rotateRecord 20s linear infinite;
+}
+
+.record-circle.secondary {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(
+    circle,
+    var(--bg-deep) 0%,
+    var(--bg-deep) 20%,
+    rgba(30, 215, 96, 0.2) 21%,
+    var(--bg-deep) 22%,
+    var(--bg-deep) 30%,
+    rgba(30, 215, 96, 0.2) 31%,
+    var(--bg-deep) 32%,
+    var(--bg-deep) 40%,
+    rgba(30, 215, 96, 0.2) 41%,
+    var(--bg-deep) 42%,
+    var(--bg-deep) 100%
+  );
+  border: 2px solid rgba(30, 215, 96, 0.3);
+  box-shadow: 0 0 30px rgba(30, 215, 96, 0.1);
+  top: auto;
+  right: auto;
+  bottom: -50px;
+  left: -50px;
+  animation: rotateRecord 15s linear infinite reverse;
+}
+
+@keyframes rotateRecord {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spotlightPulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 0.7; transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .site-title {
+    font-size: 3.5rem;
+  }
+  
+  .tagline {
+    font-size: 1.2rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .battle-mode-btn {
+    width: 90%;
+    min-width: unset;
+  }
+  
+  .record-circle, .record-circle.secondary {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Control buttons - Tidal-inspired */
+.control-btn {
+  padding: 10px 18px;
+  margin: 5px;
+  font-size: 0.9rem;
+  background: #333333; /* Tidal button color */
+  min-width: auto;
+  border-radius: 4px; /* Tidal square buttons */
+  color: white;
+  letter-spacing: 0.05em;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Battle Stage - Spotify-inspired */
+.battle-stage {
+  position: relative;
+}
+
+.battle-stage::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  background: radial-gradient(circle, rgba(29, 185, 84, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Timer controls - Spotify-inspired */
+.control-panel {
+  background: rgba(18, 18, 18, 0.95) !important; /* Spotify dark background */
+  border-top: 1px solid var(--bg-light);
+  height: auto !important;
+  max-height: 15vh !important; /* Maximum 15% of screen height as requested */
+  overflow: hidden;
+}
+
+.control-panel .timer-display {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+}
+
+.control-panel .timer-display div {
+  padding: 5px 10px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.control-panel button {
+  padding: 8px 15px;
+  margin: 5px;
+  font-size: 0.9rem;
+  border-radius: 50px;
+}
+
+/* Tidal-style slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px; /* Thinner track for Tidal */
+  border-radius: 0; /* Tidal has flat sliders */
+  background: #4A4A4A; /* Tidal slider track color */
+  outline: none;
+  margin: 15px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px; /* Square-ish thumb for Tidal */
+  background: var(--accent-primary); /* Tidal uses colored thumb */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  background: var(--accent-secondary);
+}
+
+/* Visualizer enhancements */
+canvas {
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+}

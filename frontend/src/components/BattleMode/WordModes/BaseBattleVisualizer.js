@@ -74,34 +74,36 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const { width, height } = canvas;
   
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#1a1a1a';
+    // Fill with solid black background for maximum contrast with white text
+    ctx.fillStyle = '#000000'; // Pure black for contrast
     ctx.fillRect(0, 0, width, height);
     
     const availableWidth = width;
     const availableHeight = height;
-    const topPadding = 20;
+    // Remove unused topPadding variable
     const isMobileView = availableWidth <= 768;
     
     let maxWidth, maxHeight;
     
-    if (isMobileView) {
-      maxWidth = availableWidth * 0.9;
-    } else {
-      maxWidth = Math.min(availableWidth * 0.75, 800);
-    }
-    
-    maxHeight = availableHeight - (topPadding * 2);
-    maxHeight = Math.max(20, maxHeight);
+    // Set rectangle to use most of the screen
+    // This should match the area used by text
+    maxWidth = Math.min(availableWidth * 0.9, 1200);  
+    maxHeight = Math.min(availableHeight * 0.8, 800);
     
     const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
     
     const centerX = availableWidth / 2;
     
-    const time = Date.now() / 15000;
+    // Simple animation cycle for gradient effect
+    const time = Date.now() / 15000; // Create time variable for gradient animation
+    
+    // Restore the subtle pulse animation from original code
     const pulseSize = Math.sin(time * 2) * 5;
     const animatedWidth = maxWidth + pulseSize;
     let animatedHeight = maxHeight + pulseSize;
 
+    // Position rectangle with topPadding like in original code
+    const topPadding = 20;
     let animatedY = topPadding;
     animatedHeight = Math.min(animatedHeight, maxHeight);
     animatedY = Math.max(topPadding, animatedY);
@@ -117,10 +119,11 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       width: animatedWidth,
       height: animatedHeight,
       borderRadius,
-      time
+      time // Pass time for gradient animation
     });
 
     // --- WORD WRAPPING LOGIC MOVED TO WordTextRenderer.js ---
+    // Pass exact rectangle dimensions to ensure text fits properly
     renderWordText(ctx, {
       currentWord,
       rectangle: {
@@ -128,16 +131,16 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         y: animatedY,
         width: animatedWidth,
         height: animatedHeight,
-        centerX,
+        centerX: centerX,
         centerY: finalCenterY
       },
-      isMobileView,
-      styleConfig
+      isMobileView: width < 768 // Force recalculation of mobile mode
     });
     // --- END WORD WRAPPING LOGIC ---
 
     animationRef.current = requestAnimationFrame(() => draw());
-  }, [currentWord, styleConfig, isFullScreen]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWord, styleConfig]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -177,12 +180,17 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
           marginBottom: '10px',
           display: 'block',
           padding: '10px',
-          backgroundColor: '#4CAF50',
+          backgroundColor: '#333333',
           color: 'white',
           border: 'none',
-          borderRadius: '5px',
+          borderRadius: '4px',
           cursor: 'pointer',
-          width: '100%'
+          width: '100%',
+          fontFamily: 'var(--font-display)',
+          textTransform: 'uppercase',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          position: 'relative'
         }}
       >
         {t('openControlPanel')}
@@ -192,12 +200,17 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         style={{
           display: 'block',
           padding: '10px',
-          backgroundColor: '#4CAF50',
+          backgroundColor: '#333333',
           color: 'white',
           border: 'none',
-          borderRadius: '5px',
+          borderRadius: '4px',
           cursor: 'pointer',
-          width: '100%'
+          width: '100%',
+          fontFamily: 'var(--font-display)',
+          textTransform: 'uppercase',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          position: 'relative'
         }}
       >
         {isFullScreen ? t('exitFullScreen') : t('enterFullScreen')}
@@ -213,7 +226,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        backgroundColor: '#1a1a1a'
+        backgroundColor: 'var(--bg-deep)', // Use theme variable
+        fontFamily: 'var(--font-display)' // Use theme font
       }}>
         {!isControlWindow && (
           <>
