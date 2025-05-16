@@ -18,7 +18,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     
     // Calculate sizes for contrast mode
     const itemFontSize = fontSize * 0.7;
-    const vsFontSize = itemFontSize * 1.2;
+    const vsFontSize = itemFontSize * 0.8; // Reduced from 1.2 to 0.8 for smaller VS
     
     // Position calculations for 3-element layout
     const spacing = height * 0.25;
@@ -38,32 +38,23 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     
     // Draw first item
     const item1FontSize = getScaledFontSize(item1, itemFontSize);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = item1FontSize * 0.08;
     ctx.font = `bold ${item1FontSize}px Arial`;
-    ctx.strokeText(item1, centerX, centerY - spacing);
     
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(item1, centerX, centerY - spacing);
     
     // Draw VS text
     const vsScaledFontSize = getScaledFontSize("VS", vsFontSize);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = vsScaledFontSize * 0.08;
     ctx.font = `bold ${vsScaledFontSize}px Arial`;
-    ctx.strokeText("VS", centerX, centerY);
     
-    ctx.fillStyle = '#1DB954'; // Spotify green
+    ctx.fillStyle = '#1AAE4D'; // Slightly dimmer green (10% less bright)
     ctx.fillText("VS", centerX, centerY);
     
     // Draw second item
     const item2FontSize = getScaledFontSize(item2, itemFontSize);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = item2FontSize * 0.08;
     ctx.font = `bold ${item2FontSize}px Arial`;
-    ctx.strokeText(item2, centerX, centerY + spacing);
     
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(item2, centerX, centerY + spacing);
   } 
   // Regular word mode
@@ -84,13 +75,8 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     // Update font with actual size
     ctx.font = `bold ${actualFontSize}px Arial`;
     
-    // Draw black stroke for contrast
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = actualFontSize * 0.1;
-    ctx.strokeText(currentWord, centerX, centerY);
-    
-    // Draw white text
-    ctx.fillStyle = 'white';
+    // Draw text without black stroke
+    ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(currentWord, centerX, centerY);
   }
   
