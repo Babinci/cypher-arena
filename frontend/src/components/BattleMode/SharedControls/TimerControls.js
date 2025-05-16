@@ -21,8 +21,8 @@ export const TimerControls = ({
   // Get translation function
   const { t } = useTranslation();
   
-  // Add mobile detection
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  // Slider active state
+  const [isRoundSliderActive, setIsRoundSliderActive] = useState(false);
   
   // Function to log UI positions
   const logUIPositions = () => {
@@ -99,17 +99,6 @@ export const TimerControls = ({
     }
   };
   
-  // Handle window resize only
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
   
   // Add a one-time logging effect
   useEffect(() => {
@@ -123,6 +112,89 @@ export const TimerControls = ({
 
   return (
     <>
+      {/* Custom Slider Styles */}
+      <style>{`
+        .round-time-slider {
+          outline: none;
+        }
+        
+        /* Track styles */
+        .round-time-slider::-webkit-slider-track {
+          width: 100%;
+          height: 4px;
+          background: rgba(255, 120, 60, 0.2);
+          border-radius: 2px;
+          border: none;
+        }
+        
+        .round-time-slider::-moz-range-track {
+          width: 100%;
+          height: 4px;
+          background: rgba(255, 120, 60, 0.2);
+          border-radius: 2px;
+          border: none;
+        }
+        
+        /* Thumb styles */
+        .round-time-slider::-webkit-slider-thumb {
+          appearance: none;
+          width: 20px;
+          height: 20px;
+          background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(255, 140, 70, 0.8));
+          border: 2px solid rgba(255, 180, 100, 0.8);
+          border-radius: 50%;
+          cursor: pointer;
+          margin-top: -8px;
+          box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+          transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        
+        .round-time-slider::-moz-range-thumb {
+          width: 20px;
+          height: 20px;
+          background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(255, 140, 70, 0.8));
+          border: 2px solid rgba(255, 180, 100, 0.8);
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+          transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        
+        .round-time-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.1);
+          box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        
+        .round-time-slider::-moz-range-thumb:hover {
+          transform: scale(1.1);
+          box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        
+        .round-time-slider:active::-webkit-slider-thumb {
+          transform: scale(1.2);
+          box-shadow: 0 0 15px rgba(255, 180, 100, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .round-time-slider:active::-moz-range-thumb {
+          transform: scale(1.2);
+          box-shadow: 0 0 15px rgba(255, 180, 100, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Progress fill effect */
+        .round-time-slider::-webkit-slider-runnable-track {
+          background: linear-gradient(to right, 
+            rgba(255, 160, 80, 0.8) 0%, 
+            rgba(255, 160, 80, 0.8) var(--value), 
+            rgba(255, 120, 60, 0.2) var(--value), 
+            rgba(255, 120, 60, 0.2) 100%);
+        }
+        
+        .round-time-slider::-moz-range-progress {
+          background: linear-gradient(90deg, rgba(255, 120, 60, 0.6), rgba(255, 160, 80, 0.9));
+          height: 4px;
+          border-radius: 2px;
+        }
+      `}</style>
       {/* Main timer panel - Full Width Fixed at Bottom */}
       <div
         className="timer-panel"
@@ -236,67 +308,21 @@ export const TimerControls = ({
             {timer}
           </div>
 
-          {/* Circular Round Time Control */}
+          {/* Round Time with Line Slider */}
           <div 
-            className="circular-round-control"
+            className="round-time-slider-control"
             style={{
               position: 'relative',
-              width: '110px',
-              height: '110px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              gap: '15px',
             }}>
-            {/* Circular background */}
+            {/* Round Time Display */}
             <div style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
-              border: '2px solid rgba(255, 120, 60, 0.4)',
-              boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
-            }} />
-            
-            {/* Circular progress indicator */}
-            <svg 
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                transform: 'rotate(-90deg)',
-              }}>
-              <circle
-                cx="55"
-                cy="55"
-                r="48"
-                fill="none"
-                stroke="rgba(255, 120, 60, 0.2)"
-                strokeWidth="5"
-              />
-              <circle
-                cx="55"
-                cy="55"
-                r="48"
-                fill="none"
-                stroke="rgba(255, 160, 80, 0.8)"
-                strokeWidth="5"
-                strokeDasharray={`${(roundDuration === Infinity ? 300 : roundDuration) / 300 * 301} 301`}
-                strokeLinecap="round"
-                style={{
-                  transition: 'stroke-dasharray 0.2s ease',
-                }}
-              />
-            </svg>
-            
-            {/* Central round time display */}
-            <div style={{
-              position: 'relative',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 2,
+              minWidth: '80px',
             }}>
               <span style={{
                 fontSize: '12px',
@@ -315,23 +341,88 @@ export const TimerControls = ({
               </span>
             </div>
             
-            {/* Invisible circular slider overlay */}
-            <input
-              type="range"
-              min="10"
-              max="300"
-              value={roundDuration === Infinity ? 300 : roundDuration}
-              onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-              aria-label={t('roundDuration')}
-              style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                opacity: 0,
-                cursor: 'pointer',
-                zIndex: 3,
-              }}
-            />
+            {/* Line Slider Container */}
+            <div style={{
+              position: 'relative',
+              width: '150px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+              {/* Custom Native Slider */}
+              <input
+                type="range"
+                min="10"
+                max="300"
+                value={roundDuration === Infinity ? 300 : roundDuration}
+                onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
+                onInput={(e) => handleRoundDurationChange(parseInt(e.target.value))}
+                onMouseDown={() => setIsRoundSliderActive(true)}
+                onMouseUp={() => setIsRoundSliderActive(false)}
+                onTouchStart={() => setIsRoundSliderActive(true)}
+                onTouchEnd={() => setIsRoundSliderActive(false)}
+                aria-label={t('roundDuration')}
+                style={{
+                  width: '100%',
+                  height: '8px',
+                  background: 'transparent',
+                  appearance: 'none',
+                  WebkitAppearance: 'none',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  '--value': `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
+                }}
+                className="round-time-slider"
+              />
+              
+              {/* Infinity button at the end */}
+              <button
+                onClick={() => {
+                  handleRoundDurationChange(Infinity);
+                  setIsRoundSliderActive(false);
+                }}
+                style={{
+                  position: 'absolute',
+                  right: '-35px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '50%',
+                  background: roundDuration === Infinity
+                    ? 'rgba(255, 160, 80, 0.5)'
+                    : 'rgba(40, 40, 40, 0.6)',
+                  color: roundDuration === Infinity
+                    ? 'rgba(255, 240, 180, 1)'
+                    : 'rgba(255, 180, 100, 0.7)',
+                  border: roundDuration === Infinity
+                    ? '2px solid rgba(255, 180, 100, 0.8)'
+                    : '1px solid rgba(255, 120, 60, 0.3)',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease',
+                  boxShadow: roundDuration === Infinity
+                    ? '0 0 8px rgba(255, 160, 80, 0.5)'
+                    : 'none',
+                }}
+                onMouseEnter={(e) => {
+                  if (roundDuration !== Infinity) {
+                    e.target.style.background = 'rgba(60, 60, 60, 0.7)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (roundDuration !== Infinity) {
+                    e.target.style.background = 'rgba(40, 40, 40, 0.6)';
+                  }
+                }}
+              >
+                ∞
+              </button>
+            </div>
           </div>
         </div>
         

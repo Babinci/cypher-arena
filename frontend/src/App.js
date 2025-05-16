@@ -8,7 +8,10 @@ import Home from './components/Home/Home';
 import WordMode from './components/BattleMode/WordModes/WordMode';
 import TopicMode from './components/BattleMode/WordModes/TopicMode';
 import ImagesMode from './components/BattleMode/ImagesMode/ImagesMode';
+import ImprovedImagesMode from './components/BattleMode/ImagesMode/ImprovedImagesMode';
 import BeatsMode from './components/BattleMode/BeatsMode/BeatsMode';
+import ErrorBoundary from './components/SharedUI/ErrorBoundary';
+import ToastManager from './components/SharedUI/ToastNotification';
 // Debug imports removed
 import ReportFeedback from './components/UserManagement/ReportFeedback';
 import { BackButton } from './components/Navigation/Buttons';
@@ -26,20 +29,16 @@ function App() {
     // Check if fonts API is available
     if ('fonts' in document) {
       document.fonts.ready.then(() => {
-        console.log('Document fonts ready');
         if (document.fonts.check('1em Oswald')) {
-          console.log('Oswald font is available');
           setFontsLoaded(true);
         } else {
-          console.warn('Oswald font not available, retrying...');
           // Try again after a short delay
           setTimeout(() => {
             if (document.fonts.check('1em Oswald')) {
-              console.log('Oswald font now available');
               setFontsLoaded(true);
             } else {
-              console.error('Oswald font still not available');
-              setFontsLoaded(true); // Continue anyway
+              // If still not available, continue anyway
+              setFontsLoaded(true);
             }
           }, 500);
         }
@@ -55,9 +54,11 @@ function App() {
       v7_startTransition: true,
       v7_relativeSplatPath: true
     }}>
-      <div className="App" >
-        <BackButton />
-        <Routes>
+      <ErrorBoundary>
+        <div className="App" >
+          <ToastManager position={{ top: '20px', right: '20px' }} />
+          <BackButton />
+          <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/word-mode" element={<WordMode />} />
           <Route path="/topic-mode" element={<TopicMode />} />
@@ -70,8 +71,10 @@ function App() {
           <Route path="/contrasting-mode" element={<ContrastingMode />} />
           {/* Debug routes removed */}
           {/* <Route path="/second-window" element={<SecondWindow />} /> */}
+          <Route path="/image-mode-improved" element={<ImprovedImagesMode />} />
         </Routes>
-      </div>
+        </div>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
