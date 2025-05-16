@@ -36,6 +36,7 @@ function ContrastingMode() {
     <BaseBattleVisualizer
       endpoint={`${apiConfig.baseUrl}${apiConfig.endpoints.getContrastPairs}?count=100`}
       fetchFunction={fetchContrastPairs}
+      visualMode="fire"
       // No custom styleConfig needed for font size, renderer handles it
       // styleConfig={{
       //   fontSizeFactor: 1.1, // Removed

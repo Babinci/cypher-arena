@@ -5,6 +5,7 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import { drawGradientRectangle } from './Gradient_Rectangle';
 import { renderWordText } from './WordTextRenderer';
+import { drawFireSmokeBackground, FireSmokeParticleSystem, renderFireSmokeText } from './FireSmokeVisualizer';
 // import { renderWordText } from './WordTextRendererDebug'; // Using debug version
 // import { renderWordText } from './WordTextRendererClean'; // Using clean version
 // import { renderWordText } from './WordTextRendererLarge'; // Using large version
@@ -12,11 +13,12 @@ import { renderWordText } from './WordTextRenderer';
 import useTranslation from '../../../config/useTranslation';
 // Temporarily removed font imports for debugging
 
-const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
+const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode = 'rectangle' }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+  const particleSystemRef = useRef(null);
   // const [fontLoaded, setFontLoaded] = useState(false); // Removed for debugging
   const { t } = useTranslation();
 
@@ -72,6 +74,16 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     }
   }, [currentIndex, words]);
   
+  // Initialize particle system when switching to fire mode
+  useEffect(() => {
+    if (visualMode === 'fire') {
+      const canvas = canvasRef.current;
+      if (canvas && !particleSystemRef.current) {
+        particleSystemRef.current = new FireSmokeParticleSystem(canvas.width, canvas.height);
+      }
+    }
+  }, [visualMode]);
+
   // Removed font loading effect for debugging
 
   const draw = useCallback(() => {
@@ -82,92 +94,104 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const { width, height } = canvas;
   
     ctx.clearRect(0, 0, width, height);
-    // Fill with solid black background for maximum contrast with white text
-    ctx.fillStyle = '#000000'; // Pure black for contrast
-    ctx.fillRect(0, 0, width, height);
     
     const availableWidth = width;
     const availableHeight = height;
-    // Remove unused topPadding variable
     const isMobileView = availableWidth <= 768;
     
     let maxWidth, maxHeight;
     
-    // Set rectangle to use more of the screen height - make it taller
-    // This should match the area used by text
+    // Set dimensions for text area
     maxWidth = Math.min(availableWidth * 0.9, 1200);  
-    // Increased height from 0.8 to 0.85 for a taller rectangle
     maxHeight = Math.min(availableHeight * 0.85, 900);
     
-    const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
-    
     const centerX = availableWidth / 2;
+    const time = Date.now() / 15000; // Time for animations
     
-    // Simple animation cycle for gradient effect
-    const time = Date.now() / 15000; // Create time variable for gradient animation
-    
-    // Restore the subtle pulse animation from original code
-    const pulseSize = Math.sin(time * 2) * 5;
-    const animatedWidth = maxWidth + pulseSize;
-    let animatedHeight = maxHeight + pulseSize;
-
-    // Position rectangle with less topPadding for better vertical centering
-    const topPadding = 15; // Reduced from 20
-    let animatedY = topPadding;
-    animatedHeight = Math.min(animatedHeight, maxHeight);
-    animatedY = Math.max(topPadding, animatedY);
-    
-    const finalCenterY = animatedY + animatedHeight / 2;
-    
-    const animatedX = centerX - animatedWidth / 2;
-    
-    // Use a ref to track if we've already logged this info
-    if (!window.hasLoggedRectangleInfo) {
-      // Only log once
-      console.log("=== RECTANGLE PLACEMENT INFO (ONE-TIME) ===");
-      console.log("Rectangle Placement (% of screen):");
-      console.log(`- Top border: ${(animatedY / availableHeight * 100).toFixed(1)}%`);
-      console.log(`- Bottom border: ${((animatedY + animatedHeight) / availableHeight * 100).toFixed(1)}%`);
-      console.log(`- Left border: ${(animatedX / availableWidth * 100).toFixed(1)}%`);
-      console.log(`- Right border: ${((animatedX + animatedWidth) / availableWidth * 100).toFixed(1)}%`);
-      console.log(`- Width: ${(animatedWidth / availableWidth * 100).toFixed(1)}% of screen width`);
-      console.log(`- Height: ${(animatedHeight / availableHeight * 100).toFixed(1)}% of screen height`);
+    // Choose visualization based on mode
+    if (visualMode === 'fire') {
+      // Initialize particle system if needed
+      if (!particleSystemRef.current) {
+        particleSystemRef.current = new FireSmokeParticleSystem(width, height);
+      }
       
-      // Mark that we've logged this info
-      window.hasLoggedRectangleInfo = true;
-    }
-
-    // Use the new rectangle drawing function
-    drawGradientRectangle(ctx, {
-      x: animatedX,
-      y: animatedY,
-      width: animatedWidth,
-      height: animatedHeight,
-      borderRadius,
-      time // Pass time for gradient animation
-    });
-
-    // --- WORD WRAPPING LOGIC MOVED TO WordTextRenderer.js ---
-    // Pass exact rectangle dimensions to ensure text fits properly
-    if (currentWord) {
-      renderWordText(ctx, {
-        currentWord,
-        rectangle: {
-          x: animatedX,
-          y: animatedY,
-          width: animatedWidth,
-          height: animatedHeight,
-          centerX: centerX,
-          centerY: finalCenterY
-        },
-        isMobileView: width < 768 // Force recalculation of mobile mode
+      // Draw fire/smoke background
+      drawFireSmokeBackground(ctx, {
+        x: 0,
+        y: 0,
+        width: width,
+        height: height,
+        time: time,
+        particleSystem: particleSystemRef.current
       });
+      
+      // Render text with fire effect
+      if (currentWord) {
+        renderFireSmokeText(ctx, {
+          currentWord,
+          rectangle: {
+            x: centerX - maxWidth / 2,
+            y: (height - maxHeight) / 2,
+            width: maxWidth,
+            height: maxHeight,
+            centerX: centerX,
+            centerY: height / 2
+          },
+          isMobileView: isMobileView
+        });
+      }
+    } else {
+      // Default rectangle mode
+      // Fill with solid black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+      
+      const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
+      
+      // Subtle pulse animation
+      const pulseSize = Math.sin(time * 2) * 5;
+      const animatedWidth = maxWidth + pulseSize;
+      let animatedHeight = maxHeight + pulseSize;
+      
+      // Position rectangle
+      const topPadding = 15;
+      let animatedY = topPadding;
+      animatedHeight = Math.min(animatedHeight, maxHeight);
+      animatedY = Math.max(topPadding, animatedY);
+      
+      const finalCenterY = animatedY + animatedHeight / 2;
+      const animatedX = centerX - animatedWidth / 2;
+      
+      // Draw gradient rectangle
+      drawGradientRectangle(ctx, {
+        x: animatedX,
+        y: animatedY,
+        width: animatedWidth,
+        height: animatedHeight,
+        borderRadius,
+        time: time
+      });
+      
+      // Render text on rectangle
+      if (currentWord) {
+        renderWordText(ctx, {
+          currentWord,
+          rectangle: {
+            x: animatedX,
+            y: animatedY,
+            width: animatedWidth,
+            height: animatedHeight,
+            centerX: centerX,
+            centerY: finalCenterY
+          },
+          isMobileView: width < 768
+        });
+      }
     }
-    // --- END WORD WRAPPING LOGIC ---
 
     animationRef.current = requestAnimationFrame(() => draw());
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWord, styleConfig]);
+  }, [currentWord, styleConfig, visualMode]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -176,6 +200,12 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      
+      // Update particle system dimensions if in fire mode
+      if (visualMode === 'fire' && particleSystemRef.current) {
+        particleSystemRef.current.updateDimensions(canvas.width, canvas.height);
+      }
+      
       requestAnimationFrame(() => draw());
     };
 
@@ -186,7 +216,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [draw, isControlWindow, isFullScreen]);
+  }, [draw, isControlWindow, isFullScreen, visualMode]);
 
   const renderControlButtons = () => (
     <div

@@ -18,6 +18,7 @@ function WordMode() {
     <BaseBattleVisualizer
       endpoint={`${apiConfig.baseUrl}${apiConfig.endpoints.getRandomWord}`}
       fetchFunction={fetchAndPrepareData}
+      visualMode="fire"
       // No custom styleConfig needed for font size, renderer handles it
       // styleConfig={{ fontSizeFactor: 1.5 }} // Removed
     />
