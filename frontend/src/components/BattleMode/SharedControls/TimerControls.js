@@ -132,13 +132,14 @@ export const TimerControls = ({
           left: 0,
           right: 0,
           width: '100%',
-          backgroundColor: 'rgba(18, 18, 18, 0.95)',
-          borderTop: '2px solid var(--accent-primary)',
-          boxShadow: '0 -3px 10px rgba(0, 0, 0, 0.5)',
-          padding: '10px 15px',
+          backgroundColor: 'rgba(10, 10, 10, 0.85)',
+          borderTop: '1px solid rgba(255, 120, 60, 0.3)',
+          boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
+          padding: '8px 10px',
           zIndex: 500,
           opacity: isFullScreen ? 0.2 : 1,
-          transition: 'opacity 0.3s ease'
+          transition: 'opacity 0.3s ease',
+          background: 'linear-gradient(to top, rgba(10, 10, 10, 0.95), rgba(20, 10, 5, 0.85))',
         }}
         onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
         onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0.2')}
@@ -148,135 +149,136 @@ export const TimerControls = ({
           className="timer-display"
           style={{
           position: 'relative',
-          height: '60px', /* Fixed height instead of taking up most of the screen */
+          height: '50px',
           marginBottom: '0',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'flex-end', /* Align content to bottom */
+          justifyContent: 'center',
+          gap: '30px',
         }}>
+          {/* Interval with integrated controls */}
+          <div 
+            className="interval-badge"
+            style={{
+              padding: '8px 12px',
+              background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
+              border: '1px solid rgba(255, 120, 60, 0.4)',
+              borderRadius: '20px',
+              fontSize: '14px',
+              color: 'rgba(255, 220, 160, 0.9)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
+            }}>
+            <button
+              onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
+              style={{
+                background: 'transparent',
+                color: 'rgba(255, 180, 100, 0.8)',
+                border: '1px solid rgba(255, 120, 60, 0.3)',
+                borderRadius: '50%',
+                width: '22px',
+                height: '22px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(255, 120, 60, 0.2)'}
+              onMouseLeave={(e) => e.target.style.background = 'transparent'}
+            >
+              -
+            </button>
+            <span style={{ minWidth: '80px', textAlign: 'center' }}>
+              {t('interval')}: {changeInterval}s
+            </span>
+            <button
+              onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
+              style={{
+                background: 'transparent',
+                color: 'rgba(255, 180, 100, 0.8)',
+                border: '1px solid rgba(255, 120, 60, 0.3)',
+                borderRadius: '50%',
+                width: '22px',
+                height: '22px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => e.target.style.background = 'rgba(255, 120, 60, 0.2)'}
+              onMouseLeave={(e) => e.target.style.background = 'transparent'}
+            >
+              +
+            </button>
+          </div>
+
           {/* Main Timer centered */}
           <div style={{
-            fontSize: '40px',
+            fontSize: '42px',
             fontWeight: 'bold',
             fontFamily: 'var(--font-display)',
-            color: isActive ? 'var(--accent-primary)' : 'white',
+            color: isActive ? 'rgba(255, 200, 100, 1)' : 'rgba(255, 150, 80, 0.9)',
             textAlign: 'center',
-            textShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-            marginBottom: '0', /* Ensure the timer sits at the bottom of its container */
-            paddingBottom: '5px',
+            textShadow: isActive ? '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)' : '0 2px 4px rgba(0, 0, 0, 0.7)',
+            letterSpacing: '2px',
           }}>
             {timer}
           </div>
 
-          {/* Interval and Round Time as floating badges */}
+          {/* Round Time badge - now integrated with slider */}
           <div style={{
-            width: '100%',
-            position: 'absolute',
-            bottom: '0', /* Align to bottom */
-            left: '0',
-            right: '0',
-            pointerEvents: 'none', /* Ensures clicks pass through to elements below */
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '6px',
           }}>
-            {/* Left badge - Interval with adjustment buttons */}
-            <div 
-              className="interval-badge"
-              style={{
-              padding: '5px 10px',
-              backgroundColor: 'rgba(40, 40, 40, 0.8)',
-              borderRadius: '5px',
-              fontSize: '14px',
-              color: 'white',
-              textAlign: 'center',
-              position: 'absolute',
-              left: '30%',
-              bottom: '0', /* Align to bottom */
-              transform: 'translateX(-50%)',
-              width: '140px', /* Increased width to accommodate buttons */
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '40px', /* Fixed height */
-              pointerEvents: 'auto', /* Make the badge clickable */
-              zIndex: 10,
-            }}>
-              <button
-                onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
-                style={{
-                  backgroundColor: 'transparent',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: '25px',
-                  height: '25px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  marginRight: '5px'
-                }}
-              >
-                -
-              </button>
-              {t('interval')}: {changeInterval}s
-              <button
-                onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
-                style={{
-                  backgroundColor: 'transparent',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '50%',
-                  width: '25px',
-                  height: '25px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  marginLeft: '5px'
-                }}
-              >
-                +
-              </button>
-            </div>
-            
-            {/* Right badge - Round Timer */}
             <div 
               className="roundtime-badge"
               style={{
-              padding: '5px 10px',
-              backgroundColor: 'rgba(40, 40, 40, 0.8)',
-              borderRadius: '5px',
-              fontSize: '14px',
-              color: 'white',
-              textAlign: 'center',
-              position: 'absolute',
-              right: '30%',
-              bottom: '0', /* Align to bottom */
-              transform: 'translateX(50%)',
-              width: '105px', /* Fixed width instead of percentage */
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '40px', /* Fixed height */
-              pointerEvents: 'auto', /* Make the badge clickable */
-              zIndex: 10,
-            }}>
+                padding: '8px 16px',
+                background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
+                border: '1px solid rgba(255, 120, 60, 0.4)',
+                borderRadius: '20px',
+                fontSize: '14px',
+                color: 'rgba(255, 220, 160, 0.9)',
+                textAlign: 'center',
+                boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
+              }}>
               {t('roundTime')}: {roundDuration === Infinity ? '∞' : `${roundTimer}s`}
             </div>
           </div>
         </div>
         
-        {/* Round duration slider - styled like the green progress bar in the reference */}
+        {/* Round duration slider - narrower and connected to round time */}
         <div style={{ 
-          marginTop: '10px', /* Reduced spacing to account for the lower elements */
-          marginBottom: '10px',
-          width: '90%',
-          margin: '10px auto 10px auto',
+          marginTop: '6px',
+          marginBottom: '8px',
+          width: '70%',
+          margin: '6px auto 8px auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          position: 'relative',
         }}>
+          {/* Connect slider visually to round time */}
+          <div style={{
+            position: 'absolute',
+            top: '-16px',
+            right: '50%',
+            transform: 'translateX(50%)',
+            width: '2px',
+            height: '16px',
+            background: 'linear-gradient(to bottom, rgba(255, 120, 60, 0.4), transparent)',
+          }} />
           <input
             type="range"
             min="10"
@@ -286,41 +288,46 @@ export const TimerControls = ({
             aria-label={t('roundDuration')}
             style={{ 
               width: '100%',
-              height: '12px',
+              height: '6px',
               appearance: 'none',
-              backgroundColor: 'rgba(40, 40, 40, 0.5)',
-              borderRadius: '6px',
+              background: 'linear-gradient(to right, rgba(255, 60, 30, 0.3), rgba(255, 120, 60, 0.6))',
+              borderRadius: '3px',
               outline: 'none',
-              border: '1px solid rgba(0, 0, 0, 0.3)',
+              border: '1px solid rgba(255, 120, 60, 0.2)',
             }}
-            className="green-slider"
+            className="fire-slider"
           />
         </div>
         
-        {/* Control buttons - centered layout as in reference image */}
+        {/* Control buttons - fire-themed */}
         <div 
           className="timer-buttons"
           style={{
           display: 'flex',
           flexWrap: 'nowrap',
           justifyContent: 'center',
-          gap: '5px',
-          width: '80%',
+          gap: '8px',
+          width: '70%',
           margin: '0 auto',
         }}>
           <button 
             onClick={toggleActive}
             style={{
-              padding: '8px 10px',
-              backgroundColor: isActive ? 'var(--accent-tertiary)' : '#e74c3c',
+              padding: '8px 16px',
+              background: isActive ? 
+                'linear-gradient(135deg, rgba(255, 60, 60, 0.8), rgba(200, 40, 40, 0.7))' : 
+                'linear-gradient(135deg, rgba(255, 120, 60, 0.8), rgba(255, 80, 30, 0.7))',
               color: 'white',
-              border: 'none',
-              borderRadius: '4px',
+              border: '1px solid rgba(255, 120, 60, 0.5)',
+              borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: '600',
               flex: '1',
+              textShadow: '0 1px 3px rgba(0, 0, 0, 0.7)',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
             }}
           >
             {isActive ? t('pause') : t('resume')}
@@ -329,16 +336,18 @@ export const TimerControls = ({
           <button 
             onClick={getNextItem}
             style={{
-              padding: '8px 10px',
-              backgroundColor: 'var(--bg-light)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
+              padding: '8px 16px',
+              background: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(30, 30, 30, 0.7))',
+              color: 'rgba(255, 180, 100, 0.9)',
+              border: '1px solid rgba(255, 120, 60, 0.3)',
+              borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: '600',
               flex: '1',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
             }}
           >
             {t('nextItem')}
@@ -347,16 +356,18 @@ export const TimerControls = ({
           <button 
             onClick={handleResetRound}
             style={{
-              padding: '8px 10px',
-              backgroundColor: 'var(--bg-light)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
+              padding: '8px 16px',
+              background: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(30, 30, 30, 0.7))',
+              color: 'rgba(255, 180, 100, 0.9)',
+              border: '1px solid rgba(255, 120, 60, 0.3)',
+              borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: '600',
               flex: '1',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
             }}
           >
             {t('resetRound')}
