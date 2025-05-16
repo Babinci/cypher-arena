@@ -7,12 +7,20 @@ export function drawFireSmokeBackground(ctx, { x, y, width, height, time, partic
   ctx.fillStyle = '#0A0A0A';
   ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   
-  // Apply stronger blur filter for more subtle effect
-  ctx.filter = 'blur(4px)';
+  // Apply stronger blur filter for more subtle, smooth effect
+  ctx.filter = 'blur(5px)';
   
-  // Update and draw particles
-  particleSystem.update(time);
-  particleSystem.draw(ctx);
+  // Define text region bounds (used to avoid particles in text area)
+  const textRegion = {
+    x: centerX - width * 0.4,
+    y: centerY - height * 0.3,
+    width: width * 0.8,
+    height: height * 0.6
+  };
+  
+  // Update and draw particles, passing text region to avoid
+  particleSystem.update(time, textRegion);
+  particleSystem.draw(ctx, textRegion);
   
   // Create glow effect across the screen
   const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height));
@@ -36,7 +44,7 @@ export class FireSmokeParticleSystem {
   constructor(width, height) {
     this.updateDimensions(width, height);
     this.particles = [];
-    this.maxParticles = 180; // Increased particle count for better coverage
+    this.maxParticles = 150; // Reduced from 180 for smoother performance and less chaotic appearance
     this.time = 0;
   }
   
@@ -112,16 +120,16 @@ export class FireSmokeParticleSystem {
     };
   }
   
-  update(time) {
-    // Keep track of time for evolving patterns
-    this.time += 0.01;
+  update(time, textRegion = null) {
+    // Keep track of time for evolving patterns (slower time progression for smoother changes)
+    this.time += 0.006; // Reduced from 0.01
     
-    // Create evolving spawn patterns - different rates for different emitters
-    const baseSpawnRate = Math.sin(this.time * 0.5) * 0.1 + 0.2; // Varies between 0.1 and 0.3
-    const auxSpawnRate = Math.sin(this.time * 0.4) * 0.05 + 0.12; // Lower rate for auxiliary emitters
+    // Create evolving spawn patterns - lower rates for slower animation
+    const baseSpawnRate = Math.sin(this.time * 0.3) * 0.08 + 0.15; // Reduced to vary between 0.07 and 0.23
+    const auxSpawnRate = Math.sin(this.time * 0.2) * 0.03 + 0.08; // Reduced for fewer auxiliary emitters
     
-    // Occasionally create high-flying particles from bottom emitters
-    const highFlyerChance = 0.02; // 2% chance per update
+    // Occasionally create high-flying particles from bottom emitters (reduced frequency)
+    const highFlyerChance = 0.01; // 1% chance per update (halved from 2%)
     if (Math.random() < highFlyerChance && this.particles.length < this.maxParticles) {
       // Find a base emitter (non-auxiliary)
       const baseEmitters = this.emitters.filter(em => !em.isAuxiliary);
@@ -141,30 +149,33 @@ export class FireSmokeParticleSystem {
       }
     }
     
-    // Create "topmost" particles that start near top and fall down slightly
-    const topmostParticleChance = 0.01; // 1% chance per update
+    // Create "topmost" particles that start near top and fall down slightly (reduced frequency)
+    const topmostParticleChance = 0.005; // 0.5% chance per update (halved from 1%)
     if (Math.random() < topmostParticleChance && this.particles.length < this.maxParticles) {
       // Create a particle at the top of the screen
       const x = Math.random() * this.width;
-      const particle = {
-        x: x,
-        y: this.height * 0.05, // Near the top
-        vx: (Math.random() - 0.5) * 0.5, // Very slow horizontal movement
-        vy: Math.random() * 0.3, // Slight downward drift
-        life: 1,
-        maxLife: Math.random() * 6 + 6, // Long lifespan
-        size: Math.random() * 25 + 10, // Smaller particles
-        color: Math.random() > 0.8 ? 'fire' : 'smoke', // Mostly smoke
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.05,
-        age: 0,
-        evolutionRate: Math.random() * 0.01 + 0.005,
-        evolutionPath: 2, // Swirling path for top particles
-        fromAuxiliary: true, // Treat like auxiliary emitters
-        isTopParticle: true // Special flag
-      };
-      
-      this.particles.push(particle);
+      // Avoid placing particles in the text region if it's defined
+      if (!textRegion || x < textRegion.x || x > textRegion.x + textRegion.width) {
+        const particle = {
+          x: x,
+          y: this.height * 0.05, // Near the top
+          vx: (Math.random() - 0.5) * 0.5, // Very slow horizontal movement
+          vy: Math.random() * 0.3, // Slight downward drift
+          life: 1,
+          maxLife: Math.random() * 6 + 6, // Long lifespan
+          size: Math.random() * 25 + 10, // Smaller particles
+          color: Math.random() > 0.8 ? 'fire' : 'smoke', // Mostly smoke
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.05,
+          age: 0,
+          evolutionRate: Math.random() * 0.01 + 0.005,
+          evolutionPath: 2, // Swirling path for top particles
+          fromAuxiliary: true, // Treat like auxiliary emitters
+          isTopParticle: true // Special flag
+        };
+        
+        this.particles.push(particle);
+      }
     }
     
     // Spawn particles from base emitters
@@ -173,7 +184,12 @@ export class FireSmokeParticleSystem {
       // Select base emitters in patterns rather than just randomly
       const emitterIndex = Math.floor((Math.sin(this.time) + 1) * baseEmitters.length / 2);
       const emitter = baseEmitters[emitterIndex % baseEmitters.length];
-      this.particles.push(this.createParticle(emitter));
+      // Avoid spawning from emitters directly under the text region
+      if (!textRegion || 
+          emitter.x < textRegion.x || 
+          emitter.x > textRegion.x + textRegion.width) {
+        this.particles.push(this.createParticle(emitter));
+      }
     }
     
     // Spawn particles from auxiliary (mid-height) emitters
@@ -182,91 +198,137 @@ export class FireSmokeParticleSystem {
       // Select auxiliary emitters semi-randomly
       const emitterIndex = Math.floor(Math.random() * auxEmitters.length);
       const emitter = auxEmitters[emitterIndex];
-      this.particles.push(this.createParticle(emitter));
+      // Avoid spawning from emitters in the text region
+      if (!textRegion || 
+          emitter.x < textRegion.x || 
+          emitter.x > textRegion.x + textRegion.width ||
+          emitter.y < textRegion.y || 
+          emitter.y > textRegion.y + textRegion.height) {
+        this.particles.push(this.createParticle(emitter));
+      }
     }
     
     // Update existing particles
     for (let i = this.particles.length - 1; i >= 0; i--) {
       const particle = this.particles[i];
       
-      // Track particle age for evolution
-      particle.age += 0.016;
+      // Track particle age for evolution (slower aging for more consistent motion)
+      particle.age += 0.01; // Reduced from 0.016
       
       // Apply initial boost for particles that have it
       if (particle.hasInitialBoost && particle.age < 0.2) {
         particle.vy -= 0.05; // Extra upward acceleration at the beginning
       }
       
-      // Update position (even slower movement)
-      particle.x += particle.vx * 0.5;
-      particle.y += particle.vy * 0.5;
+      // Calculate next position - slower movement (0.3 instead of 0.5)
+      const nextX = particle.x + particle.vx * 0.3;
+      const nextY = particle.y + particle.vy * 0.3;
+      
+      // Check if next position is in text region - if so, redirect the particle
+      if (textRegion && 
+          nextX >= textRegion.x && 
+          nextX <= textRegion.x + textRegion.width && 
+          nextY >= textRegion.y && 
+          nextY <= textRegion.y + textRegion.height) {
+        
+        // Calculate distance to each edge of text region
+        const distToLeft = Math.abs(nextX - textRegion.x);
+        const distToRight = Math.abs(nextX - (textRegion.x + textRegion.width));
+        const distToTop = Math.abs(nextY - textRegion.y);
+        const distToBottom = Math.abs(nextY - (textRegion.y + textRegion.height));
+        
+        // Find the closest edge and deflect the particle away
+        const minDist = Math.min(distToLeft, distToRight, distToTop, distToBottom);
+        
+        if (minDist === distToLeft) {
+          // Deflect left
+          particle.vx = -Math.abs(particle.vx) * 1.2;
+        } else if (minDist === distToRight) {
+          // Deflect right
+          particle.vx = Math.abs(particle.vx) * 1.2;
+        } else if (minDist === distToTop) {
+          // Deflect up
+          particle.vy = -Math.abs(particle.vy) * 1.2;
+        } else {
+          // Deflect down
+          particle.vy = Math.abs(particle.vy) * 1.2;
+        }
+        
+        // Add a small random component to prevent particles from getting stuck
+        particle.vx += (Math.random() - 0.5) * 0.3;
+        particle.vy += (Math.random() - 0.5) * 0.3;
+      } else {
+        // Normal movement if not in text region
+        particle.x = nextX;
+        particle.y = nextY;
+      }
       
       // Apply forces with evolving behavior
       const ageProgress = particle.age / particle.maxLife;
       
-      // Different evolution paths create more variety
+      // Different evolution paths create more variety - but gentler transitions
       if (particle.evolutionPath === 0) {
         // Path 0: Particles that rise more vertically
-        particle.vy *= 0.998; // Almost no vertical deceleration to reach top
-        particle.vx *= 0.96;  // More horizontal dampening
+        particle.vy *= 0.999; // Almost no vertical deceleration to reach top (increased from 0.998)
+        particle.vx *= 0.97;  // More horizontal dampening (less severe from 0.96)
         
-        // Slight tendency to move toward center as they age
-        const centerPull = (this.width / 2 - particle.x) * 0.0001 * ageProgress;
+        // Gentler center pull for smoother movement
+        const centerPull = (this.width / 2 - particle.x) * 0.00005 * ageProgress; // Halved force
         particle.vx += centerPull;
       } else if (particle.evolutionPath === 1) {
         // Path 1: Particles that spread more horizontally
-        particle.vy *= 0.997; // Very little vertical slowdown
-        particle.vx *= 0.99; // Less horizontal dampening
+        particle.vy *= 0.998; // Very little vertical slowdown (increased from 0.997)
+        particle.vx *= 0.995; // Less horizontal dampening (increased from 0.99)
         
-        // More sideways movement as they age
-        const lateralForce = Math.sin(particle.age * 2) * 0.05 * ageProgress;
+        // More sideways movement as they age, but smoother
+        const lateralForce = Math.sin(particle.age) * 0.025 * ageProgress; // Halved force, slower oscillation
         particle.vx += lateralForce;
       } else {
         // Path 2: Swirling particles
-        particle.vy *= 0.998; // Even less vertical slowdown
-        particle.vx *= 0.98;
+        particle.vy *= 0.999; // Even less vertical slowdown (increased from 0.998)
+        particle.vx *= 0.99; // Less horizontal dampening (increased from 0.98)
         
-        // Add swirl effect increasing with age
-        const swirl = Math.sin(particle.age * 3) * 0.08 * ageProgress;
-        const swirlX = Math.cos(particle.age * 2) * swirl;
-        const swirlY = Math.sin(particle.age * 2) * swirl;
+        // Add swirl effect increasing with age - gentler for smoother movement
+        const swirl = Math.sin(particle.age * 1.5) * 0.04 * ageProgress; // Reduced force and frequency
+        const swirlX = Math.cos(particle.age) * swirl; // Reduced frequency
+        const swirlY = Math.sin(particle.age) * swirl; // Reduced frequency
         
         particle.vx += swirlX;
         particle.vy += swirlY;
       }
       
-      // Universal turbulence that affects all particles
-      const turbulence = Math.sin(this.time + particle.x / 100 + particle.y / 100) * 0.3;
-      particle.vx += (Math.random() - 0.5) * 0.2 + turbulence * 0.1;
+      // Reduced turbulence for smoother movement
+      const turbulence = Math.sin(this.time + particle.x / 100 + particle.y / 100) * 0.15; // Halved from 0.3
+      particle.vx += (Math.random() - 0.5) * 0.1 + turbulence * 0.05; // Halved random movement
       
-      // Special handling for different particle types
+      // Special handling for different particle types - gentler movement
       if (particle.isTopParticle) {
         // Top particles have different behavior
-        particle.vy += Math.sin(particle.age + this.time) * 0.01; // Wavy vertical movement
-        particle.life -= 1 / (particle.maxLife * 110); // Even slower fade for top particles
+        particle.vy += Math.sin(particle.age * 0.5 + this.time * 0.5) * 0.005; // Slower, gentler wavy vertical movement
+        particle.life -= 1 / (particle.maxLife * 130); // Even slower fade for top particles
       } else if (particle.evolution === 'highflyer') {
-        // High flyers get extra vertical boosts
-        if (Math.random() < 0.05) {
-          particle.vy -= 0.2; // Strong upward boosts
+        // High flyers get extra vertical boosts (but less frequently)
+        if (Math.random() < 0.02) { // Reduced from 0.05
+          particle.vy -= 0.12; // Gentler upward boosts (reduced from 0.2)
         }
-        particle.life -= 1 / (particle.maxLife * 100); // Slower fade for high flyers
+        particle.life -= 1 / (particle.maxLife * 120); // Slower fade for high flyers
       } else {
-        // More frequent upward boosts for regular particles to reach the top of the screen
-        if (Math.random() < 0.03) {
-          const evolutionJump = Math.sin(this.time * 0.5) * 0.5 + 0.5; // 0 to 1 based on time
-          particle.vx += (Math.random() - 0.5) * evolutionJump;
-          particle.vy -= Math.random() * evolutionJump * 0.5; // Stronger upward boost 
+        // Less frequent upward boosts for regular particles
+        if (Math.random() < 0.015) { // Halved from 0.03
+          const evolutionJump = Math.sin(this.time * 0.3) * 0.3 + 0.3; // 0 to 0.6 based on time (reduced)
+          particle.vx += (Math.random() - 0.5) * evolutionJump * 0.7; // Reduced lateral force
+          particle.vy -= Math.random() * evolutionJump * 0.3; // Gentler upward boost
         }
-        // Update life (slower fade)
-        particle.life -= 1 / (particle.maxLife * 90);
+        // Update life (even slower fade)
+        particle.life -= 1 / (particle.maxLife * 110);
       }
       
-      // Update rotation (slower rotation)
-      particle.rotation += particle.rotationSpeed * 0.7;
+      // Update rotation (even slower rotation)
+      particle.rotation += particle.rotationSpeed * 0.4; // Reduced from 0.7
       
-      // Randomize rotation occasionally for more chaos
-      if (Math.random() < 0.02) {
-        particle.rotationSpeed = (Math.random() - 0.5) * 0.1;
+      // Randomize rotation very occasionally for more subtle chaos
+      if (Math.random() < 0.008) { // Reduced from 0.02
+        particle.rotationSpeed = (Math.random() - 0.5) * 0.06; // Reduced from 0.1
       }
       
       // Remove dead particles only when life expires, not when they reach the top
@@ -276,10 +338,19 @@ export class FireSmokeParticleSystem {
     }
   }
   
-  draw(ctx) {
+  draw(ctx, textRegion = null) {
     ctx.save();
     
     for (const particle of this.particles) {
+      // Skip drawing if particle is within text region
+      if (textRegion && 
+          particle.x >= textRegion.x && 
+          particle.x <= textRegion.x + textRegion.width && 
+          particle.y >= textRegion.y && 
+          particle.y <= textRegion.y + textRegion.height) {
+        continue;
+      }
+      
       ctx.save();
       ctx.translate(particle.x, particle.y);
       ctx.rotate(particle.rotation);
@@ -304,32 +375,35 @@ export class FireSmokeParticleSystem {
         const heightFactor = 1.0 - Math.max(0, Math.min(1, (this.height - particle.y) / this.height));
         const positionAlpha = 1.0 - (heightFactor * 0.5); // Progressively more transparent near top
         
+        // Reduce overall particle intensity for better text contrast
+        const contrastFactor = 0.85; // Slightly dimmer particles (85% of original brightness)
+        
         // Special handling for different types
         if (particle.isTopParticle) {
           // Top particles are more gaseous and transparent
-          coreColor = `rgba(255, ${210 - ageProgress * 50}, ${100 + hueShift}, ${alpha * 0.3 * positionAlpha})`;
-          midColor = `rgba(255, ${150 - ageProgress * 50}, ${50 + hueShift}, ${alpha * 0.2 * positionAlpha})`;
-          outerColor = `rgba(${220 - ageProgress * 40}, ${60 - ageProgress * 30}, ${20 + hueShift}, ${alpha * 0.1 * positionAlpha})`;
+          coreColor = `rgba(255, ${210 - ageProgress * 50}, ${100 + hueShift}, ${alpha * 0.3 * positionAlpha * contrastFactor})`;
+          midColor = `rgba(255, ${150 - ageProgress * 50}, ${50 + hueShift}, ${alpha * 0.2 * positionAlpha * contrastFactor})`;
+          outerColor = `rgba(${220 - ageProgress * 40}, ${60 - ageProgress * 30}, ${20 + hueShift}, ${alpha * 0.1 * positionAlpha * contrastFactor})`;
         } else if (particle.evolution === 'highflyer') {
           // High flyers are more vibrant but smaller
-          coreColor = `rgba(255, ${240 - ageProgress * 40}, ${150 + hueShift}, ${alpha * 0.4 * positionAlpha})`;
-          midColor = `rgba(255, ${190 - ageProgress * 50}, ${60 + hueShift}, ${alpha * 0.3 * positionAlpha})`;
-          outerColor = `rgba(${230 - ageProgress * 30}, ${100 - ageProgress * 40}, ${30 + hueShift}, ${alpha * 0.2 * positionAlpha})`;
+          coreColor = `rgba(255, ${240 - ageProgress * 40}, ${150 + hueShift}, ${alpha * 0.4 * positionAlpha * contrastFactor})`;
+          midColor = `rgba(255, ${190 - ageProgress * 50}, ${60 + hueShift}, ${alpha * 0.3 * positionAlpha * contrastFactor})`;
+          outerColor = `rgba(${230 - ageProgress * 30}, ${100 - ageProgress * 40}, ${30 + hueShift}, ${alpha * 0.2 * positionAlpha * contrastFactor})`;
         } else if (particle.evolutionPath === 0) {
           // Hotter, more yellow core
-          coreColor = `rgba(255, ${255 - ageProgress * 30}, ${120 + hueShift}, ${alpha * 0.5 * positionAlpha})`;
-          midColor = `rgba(255, ${180 - ageProgress * 40}, ${50 + hueShift}, ${alpha * 0.4 * positionAlpha})`;
-          outerColor = `rgba(${255 - ageProgress * 55}, ${100 - ageProgress * 50}, ${20 + hueShift}, ${alpha * 0.25 * positionAlpha})`;
+          coreColor = `rgba(255, ${255 - ageProgress * 30}, ${120 + hueShift}, ${alpha * 0.5 * positionAlpha * contrastFactor})`;
+          midColor = `rgba(255, ${180 - ageProgress * 40}, ${50 + hueShift}, ${alpha * 0.4 * positionAlpha * contrastFactor})`;
+          outerColor = `rgba(${255 - ageProgress * 55}, ${100 - ageProgress * 50}, ${20 + hueShift}, ${alpha * 0.25 * positionAlpha * contrastFactor})`;
         } else if (particle.evolutionPath === 1) {
           // More orange, ember-like
-          coreColor = `rgba(255, ${220 - ageProgress * 60}, ${80 + hueShift}, ${alpha * 0.5 * positionAlpha})`;
-          midColor = `rgba(255, ${160 - ageProgress * 50}, ${40 + hueShift}, ${alpha * 0.4 * positionAlpha})`;
-          outerColor = `rgba(${220 - ageProgress * 40}, ${80 - ageProgress * 30}, ${20 + hueShift}, ${alpha * 0.25 * positionAlpha})`;
+          coreColor = `rgba(255, ${220 - ageProgress * 60}, ${80 + hueShift}, ${alpha * 0.5 * positionAlpha * contrastFactor})`;
+          midColor = `rgba(255, ${160 - ageProgress * 50}, ${40 + hueShift}, ${alpha * 0.4 * positionAlpha * contrastFactor})`;
+          outerColor = `rgba(${220 - ageProgress * 40}, ${80 - ageProgress * 30}, ${20 + hueShift}, ${alpha * 0.25 * positionAlpha * contrastFactor})`;
         } else {
           // More red, intense
-          coreColor = `rgba(255, ${200 - ageProgress * 80}, ${100 + hueShift}, ${alpha * 0.5 * positionAlpha})`;
-          midColor = `rgba(255, ${140 - ageProgress * 60}, ${30 + hueShift}, ${alpha * 0.4 * positionAlpha})`;
-          outerColor = `rgba(${200 - ageProgress * 20}, ${60 - ageProgress * 40}, ${10 + hueShift}, ${alpha * 0.25 * positionAlpha})`;
+          coreColor = `rgba(255, ${200 - ageProgress * 80}, ${100 + hueShift}, ${alpha * 0.5 * positionAlpha * contrastFactor})`;
+          midColor = `rgba(255, ${140 - ageProgress * 60}, ${30 + hueShift}, ${alpha * 0.4 * positionAlpha * contrastFactor})`;
+          outerColor = `rgba(${200 - ageProgress * 20}, ${60 - ageProgress * 40}, ${10 + hueShift}, ${alpha * 0.25 * positionAlpha * contrastFactor})`;
         }
         
         const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, evolvedSize);
@@ -347,6 +421,9 @@ export class FireSmokeParticleSystem {
         const heightFactor = 1.0 - Math.max(0, Math.min(1, (this.height - particle.y) / this.height));
         const positionAlpha = 1.0 - (heightFactor * 0.7); // More position-dependent than fire
         
+        // Reduce overall particle intensity for better text contrast
+        const contrastFactor = 0.85; // Slightly dimmer particles
+        
         // Different smoke colors based on type and position
         let smokeGray;
         if (particle.isTopParticle) {
@@ -361,8 +438,8 @@ export class FireSmokeParticleSystem {
         }
         
         const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, evolvedSize);
-        gradient.addColorStop(0, `rgba(${smokeGray}, ${smokeGray}, ${smokeGray}, ${alpha * smokeOpacity * positionAlpha})`);
-        gradient.addColorStop(0.5, `rgba(${smokeGray * 0.6}, ${smokeGray * 0.6}, ${smokeGray * 0.6}, ${alpha * smokeOpacity * 0.6 * positionAlpha})`);
+        gradient.addColorStop(0, `rgba(${smokeGray}, ${smokeGray}, ${smokeGray}, ${alpha * smokeOpacity * positionAlpha * contrastFactor})`);
+        gradient.addColorStop(0.5, `rgba(${smokeGray * 0.6}, ${smokeGray * 0.6}, ${smokeGray * 0.6}, ${alpha * smokeOpacity * 0.6 * positionAlpha * contrastFactor})`);
         gradient.addColorStop(1, 'rgba(30, 30, 30, 0)');
         
         ctx.fillStyle = gradient;
@@ -417,7 +494,7 @@ export function renderFireSmokeText(ctx, { currentWord, rectangle, isMobileView 
     
     // Helper function to get scaled font size for text
     const getScaledFontSize = (text, baseSize) => {
-      ctx.font = `900 ${baseSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+      ctx.font = `700 ${baseSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
       const textWidth = ctx.measureText(text).width;
       const padding = width * 0.05;
       const maxTextWidth = width - (padding * 2);
@@ -430,35 +507,39 @@ export function renderFireSmokeText(ctx, { currentWord, rectangle, isMobileView 
     
     // Draw first item with fire glow
     const item1FontSize = getScaledFontSize(item1, itemFontSize);
-    ctx.font = `900 ${item1FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.font = `700 ${item1FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
-    // Add glow effect
-    ctx.shadowColor = '#FF6B00';
-    ctx.shadowBlur = 30;
-    ctx.fillStyle = '#FFFFFF';
+    // Draw text shadow/outline for better contrast with fire background
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 2;
+    
+    // Add moderate glow effect - less intense than before
+    ctx.fillStyle = '#F0F0F0'; // Slightly off-white for less eye strain
     ctx.fillText(item1, centerX, centerY - spacing);
     
-    // Draw VS text with stronger glow
+    // Draw VS text
     const vsScaledFontSize = getScaledFontSize("VS", vsFontSize);
-    ctx.font = `900 ${vsScaledFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.font = `800 ${vsScaledFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
-    ctx.shadowColor = '#FF0000';
-    ctx.shadowBlur = 40;
-    ctx.fillStyle = '#FFD700';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+    ctx.shadowBlur = 5;
+    ctx.fillStyle = '#FFE87C'; // Softer gold for less eye strain
     ctx.fillText("VS", centerX, centerY);
     
-    // Draw second item with fire glow
+    // Draw second item with same style as first
     const item2FontSize = getScaledFontSize(item2, itemFontSize);
-    ctx.font = `900 ${item2FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.font = `700 ${item2FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
-    ctx.shadowColor = '#FF6B00';
-    ctx.shadowBlur = 30;
-    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+    ctx.shadowBlur = 4;
+    ctx.fillStyle = '#F0F0F0'; // Slightly off-white
     ctx.fillText(item2, centerX, centerY + spacing);
   } 
   // Regular word mode
   else if (currentWord) {
-    ctx.font = `900 ${fontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.font = `700 ${fontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     // Check if text fits within the rectangle width
     const textWidth = ctx.measureText(currentWord).width;
@@ -471,18 +552,23 @@ export function renderFireSmokeText(ctx, { currentWord, rectangle, isMobileView 
       actualFontSize = fontSize * (maxTextWidth / textWidth);
     }
     
-    // Update font with actual size
-    ctx.font = `900 ${actualFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    // Update font with actual size - using 700 weight instead of 900 for less eye strain
+    ctx.font = `700 ${actualFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
-    // Draw text with fire glow effect
-    ctx.shadowColor = '#FF6B00';
-    ctx.shadowBlur = 40;
-    ctx.fillStyle = '#FFFFFF';
+    // Add subtle shadow for better text readability on fire background
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+    ctx.shadowBlur = 4; 
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 2;
+    
+    // Use slightly off-white for better viewing comfort
+    ctx.fillStyle = '#F0F0F0';
     ctx.fillText(currentWord, centerX, centerY);
     
-    // Add extra glow layer
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = '#FFD700';
+    // Add very subtle glow
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = 'rgba(255, 200, 50, 0.4)';
+    ctx.shadowOffsetY = 0;
     ctx.fillText(currentWord, centerX, centerY);
   }
   
