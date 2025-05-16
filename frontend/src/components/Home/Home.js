@@ -116,8 +116,12 @@ function Home() {
       
       {/* Visual elements with fractal aesthetic */}
       <div className="visual-elements">
-        <div className="record-circle"></div>
-        <div className="record-circle secondary"></div>
+        <div className="record-circle">
+          <div className="vinyl-shine"></div>
+        </div>
+        <div className="record-circle secondary">
+          <div className="vinyl-shine"></div>
+        </div>
         <div className="fractal-orb" style={{
           position: 'absolute',
           width: '400px',
