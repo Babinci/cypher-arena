@@ -135,7 +135,7 @@ export const TimerControls = ({
           backgroundColor: 'rgba(10, 10, 10, 0.85)',
           borderTop: '1px solid rgba(255, 120, 60, 0.3)',
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
-          padding: '8px 10px',
+          padding: '15px 10px 8px 10px',
           zIndex: 500,
           opacity: isFullScreen ? 0.2 : 1,
           transition: 'opacity 0.3s ease',
@@ -149,8 +149,8 @@ export const TimerControls = ({
           className="timer-display"
           style={{
           position: 'relative',
-          height: '50px',
-          marginBottom: '0',
+          height: '88px',
+          marginBottom: '15px',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -161,16 +161,17 @@ export const TimerControls = ({
           <div 
             className="interval-badge"
             style={{
-              padding: '8px 12px',
+              padding: '10px 14px',
               background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
               border: '1px solid rgba(255, 120, 60, 0.4)',
-              borderRadius: '20px',
+              borderRadius: '25px',
               fontSize: '14px',
               color: 'rgba(255, 220, 160, 0.9)',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
               boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
+              height: '48px',
             }}>
             <button
               onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
@@ -179,8 +180,8 @@ export const TimerControls = ({
                 color: 'rgba(255, 180, 100, 0.8)',
                 border: '1px solid rgba(255, 120, 60, 0.3)',
                 borderRadius: '50%',
-                width: '22px',
-                height: '22px',
+                width: '26px',
+                height: '26px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -204,8 +205,8 @@ export const TimerControls = ({
                 color: 'rgba(255, 180, 100, 0.8)',
                 border: '1px solid rgba(255, 120, 60, 0.3)',
                 borderRadius: '50%',
-                width: '22px',
-                height: '22px',
+                width: '26px',
+                height: '26px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -223,80 +224,115 @@ export const TimerControls = ({
 
           {/* Main Timer centered */}
           <div style={{
-            fontSize: '42px',
+            fontSize: '53px',
             fontWeight: 'bold',
             fontFamily: 'var(--font-display)',
             color: isActive ? 'rgba(255, 200, 100, 1)' : 'rgba(255, 150, 80, 0.9)',
             textAlign: 'center',
             textShadow: isActive ? '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)' : '0 2px 4px rgba(0, 0, 0, 0.7)',
             letterSpacing: '2px',
+            lineHeight: '1.2',
           }}>
             {timer}
           </div>
 
-          {/* Round Time badge - now integrated with slider */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '6px',
-          }}>
-            <div 
-              className="roundtime-badge"
-              style={{
-                padding: '8px 16px',
-                background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
-                border: '1px solid rgba(255, 120, 60, 0.4)',
-                borderRadius: '20px',
-                fontSize: '14px',
-                color: 'rgba(255, 220, 160, 0.9)',
-                textAlign: 'center',
-                boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
-              }}>
-              {t('roundTime')}: {roundDuration === Infinity ? '∞' : `${roundTimer}s`}
-            </div>
-          </div>
-        </div>
-        
-        {/* Round duration slider - narrower and connected to round time */}
-        <div style={{ 
-          marginTop: '6px',
-          marginBottom: '8px',
-          width: '70%',
-          margin: '6px auto 8px auto',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          position: 'relative',
-        }}>
-          {/* Connect slider visually to round time */}
-          <div style={{
-            position: 'absolute',
-            top: '-16px',
-            right: '50%',
-            transform: 'translateX(50%)',
-            width: '2px',
-            height: '16px',
-            background: 'linear-gradient(to bottom, rgba(255, 120, 60, 0.4), transparent)',
-          }} />
-          <input
-            type="range"
-            min="10"
-            max="300"
-            value={roundDuration === Infinity ? 300 : roundDuration}
-            onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-            aria-label={t('roundDuration')}
-            style={{ 
+          {/* Circular Round Time Control */}
+          <div 
+            className="circular-round-control"
+            style={{
+              position: 'relative',
+              width: '110px',
+              height: '110px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            {/* Circular background */}
+            <div style={{
+              position: 'absolute',
               width: '100%',
-              height: '6px',
-              appearance: 'none',
-              background: 'linear-gradient(to right, rgba(255, 60, 30, 0.3), rgba(255, 120, 60, 0.6))',
-              borderRadius: '3px',
-              outline: 'none',
-              border: '1px solid rgba(255, 120, 60, 0.2)',
-            }}
-            className="fire-slider"
-          />
+              height: '100%',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
+              border: '2px solid rgba(255, 120, 60, 0.4)',
+              boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
+            }} />
+            
+            {/* Circular progress indicator */}
+            <svg 
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                transform: 'rotate(-90deg)',
+              }}>
+              <circle
+                cx="55"
+                cy="55"
+                r="48"
+                fill="none"
+                stroke="rgba(255, 120, 60, 0.2)"
+                strokeWidth="5"
+              />
+              <circle
+                cx="55"
+                cy="55"
+                r="48"
+                fill="none"
+                stroke="rgba(255, 160, 80, 0.8)"
+                strokeWidth="5"
+                strokeDasharray={`${(roundDuration === Infinity ? 300 : roundDuration) / 300 * 301} 301`}
+                strokeLinecap="round"
+                style={{
+                  transition: 'stroke-dasharray 0.2s ease',
+                }}
+              />
+            </svg>
+            
+            {/* Central round time display */}
+            <div style={{
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 2,
+            }}>
+              <span style={{
+                fontSize: '12px',
+                color: 'rgba(255, 180, 100, 0.7)',
+                marginBottom: '3px',
+              }}>
+                {t('roundTime')}
+              </span>
+              <span style={{
+                fontSize: '22px',
+                fontWeight: 'bold',
+                color: 'rgba(255, 220, 160, 0.95)',
+                fontFamily: 'var(--font-display)',
+              }}>
+                {roundDuration === Infinity ? '∞' : `${roundTimer}s`}
+              </span>
+            </div>
+            
+            {/* Invisible circular slider overlay */}
+            <input
+              type="range"
+              min="10"
+              max="300"
+              value={roundDuration === Infinity ? 300 : roundDuration}
+              onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
+              aria-label={t('roundDuration')}
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                opacity: 0,
+                cursor: 'pointer',
+                zIndex: 3,
+              }}
+            />
+          </div>
         </div>
         
         {/* Control buttons - fire-themed */}
