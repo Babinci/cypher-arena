@@ -25,7 +25,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     
     // Helper function to get scaled font size for text
     const getScaledFontSize = (text, baseSize) => {
-      ctx.font = `bold ${baseSize}px Arial`;
+      ctx.font = `700 ${baseSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
       const textWidth = ctx.measureText(text).width;
       const padding = width * 0.05;
       const maxTextWidth = width - (padding * 2);
@@ -38,28 +38,28 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     
     // Draw first item
     const item1FontSize = getScaledFontSize(item1, itemFontSize);
-    ctx.font = `bold ${item1FontSize}px Arial`;
+    ctx.font = `700 ${item1FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(item1, centerX, centerY - spacing);
     
     // Draw VS text
     const vsScaledFontSize = getScaledFontSize("VS", vsFontSize);
-    ctx.font = `bold ${vsScaledFontSize}px Arial`;
+    ctx.font = `800 ${vsScaledFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     ctx.fillStyle = '#1AAE4D'; // Slightly dimmer green (10% less bright)
     ctx.fillText("VS", centerX, centerY);
     
     // Draw second item
     const item2FontSize = getScaledFontSize(item2, itemFontSize);
-    ctx.font = `bold ${item2FontSize}px Arial`;
+    ctx.font = `700 ${item2FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(item2, centerX, centerY + spacing);
   } 
   // Regular word mode
   else if (currentWord) {
-    ctx.font = `bold ${fontSize}px Arial`;
+    ctx.font = `700 ${fontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     // Check if text fits within the rectangle width
     const textWidth = ctx.measureText(currentWord).width;
@@ -73,7 +73,7 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     }
     
     // Update font with actual size
-    ctx.font = `bold ${actualFontSize}px Arial`;
+    ctx.font = `700 ${actualFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     // Draw text without black stroke
     ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
