@@ -110,3 +110,63 @@ The frontend follows a feature-based component structure:
 - Oswald font implemented consistently across all battle modes
 - Improves visual coherence between different visualization types
 - Ensures proper text rendering on all devices
+
+## Canvas Text Rendering Patterns
+
+### Word Visibility Issues and Solutions
+
+When rendering text on canvas elements, several issues can impact visibility:
+
+1. **Font Size Scaling**:
+   - Issue: Text too small relative to large canvas dimensions
+   - Solution: Calculate font size as a percentage (25%) of the smaller dimension
+   - Implementation: `const fontSize = Math.min(width, height) * 0.25;`
+
+2. **Container Height Constraints**:
+   - Issue: Timer controls taking excessive screen space (94vh)
+   - Solution: Fixed height for timer panel (60px)
+   - Location: `src/components/BattleMode/SharedControls/TimerControls.js`
+
+3. **Text Bounds Checking**:
+   - Issue: Text overflowing rectangle boundaries
+   - Solution: Auto-scale font size based on text width
+   ```javascript
+   const textWidth = ctx.measureText(text).width;
+   const maxTextWidth = width - (padding * 2);
+   if (textWidth > maxTextWidth) {
+     actualFontSize = fontSize * (maxTextWidth / textWidth);
+   }
+   ```
+
+4. **Z-Index Hierarchy**:
+   - Issue: UI elements overshadowing canvas content
+   - Solution: Proper z-index ordering
+   - Timer controls: 500
+   - Control buttons: 500
+   - Canvas: 10
+   - Back button: 2000
+
+5. **Font Loading**:
+   - Issue: Canvas rendering before fonts load
+   - Solution: Use simple font fallbacks for consistent rendering
+   - Font family: `Arial` (removed CSS variables for canvas compatibility)
+
+### Debugging Process
+
+When debugging canvas text visibility issues:
+
+1. Create minimal test components to verify basic canvas rendering
+2. Add comprehensive logging to track calculations
+3. Use visual debugging aids (rectangles, crosshairs)
+4. Test with static values before implementing dynamic calculations
+5. Scale font sizes appropriately for different canvas dimensions
+6. Ensure proper z-index hierarchy to prevent UI overlap
+
+### Final Implementation
+
+The fixed `WordTextRenderer.js` includes:
+- Dynamic font sizing based on container dimensions
+- Automatic text scaling to fit within bounds
+- Proper contrast with black stroke on white text
+- Special handling for contrast mode with VS separator
+- Consistent rendering across different canvas sizes

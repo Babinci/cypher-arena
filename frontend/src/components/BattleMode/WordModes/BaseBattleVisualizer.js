@@ -5,13 +5,19 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import { drawGradientRectangle } from './Gradient_Rectangle';
 import { renderWordText } from './WordTextRenderer';
+// import { renderWordText } from './WordTextRendererDebug'; // Using debug version
+// import { renderWordText } from './WordTextRendererClean'; // Using clean version
+// import { renderWordText } from './WordTextRendererLarge'; // Using large version
+// import { renderWordText } from './WordTextRendererFixed'; // Using fixed version
 import useTranslation from '../../../config/useTranslation';
+// Temporarily removed font imports for debugging
 
 const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+  // const [fontLoaded, setFontLoaded] = useState(false); // Removed for debugging
   const { t } = useTranslation();
 
   const {
@@ -65,6 +71,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       setCurrentWord(words[currentIndex]);
     }
   }, [currentIndex, words]);
+  
+  // Removed font loading effect for debugging
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -141,18 +149,20 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
 
     // --- WORD WRAPPING LOGIC MOVED TO WordTextRenderer.js ---
     // Pass exact rectangle dimensions to ensure text fits properly
-    renderWordText(ctx, {
-      currentWord,
-      rectangle: {
-        x: animatedX,
-        y: animatedY,
-        width: animatedWidth,
-        height: animatedHeight,
-        centerX: centerX,
-        centerY: finalCenterY
-      },
-      isMobileView: width < 768 // Force recalculation of mobile mode
-    });
+    if (currentWord) {
+      renderWordText(ctx, {
+        currentWord,
+        rectangle: {
+          x: animatedX,
+          y: animatedY,
+          width: animatedWidth,
+          height: animatedHeight,
+          centerX: centerX,
+          centerY: finalCenterY
+        },
+        isMobileView: width < 768 // Force recalculation of mobile mode
+      });
+    }
     // --- END WORD WRAPPING LOGIC ---
 
     animationRef.current = requestAnimationFrame(() => draw());
@@ -184,7 +194,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         position: 'fixed',
         top: 10,
         right: 10,
-        zIndex: 1000,
+        zIndex: 500,
         transition: 'opacity 0.3s ease-in-out',
         opacity: isFullScreen ? 0 : 1,
       }}
@@ -261,7 +271,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
                   top: 0, 
                   left: 0,
                   width: '100%',
-                  height: '100%'
+                  height: '100%',
+                  zIndex: 10 // Add explicit z-index to ensure it's below the back button but above background
                 }} 
               />
             </div>

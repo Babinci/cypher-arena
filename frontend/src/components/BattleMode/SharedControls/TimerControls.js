@@ -136,7 +136,7 @@ export const TimerControls = ({
           borderTop: '2px solid var(--accent-primary)',
           boxShadow: '0 -3px 10px rgba(0, 0, 0, 0.5)',
           padding: '10px 15px',
-          zIndex: 1000,
+          zIndex: 500,
           opacity: isFullScreen ? 0.2 : 1,
           transition: 'opacity 0.3s ease'
         }}
@@ -148,7 +148,7 @@ export const TimerControls = ({
           className="timer-display"
           style={{
           position: 'relative',
-          height: 'calc(94vh - 80px)', /* Increased from 90vh to 94vh (4% more) */
+          height: '60px', /* Fixed height instead of taking up most of the screen */
           marginBottom: '0',
           display: 'flex',
           flexDirection: 'column',

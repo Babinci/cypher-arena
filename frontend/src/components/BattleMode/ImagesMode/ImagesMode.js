@@ -127,7 +127,7 @@ function ImagesMode() {
         position: 'fixed',
         top: 10,
         right: 10,
-        zIndex: 1000,
+        zIndex: 500,
         transition: 'opacity 0.3s ease-in-out',
         opacity: isFullScreen ? 0 : 1,
       }}
