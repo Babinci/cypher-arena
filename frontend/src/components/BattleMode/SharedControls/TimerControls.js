@@ -178,7 +178,7 @@ export const TimerControls = ({
             right: '0',
             pointerEvents: 'none', /* Ensures clicks pass through to elements below */
           }}>
-            {/* Left badge - Interval */}
+            {/* Left badge - Interval with adjustment buttons */}
             <div 
               className="interval-badge"
               style={{
@@ -192,7 +192,7 @@ export const TimerControls = ({
               left: '30%',
               bottom: '0', /* Align to bottom */
               transform: 'translateX(-50%)',
-              width: '100px', /* Fixed width instead of percentage */
+              width: '140px', /* Increased width to accommodate buttons */
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -200,7 +200,47 @@ export const TimerControls = ({
               pointerEvents: 'auto', /* Make the badge clickable */
               zIndex: 10,
             }}>
+              <button
+                onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
+                style={{
+                  backgroundColor: 'transparent',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '25px',
+                  height: '25px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  marginRight: '5px'
+                }}
+              >
+                -
+              </button>
               {t('interval')}: {changeInterval}s
+              <button
+                onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
+                style={{
+                  backgroundColor: 'transparent',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '25px',
+                  height: '25px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  marginLeft: '5px'
+                }}
+              >
+                +
+              </button>
             </div>
             
             {/* Right badge - Round Timer */}
@@ -302,42 +342,6 @@ export const TimerControls = ({
             }}
           >
             {t('nextItem')}
-          </button>
-          
-          <button 
-            onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
-            style={{
-              padding: '8px 10px',
-              backgroundColor: 'var(--bg-light)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-display)',
-              fontSize: '14px',
-              fontWeight: '600',
-              flex: '1',
-            }}
-          >
-            {t('decreaseInterval')}
-          </button>
-          
-          <button 
-            onClick={() => handleIntervalChange(Math.min(120, changeInterval + 5))}
-            style={{
-              padding: '8px 10px',
-              backgroundColor: 'var(--bg-light)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-display)',
-              fontSize: '14px',
-              fontWeight: '600',
-              flex: '1',
-            }}
-          >
-            {t('increaseInterval')}
           </button>
           
           <button 
