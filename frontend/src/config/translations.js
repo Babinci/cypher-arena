@@ -22,6 +22,7 @@ const translations = {
     resetRound: "Reset Round",
     
     // Home page
+    freestyleHub: "Ultimate Freestyle Sanctuary",
     freestyleRounds: "Freestyle Rounds",
     wordMode: "Word Mode",
     imagesMode: "Images",
@@ -69,6 +70,7 @@ const translations = {
     resetRound: "Resetuj Rundę",
     
     // Home page
+    freestyleHub: "Świątynia Freestyle'u",
     freestyleRounds: "Rundy Freestyle",
     wordMode: "Tryb Słów",
     imagesMode: "Obrazki",
