@@ -7,6 +7,7 @@ import apiConfig from '../../../config/apiConfig';
 import useTranslation from '../../../config/useTranslation';
 import ImagePreloader from './ImagePreloader';
 import { getImage } from './indexedDBUtils';
+import '../../../fire-theme.css';
 
 function ImagesMode() {
   const BUFFER_SIZE = 100;

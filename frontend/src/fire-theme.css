@@ -1,0 +1,316 @@
+/* fire-theme.css - Fire-themed styles for Cypher Arena */
+
+:root {
+  /* Fire theme colors */
+  --fire-border: #FF784C;
+  --fire-accent: #FFA050;
+  --fire-medium: #FF9C60;
+  --fire-highlight: #FFEFB0;
+  
+  /* Fire theme gradients */
+  --fire-panel-gradient: linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95));
+  --fire-badge-gradient: linear-gradient(to bottom, rgba(50, 25, 15, 0.7), rgba(40, 20, 10, 0.8));
+  --fire-button-gradient: linear-gradient(to bottom, rgba(60, 30, 15, 0.6), rgba(40, 20, 10, 0.7));
+  --fire-active-gradient: linear-gradient(to bottom, rgba(255, 100, 50, 0.8), rgba(200, 80, 30, 0.9));
+  --fire-inactive-gradient: linear-gradient(to bottom, rgba(100, 50, 30, 0.6), rgba(70, 35, 20, 0.7));
+  --fire-hover-gradient: linear-gradient(to bottom, rgba(255, 120, 60, 0.8), rgba(200, 80, 30, 0.9));
+  
+  /* Fire theme shadows */
+  --fire-glow: 0 0 10px rgba(255, 180, 100, 0.7), 0 0 20px rgba(255, 140, 60, 0.5);
+  
+  /* Override any default focus colors */
+  --focus-color: rgba(255, 140, 70, 0.5);
+}
+
+/* Override global button styles with fire theme */
+button {
+  font-family: 'Oswald', 'Oswald Fallback', 'Impact', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--fire-button-gradient) !important;
+  color: var(--fire-accent) !important;
+  border: 1px solid var(--fire-border) !important;
+  border-radius: 1rem !important; /* More rounded buttons for fire theme */
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(255, 120, 60, 0.3);
+  background: var(--fire-active-gradient) !important;
+  border-color: rgba(255, 140, 60, 0.7) !important;
+  color: var(--fire-highlight) !important;
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Override all range inputs with fire theme */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right, rgba(217, 119, 6, 0.9), rgba(146, 64, 14, 0.3));
+  outline: none;
+  margin: 10px 0;
+  box-shadow: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8));
+  border: 2px solid rgba(217, 119, 6, 0.8);
+  box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8));
+  border: 2px solid rgba(217, 119, 6, 0.8);
+  box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, 
+    rgba(255, 160, 80, 0.8) 0%, 
+    rgba(255, 160, 80, 0.8) var(--value, 50%), 
+    rgba(0, 0, 0, 0.2) var(--value, 50%), 
+    rgba(0, 0, 0, 0.2) 100%);
+  height: 4px;
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-progress {
+  background: linear-gradient(90deg, rgba(255, 120, 60, 0.6), rgba(255, 160, 80, 0.9));
+  height: 4px;
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  border: none;
+}
+
+/* Action buttons (pause/resume) */
+button.action-button {
+  background: var(--fire-active-gradient) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 120, 60, 0.5) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+button.action-button.inactive {
+  background: var(--fire-inactive-gradient) !important;
+}
+
+/* Control buttons (next item, reset) */
+button.control-button {
+  background: var(--fire-button-gradient) !important;
+  color: var(--fire-accent) !important;
+}
+
+/* Fire-themed panels and containers */
+.fire-panel {
+  background: var(--fire-panel-gradient);
+  border-top: 1px solid var(--fire-border);
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.7);
+}
+
+.fire-badge {
+  background: var(--fire-badge-gradient);
+  border: 1px solid var(--fire-border);
+  border-radius: 25px;
+  color: var(--fire-accent);
+  box-shadow: 0 2px 8px rgba(255, 120, 60, 0.2);
+}
+
+/* Fire-themed text */
+.fire-text {
+  color: var(--fire-medium);
+}
+
+.fire-text.active {
+  color: var(--fire-highlight);
+  text-shadow: var(--fire-glow);
+}
+
+/* Override green classes */
+.green-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, rgba(217, 119, 6, 0.9), rgba(146, 64, 14, 0.3)) !important;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  margin: 10px 0;
+}
+
+.green-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8)) !important;
+  border: 2px solid rgba(217, 119, 6, 0.8) !important;
+  box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  cursor: pointer;
+}
+
+.green-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8)) !important;
+  border: 2px solid rgba(217, 119, 6, 0.8) !important;
+  box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  cursor: pointer;
+}
+
+.green-slider::-webkit-slider-runnable-track {
+  background: rgba(217, 119, 6, 0.5) !important;
+}
+
+.green-slider::-moz-range-progress {
+  background: rgba(217, 119, 6, 0.9) !important;
+}
+
+.green-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  background: radial-gradient(circle, rgba(255, 200, 120, 0.95), rgba(237, 139, 26, 0.85)) !important;
+}
+
+.green-slider::-moz-range-thumb:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  background: radial-gradient(circle, rgba(255, 200, 120, 0.95), rgba(237, 139, 26, 0.85)) !important;
+}
+
+/* Override default focus styles to remove any green outlines */
+input:focus, button:focus, a:focus, select:focus, textarea:focus, *:focus {
+  outline-color: var(--fire-accent) !important;
+  box-shadow: 0 0 0 2px rgba(255, 160, 80, 0.5) !important;
+}
+
+/* Make sure all buttons use fire theme for hover/focus states */
+button:hover, 
+button:focus,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.btn:hover,
+.button:hover {
+  background: var(--fire-hover-gradient) !important;
+  color: var(--fire-highlight) !important;
+  border-color: var(--fire-border) !important;
+  box-shadow: 0 0 10px rgba(255, 140, 60, 0.3) !important;
+  outline-color: var(--fire-accent) !important;
+}
+
+/* Target any outline or focus rings */
+*:focus-visible,
+*:-moz-focusring,
+*:focus {
+  outline-color: var(--fire-border) !important;
+}
+
+/* Specifically target any React focus indicators */
+.focus-visible,
+.focus,
+.focused,
+.is-focused,
+[data-focus="true"],
+[aria-selected="true"] {
+  box-shadow: 0 0 0 2px var(--fire-border) !important;
+  outline-color: var(--fire-border) !important;
+}
+
+/* Specifically target the round time slider which may have custom styling */
+.round-time-slider-control input[type="range"],
+input.green-slider,
+input.fire-slider {
+  background: linear-gradient(to right, rgba(217, 119, 6, 0.9), rgba(146, 64, 14, 0.3)) !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.round-time-slider-control input[type="range"]::-webkit-slider-thumb,
+input.green-slider::-webkit-slider-thumb,
+input.fire-slider::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8)) !important;
+  border: 2px solid rgba(217, 119, 6, 0.8) !important;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+}
+
+.round-time-slider-control input[type="range"]::-moz-range-thumb,
+input.green-slider::-moz-range-thumb,
+input.fire-slider::-moz-range-thumb {
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8)) !important;
+  border: 2px solid rgba(217, 119, 6, 0.8) !important;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+}
+
+.round-time-slider-control input[type="range"]::-webkit-slider-runnable-track,
+input.green-slider::-webkit-slider-runnable-track,
+input.fire-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, rgba(217, 119, 6, 0.9), rgba(146, 64, 14, 0.3)) !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+}
+
+.round-time-slider-control input[type="range"]::-moz-range-track,
+input.green-slider::-moz-range-track,
+input.fire-slider::-moz-range-track {
+  background: rgba(146, 64, 14, 0.3) !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+}
+
+.round-time-slider-control input[type="range"]::-moz-range-progress,
+input.green-slider::-moz-range-progress,
+input.fire-slider::-moz-range-progress {
+  background: rgba(217, 119, 6, 0.9) !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+}

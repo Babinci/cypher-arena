@@ -1,7 +1,9 @@
 // components/SharedControls/TimerControls.js
 import React, { useState, useEffect, useRef } from 'react';
 import useTranslation from '../../../config/useTranslation';
+import FireSliderStyles from './FireSliderStyles';
 import '../../../cypher-theme.css';
+import '../../../fire-theme.css';
 
 // TimerControls: A reusable component that renders the control panel UI
 export const TimerControls = ({
@@ -112,89 +114,8 @@ export const TimerControls = ({
 
   return (
     <>
-      {/* Custom Slider Styles */}
-      <style>{`
-        .round-time-slider {
-          outline: none;
-        }
-        
-        /* Track styles */
-        .round-time-slider::-webkit-slider-track {
-          width: 100%;
-          height: 4px;
-          background: rgba(255, 120, 60, 0.2);
-          border-radius: 2px;
-          border: none;
-        }
-        
-        .round-time-slider::-moz-range-track {
-          width: 100%;
-          height: 4px;
-          background: rgba(255, 120, 60, 0.2);
-          border-radius: 2px;
-          border: none;
-        }
-        
-        /* Thumb styles */
-        .round-time-slider::-webkit-slider-thumb {
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(255, 140, 70, 0.8));
-          border: 2px solid rgba(255, 180, 100, 0.8);
-          border-radius: 50%;
-          cursor: pointer;
-          margin-top: -8px;
-          box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
-          transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-        
-        .round-time-slider::-moz-range-thumb {
-          width: 20px;
-          height: 20px;
-          background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(255, 140, 70, 0.8));
-          border: 2px solid rgba(255, 180, 100, 0.8);
-          border-radius: 50%;
-          cursor: pointer;
-          box-shadow: 0 0 8px rgba(255, 140, 70, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
-          transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-        
-        .round-time-slider::-webkit-slider-thumb:hover {
-          transform: scale(1.1);
-          box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
-        }
-        
-        .round-time-slider::-moz-range-thumb:hover {
-          transform: scale(1.1);
-          box-shadow: 0 0 12px rgba(255, 160, 80, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
-        }
-        
-        .round-time-slider:active::-webkit-slider-thumb {
-          transform: scale(1.2);
-          box-shadow: 0 0 15px rgba(255, 180, 100, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .round-time-slider:active::-moz-range-thumb {
-          transform: scale(1.2);
-          box-shadow: 0 0 15px rgba(255, 180, 100, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Progress fill effect */
-        .round-time-slider::-webkit-slider-runnable-track {
-          background: linear-gradient(to right, 
-            rgba(255, 160, 80, 0.8) 0%, 
-            rgba(255, 160, 80, 0.8) var(--value), 
-            rgba(255, 120, 60, 0.2) var(--value), 
-            rgba(255, 120, 60, 0.2) 100%);
-        }
-        
-        .round-time-slider::-moz-range-progress {
-          background: linear-gradient(90deg, rgba(255, 120, 60, 0.6), rgba(255, 160, 80, 0.9));
-          height: 4px;
-          border-radius: 2px;
-        }
-      `}</style>
+      {/* Custom Fire Slider Styles */}
+      <FireSliderStyles />
       {/* Main timer panel - Full Width Fixed at Bottom */}
       <div
         className="timer-panel"
@@ -204,14 +125,13 @@ export const TimerControls = ({
           left: 0,
           right: 0,
           width: '100%',
-          backgroundColor: 'rgba(10, 10, 10, 0.85)',
-          borderTop: '1px solid rgba(255, 120, 60, 0.3)',
+          borderTop: '1px solid #FF784C',
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
-          padding: '15px 10px 8px 10px',
+          padding: '20px',
           zIndex: 500,
           opacity: isFullScreen ? 0.2 : 1,
           transition: 'opacity 0.3s ease',
-          background: 'linear-gradient(to top, rgba(10, 10, 10, 0.95), rgba(20, 10, 5, 0.85))',
+          background: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
         }}
         onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
         onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0.2')}
@@ -364,60 +284,17 @@ export const TimerControls = ({
                 aria-label={t('roundDuration')}
                 style={{
                   width: '100%',
-                  height: '8px',
-                  background: 'transparent',
-                  appearance: 'none',
-                  WebkitAppearance: 'none',
-                  cursor: 'pointer',
-                  zIndex: 10,
                   '--value': `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
                 }}
-                className="round-time-slider"
+                className="fire-slider"
               />
               
               {/* Infinity button at the end */}
               <button
+                className={`infinity-button ${roundDuration === Infinity ? 'active' : 'inactive'}`}
                 onClick={() => {
                   handleRoundDurationChange(Infinity);
                   setIsRoundSliderActive(false);
-                }}
-                style={{
-                  position: 'absolute',
-                  right: '-35px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '26px',
-                  height: '26px',
-                  borderRadius: '50%',
-                  background: roundDuration === Infinity
-                    ? 'rgba(255, 160, 80, 0.5)'
-                    : 'rgba(40, 40, 40, 0.6)',
-                  color: roundDuration === Infinity
-                    ? 'rgba(255, 240, 180, 1)'
-                    : 'rgba(255, 180, 100, 0.7)',
-                  border: roundDuration === Infinity
-                    ? '2px solid rgba(255, 180, 100, 0.8)'
-                    : '1px solid rgba(255, 120, 60, 0.3)',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.2s ease',
-                  boxShadow: roundDuration === Infinity
-                    ? '0 0 8px rgba(255, 160, 80, 0.5)'
-                    : 'none',
-                }}
-                onMouseEnter={(e) => {
-                  if (roundDuration !== Infinity) {
-                    e.target.style.background = 'rgba(60, 60, 60, 0.7)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (roundDuration !== Infinity) {
-                    e.target.style.background = 'rgba(40, 40, 40, 0.6)';
-                  }
                 }}
               >
                 ∞

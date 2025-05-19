@@ -11,6 +11,7 @@ import { drawFireSmokeBackground, FireSmokeParticleSystem, renderFireSmokeText }
 // import { renderWordText } from './WordTextRendererLarge'; // Using large version
 // import { renderWordText } from './WordTextRendererFixed'; // Using fixed version
 import useTranslation from '../../../config/useTranslation';
+import '../../../fire-theme.css';
 // Temporarily removed font imports for debugging
 
 const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode = 'rectangle' }) => {

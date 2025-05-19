@@ -2,6 +2,7 @@
 // App.js
 
 import './global.css';
+import './fire-theme.css';
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';

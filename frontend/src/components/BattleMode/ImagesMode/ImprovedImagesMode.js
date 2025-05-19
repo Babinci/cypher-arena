@@ -11,6 +11,7 @@ import theme from '../../../config/theme';
 import ErrorBoundary from '../../SharedUI/ErrorBoundary';
 import ErrorMessage from '../../SharedUI/ErrorMessage';
 import { showToast } from '../../SharedUI/ToastNotification';
+import '../../../fire-theme.css';
 import { 
   ApiError, 
   NetworkError, 

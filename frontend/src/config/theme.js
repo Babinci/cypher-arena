@@ -17,11 +17,11 @@ const theme = {
     // Battle mode-specific colors (fire theme)
     fire: {
       light: 'rgba(255, 180, 100, 0.9)',
-      medium: 'rgba(255, 120, 60, 0.8)',
+      medium: '#FF9C60',
       dark: 'rgba(255, 80, 30, 0.7)',
-      accent: 'rgba(255, 220, 160, 0.95)',
-      border: 'rgba(255, 120, 60, 0.4)',
-      highlight: 'rgba(255, 200, 100, 1)',
+      accent: '#FFA050',
+      border: '#FF784C',
+      highlight: '#FFEFB0',
     },
     
     // Transparency utilities
@@ -82,7 +82,7 @@ const theme = {
     inner: 'inset 0 2px 4px rgba(0, 0, 0, 0.3)',
     glow: {
       primary: '0 0 15px var(--accent-primary)',
-      fire: '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)',
+      fire: '0 0 10px rgba(255, 180, 100, 0.7), 0 0 20px rgba(255, 140, 60, 0.5)',
     },
   },
   
@@ -93,11 +93,11 @@ const theme = {
     button: 'var(--gradient-button, linear-gradient(to right, var(--accent-primary), var(--accent-secondary)))',
     // Battle mode fire gradients
     fire: {
-      panel: 'linear-gradient(to top, rgba(10, 10, 10, 0.95), rgba(20, 10, 5, 0.85))',
-      active: 'linear-gradient(135deg, rgba(255, 60, 60, 0.8), rgba(200, 40, 40, 0.7))',
-      inactive: 'linear-gradient(135deg, rgba(255, 120, 60, 0.8), rgba(255, 80, 30, 0.7))',
-      badge: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
-      button: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(30, 30, 30, 0.7))',
+      panel: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
+      active: 'linear-gradient(to bottom, rgba(255, 100, 50, 0.8), rgba(200, 80, 30, 0.9))',
+      inactive: 'linear-gradient(to bottom, rgba(100, 50, 30, 0.6), rgba(70, 35, 20, 0.7))',
+      badge: 'linear-gradient(to bottom, rgba(50, 25, 15, 0.7), rgba(40, 20, 10, 0.8))',
+      button: 'linear-gradient(to bottom, rgba(60, 30, 15, 0.6), rgba(40, 20, 10, 0.7))',
     },
   },
   
@@ -114,7 +114,7 @@ const theme = {
     tooltip: 1500,
     toast: 1600,
     // App-specific
-    timerPanel: 500,
+    timerPanel: 100,
   },
   
   // Animation durations
@@ -123,7 +123,7 @@ const theme = {
     medium: '0.3s',
     slow: '0.5s',
     easing: {
-      default: 'ease',
+      default: 'ease-out',
       bounce: 'cubic-bezier(0.68, -0.55, 0.27, 1.55)',
       in: 'ease-in',
       out: 'ease-out',
@@ -144,15 +144,15 @@ const theme = {
   // UI dimensions
   dimensions: {
     timer: {
-      height: '88px',
-      padding: '15px 10px 8px 10px',
-      fontSize: '53px',
-      badgeHeight: '48px',
-      buttonFontSize: '13px',
+      height: '80px',
+      padding: '20px',
+      fontSize: '42px',
+      badgeHeight: '36px',
+      buttonFontSize: '14px',
     },
     sliders: {
-      width: '150px',
-      height: '8px',
+      width: '200px',
+      height: '20px',
       thumbSize: '20px',
     }
   },
