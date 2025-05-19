@@ -116,7 +116,7 @@ const SliderContainer = styled.div`
 
 const InfinityButton = styled.button`
   position: absolute;
-  right: -35px;
+  right: -45px;
   top: 50%;
   transform: translateY(-50%);
   width: 26px;
@@ -192,7 +192,7 @@ const SliderStyles = `
   .round-time-slider::-webkit-slider-track {
     width: 100%;
     height: 4px;
-    background: rgba(255, 120, 60, 0.2);
+    background: transparent;
     border-radius: 2px;
     border: none;
   }
@@ -200,7 +200,7 @@ const SliderStyles = `
   .round-time-slider::-moz-range-track {
     width: 100%;
     height: 4px;
-    background: rgba(255, 120, 60, 0.2);
+    background: transparent;
     border-radius: 2px;
     border: none;
   }
@@ -255,14 +255,22 @@ const SliderStyles = `
     background: linear-gradient(to right, 
       rgba(255, 160, 80, 0.8) 0%, 
       rgba(255, 160, 80, 0.8) var(--value), 
-      rgba(255, 120, 60, 0.2) var(--value), 
-      rgba(255, 120, 60, 0.2) 100%);
+      transparent var(--value), 
+      transparent 100%);
   }
   
   .round-time-slider::-moz-range-progress {
     background: linear-gradient(90deg, rgba(255, 120, 60, 0.6), rgba(255, 160, 80, 0.9));
     height: 4px;
     border-radius: 2px;
+  }
+  
+  .round-time-slider::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    border-radius: 2px;
+    border: none;
   }
 `;
 
