@@ -129,7 +129,7 @@ button::after {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--accent-primary);
+  background: var(--fire-medium);
   transition: width 0.3s ease;
 }
 
@@ -137,10 +137,12 @@ button:hover {
   transform: translateY(-1px);
   background: #2a2a2a; /* Darker but still visible on hover */
   box-shadow: none;
+  color: var(--fire-medium); /* Use fire accent color on hover */
 }
 
 button:hover::after {
   width: 100%;
+  background: var(--fire-medium); /* Change underline color to match fire theme */
 }
 
 button:active {
@@ -161,8 +163,8 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.3);
+  border-color: rgba(255, 140, 70, 0.8);
+  box-shadow: 0 0 0 2px rgba(255, 140, 70, 0.3);
 }
 
 /* Home page styling - Spotify-inspired clean design */
@@ -668,10 +670,10 @@ input[type="range"] {
   width: 100%;
   height: 6px; /* Thicker track for better visibility */
   border-radius: 3px; /* Slightly rounded track */
-  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(to right, rgba(217, 119, 6, 0.9), rgba(146, 64, 14, 0.3));
   outline: none;
   margin: 20px 0; /* More vertical space */
-  box-shadow: 0 0 5px rgba(29, 185, 84, 0.3); /* Subtle glow */
+  box-shadow: 0 0 5px rgba(255, 140, 60, 0.3); /* Subtle fire-themed glow */
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -679,36 +681,36 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 20px; /* Larger thumb */
   height: 20px; /* Larger thumb */
-  border-radius: 4px; /* Square-ish thumb with rounded corners */
-  background: var(--accent-primary); /* Main brand color */
+  border-radius: 50%; /* Round thumb for fire theme */
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8)); /* Fire theme color */
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
-  border: 2px solid rgba(255, 255, 255, 0.8); /* White border for contrast */
+  border: 2px solid rgba(217, 119, 6, 0.8); /* Fire-colored border */
 }
 
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  background: var(--accent-secondary);
-  box-shadow: 0 0 12px rgba(29, 185, 84, 0.6); /* Enhanced glow on hover */
+  background: radial-gradient(circle, rgba(255, 200, 120, 0.95), rgba(237, 139, 26, 0.85));
+  box-shadow: 0 0 12px rgba(255, 160, 80, 0.7); /* Enhanced fire glow on hover */
 }
 
 /* Mozilla Firefox styles */
 input[type="range"]::-moz-range-track {
   height: 6px;
   border-radius: 3px;
-  background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(to right, rgba(217, 119, 6, 0.9), rgba(146, 64, 14, 0.3));
 }
 
 input[type="range"]::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  border-radius: 4px;
-  background: var(--accent-primary);
+  border-radius: 50%; /* Round thumb for fire theme */
+  background: radial-gradient(circle, rgba(255, 180, 100, 0.9), rgba(217, 119, 6, 0.8));
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(217, 119, 6, 0.8);
 }
 
 /* Visualizer enhancements */
@@ -749,7 +751,7 @@ canvas {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--accent-primary);
+  background: var(--fire-medium);
   transition: width 0.3s ease;
 }
 

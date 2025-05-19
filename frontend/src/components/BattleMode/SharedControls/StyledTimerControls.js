@@ -257,6 +257,9 @@ export const StyledTimerControls = ({
                 aria-label={t('roundDuration')}
                 style={{
                   '--value': `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
+                  // Override focus styles inline for this specific element
+                  '--focus-color': 'rgba(255, 140, 70, 0.5)',
+                  'outline-color': 'rgba(255, 140, 70, 0.8)',
                 }}
                 className="fire-slider"
               />

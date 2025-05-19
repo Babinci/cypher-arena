@@ -12,6 +12,12 @@ const FireSliderStyles = () => {
         box-shadow: 0 0 0 2px rgba(255, 140, 70, 0.3) !important;
       }
       
+      /* Specific rule for the slider focus outline */
+      input[type="range"]:focus {
+        outline-color: rgba(255, 140, 70, 0.8) !important;
+        box-shadow: 0 0 0 2px rgba(255, 140, 70, 0.3) !important;
+      }
+      
       /* Enhanced fire slider styling */
       .fire-slider {
         -webkit-appearance: none;
@@ -165,6 +171,15 @@ const FireSliderStyles = () => {
         background: rgba(255, 120, 60, 0.2) !important;
         color: rgba(255, 220, 160, 1) !important;
         border-color: rgba(255, 140, 60, 0.5) !important;
+      }
+      
+      /* Very specific override for the round time slider to ensure no green focus effects */
+      .round-time-slider-control input[type="range"]:focus,
+      input.fire-slider:focus,
+      input[type="range"].fire-slider:focus {
+        outline-color: rgba(255, 140, 70, 0.8) !important;
+        box-shadow: 0 0 0 2px rgba(255, 140, 70, 0.3) !important;
+        border-color: rgba(255, 140, 70, 0.5) !important;
       }
     `}</style>
   );
