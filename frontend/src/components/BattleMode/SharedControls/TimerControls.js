@@ -314,90 +314,114 @@ export const TimerControls = ({
               alignItems: 'center',
               paddingTop: '6px',
             }}>
-              {/* Background track */}
+              {/* Simple track for visual indication only */}
               <div className="round-time-track"></div>
-              
-              {/* Interactive Track for Dragging */}
-              <div
-                className="round-time-interactive-track"
-                ref={(el) => {
-                  if (el) {
-                    // Store track element for dragging calculations
-                    el._trackEl = el;
-                    
-                    // Setup mouse and touch events for manual dragging
-                    const updateFromPointer = (clientX) => {
-                      const rect = el.getBoundingClientRect();
-                      const x = clientX - rect.left;
-                      const ratio = Math.min(Math.max(x / rect.width, 0), 1);
-                      const newValue = Math.round(10 + ratio * 290);
-                      handleRoundDurationChange(newValue);
-                    };
-                    
-                    // Mouse events
-                    el.onmousedown = (e) => {
-                      setIsRoundSliderActive(true);
-                      updateFromPointer(e.clientX);
-                      
-                      const handleMouseMove = (e) => updateFromPointer(e.clientX);
-                      const handleMouseUp = () => {
-                        setIsRoundSliderActive(false);
-                        document.removeEventListener('mousemove', handleMouseMove);
-                        document.removeEventListener('mouseup', handleMouseUp);
-                      };
-                      
-                      document.addEventListener('mousemove', handleMouseMove);
-                      document.addEventListener('mouseup', handleMouseUp);
-                    };
-                    
-                    // Touch events
-                    el.ontouchstart = (e) => {
-                      setIsRoundSliderActive(true);
-                      updateFromPointer(e.touches[0].clientX);
-                      
-                      const handleTouchMove = (e) => updateFromPointer(e.touches[0].clientX);
-                      const handleTouchEnd = () => {
-                        setIsRoundSliderActive(false);
-                        document.removeEventListener('touchmove', handleTouchMove);
-                        document.removeEventListener('touchend', handleTouchEnd);
-                      };
-                      
-                      document.addEventListener('touchmove', handleTouchMove);
-                      document.addEventListener('touchend', handleTouchEnd);
-                    };
-                  }
-                }}
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '30px',
-                  zIndex: 4,
-                  cursor: 'pointer',
-                }}
-              />
               
               {/* Custom track fill */}
               <div 
                 className="round-time-track-fill"
                 style={{
                   width: `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
-                  zIndex: 1,
                 }}
               ></div>
               
-              {/* Time Display on Thumb */}
+              {/* Draggable Thumb Display */}
               <div 
                 className="round-time-thumb-display"
+                ref={(el) => {
+                  if (el) {
+                    // Setup drag functionality
+                    const getTrackElement = () => {
+                      // Find the track element (parent of this thumb)
+                      return el.parentElement.querySelector('.round-time-track');
+                    };
+                    
+                    // Calculate and set slider value from pointer position
+                    const updateFromPointer = (clientX) => {
+                      const trackEl = getTrackElement();
+                      if (!trackEl) return;
+                      
+                      const rect = trackEl.getBoundingClientRect();
+                      const thumbWidth = el.offsetWidth;
+                      
+                      // Calculate x position relative to track, accounting for thumb width
+                      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+                      const ratio = x / rect.width;
+                      
+                      // Update the slider value (10-300 range)
+                      const newValue = Math.round(10 + ratio * 290);
+                      handleRoundDurationChange(newValue);
+                    };
+                    
+                    // Mouse event handlers
+                    el.onmousedown = (e) => {
+                      e.preventDefault(); // Prevent text selection
+                      setIsRoundSliderActive(true);
+                      
+                      // Capture starting point for drag
+                      const startX = e.clientX;
+                      const startLeft = parseFloat(el.style.left || '0');
+                      
+                      // Update cursor style
+                      el.style.cursor = 'grabbing';
+                      
+                      // Create move handler
+                      const handleMouseMove = (e) => {
+                        updateFromPointer(e.clientX);
+                      };
+                      
+                      // Create mouse up handler
+                      const handleMouseUp = () => {
+                        setIsRoundSliderActive(false);
+                        el.style.cursor = 'grab';
+                        document.removeEventListener('mousemove', handleMouseMove);
+                        document.removeEventListener('mouseup', handleMouseUp);
+                      };
+                      
+                      // Add global event listeners
+                      document.addEventListener('mousemove', handleMouseMove);
+                      document.addEventListener('mouseup', handleMouseUp);
+                    };
+                    
+                    // Touch event handlers
+                    el.ontouchstart = (e) => {
+                      e.preventDefault(); // Prevent scrolling
+                      setIsRoundSliderActive(true);
+                      
+                      // Update cursor style
+                      el.classList.add('dragging');
+                      
+                      // Create touch move handler
+                      const handleTouchMove = (e) => {
+                        updateFromPointer(e.touches[0].clientX);
+                      };
+                      
+                      // Create touch end handler
+                      const handleTouchEnd = () => {
+                        setIsRoundSliderActive(false);
+                        el.classList.remove('dragging');
+                        document.removeEventListener('touchmove', handleTouchMove);
+                        document.removeEventListener('touchend', handleTouchEnd);
+                      };
+                      
+                      // Add global event listeners
+                      document.addEventListener('touchmove', handleTouchMove);
+                      document.addEventListener('touchend', handleTouchEnd);
+                    };
+                    
+                    // Also allow clicking directly on the track
+                    const trackEl = getTrackElement();
+                    if (trackEl) {
+                      trackEl.onclick = (e) => {
+                        updateFromPointer(e.clientX);
+                      };
+                    }
+                  }
+                }}
                 style={{
-                  left: `calc(${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}% - 25px)`,
+                  left: `calc(${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}% - 20px)`,
                   top: '-18px',
                   cursor: 'grab',
-                }}
-                onMouseDown={(e) => {
-                  e.currentTarget.style.cursor = 'grabbing';
-                }}
-                onMouseUp={(e) => {
-                  e.currentTarget.style.cursor = 'grab';
                 }}
               >
                 {roundDuration === Infinity ? '∞' : roundTimer}

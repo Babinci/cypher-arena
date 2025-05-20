@@ -176,23 +176,25 @@ const FireSliderStyles = () => {
       /* Round Time Slider Thumb Display */
       .round-time-thumb-display {
         position: absolute;
-        width: 44px;
-        height: 28px;
-        background: linear-gradient(to bottom, rgba(255, 200, 80, 0.95), rgba(200, 120, 40, 0.95));
+        width: 40px;
+        height: 26px;
+        background: linear-gradient(to bottom, #F8A932, #DD7D1B);
         color: #fff;
         font-weight: bold;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 4px;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.4);
         font-size: 18px;
-        z-index: 3;
+        z-index: 10; /* Higher z-index to ensure it's always clickable */
         font-family: var(--font-display);
-        transition: left 0.15s cubic-bezier(0.23, 1, 0.32, 1), transform 0.1s ease;
-        border: 1px solid rgba(255, 220, 160, 0.3);
+        transition: transform 0.1s ease; /* Only animate transform for better dragging */
+        border: 1px solid rgba(255, 220, 160, 0.4);
         text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         cursor: grab;
+        user-select: none; /* Prevent text selection */
+        touch-action: none; /* Better touch handling */
       }
       
       /* Pointer below box */
@@ -204,9 +206,9 @@ const FireSliderStyles = () => {
         transform: translateX(-50%);
         width: 0;
         height: 0;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-top: 6px solid rgba(200, 120, 40, 0.95);
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid #DD7D1B;
       }
       
       .round-time-thumb-display:hover {
@@ -214,41 +216,40 @@ const FireSliderStyles = () => {
         box-shadow: 0 4px 10px rgba(0,0,0,0.5);
       }
       
-      .round-time-thumb-display:active {
-        cursor: grabbing;
+      .round-time-thumb-display:active, 
+      .round-time-thumb-display.dragging {
+        cursor: grabbing !important;
         transform: scale(0.98);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.4);
       }
       
-      /* Round Time Track Styling */
+      /* Round Time Track Styling - Simplified with one track */
       .round-time-track {
         position: absolute;
-        height: 12px;
-        background: rgba(30, 15, 5, 0.6);
-        border-radius: 6px;
+        height: 8px;
+        background: rgba(40, 20, 10, 0.6);
+        border-radius: 4px;
         width: 100%;
-        border: 1px solid rgba(80, 40, 10, 0.5);
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+        cursor: pointer; /* Make track clickable */
       }
       
       .round-time-track-fill {
         position: absolute;
-        height: 10px;
-        top: 1px;
-        left: 1px;
-        background: linear-gradient(to right, rgba(255, 180, 60, 0.9), rgba(240, 140, 40, 0.85));
-        border-radius: 5px;
-        transition: width 0.15s cubic-bezier(0.23, 1, 0.32, 1);
-        box-shadow: 0 0 10px rgba(255, 180, 60, 0.4);
+        height: 8px;
+        background: linear-gradient(to right, #F8A932, #DD7D1B);
+        border-radius: 4px;
+        transition: width 0.1s ease-out;
+        pointer-events: none; /* Allow clicks to pass through to track */
       }
       
-      /* Interactive styling */
-      .round-time-interactive-track {
-        cursor: pointer;
+      /* Make track visually clear it's interactive */
+      .round-time-track:hover {
+        background: rgba(50, 25, 12, 0.7);
       }
       
-      .round-time-interactive-track:hover + .round-time-track-fill {
-        background: linear-gradient(to right, rgba(255, 200, 80, 0.95), rgba(255, 160, 60, 0.9));
-        box-shadow: 0 0 15px rgba(255, 200, 80, 0.5);
+      .round-time-track:active {
+        background: rgba(60, 30, 15, 0.75);
       }
       
       /* Round Time Label Styling */
