@@ -176,28 +176,39 @@ const FireSliderStyles = () => {
       /* Round Time Slider Thumb Display */
       .round-time-thumb-display {
         position: absolute;
-        width: 40px;
-        height: 22px;
+        width: 44px;
+        height: 28px;
         background: linear-gradient(to bottom, #F8A932, #DD7D1B);
         color: #fff;
         font-weight: bold;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 2px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        border-radius: 4px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 8px rgba(255, 140, 60, 0.5);
         font-size: 16px;
         z-index: 10; /* Higher z-index to ensure it's always clickable */
         font-family: var(--font-display);
         transition: transform 0.1s ease; /* Only animate transform for better dragging */
-        border: 1px solid rgba(255, 220, 160, 0.2);
+        border: 2px solid rgba(255, 220, 160, 0.4);
         text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         cursor: grab;
         user-select: none; /* Prevent text selection */
         touch-action: none; /* Better touch handling */
         /* Remove pointer and let the thumb sit directly on the track line */
-        top: -11px; /* Position thumb centered on the track */
+        top: -14px; /* Position thumb centered on the track */
         margin-top: 0; /* Reset any margins */
+      }
+      
+      /* Add drag arrows to indicate it's adjustable */
+      .round-time-thumb-display::before {
+        content: "⇄";
+        position: absolute;
+        bottom: -15px;
+        font-size: 12px;
+        color: rgba(255, 180, 100, 0.9);
+        text-shadow: 0 1px 1px rgba(0,0,0,0.6);
+      }
       }
       
       .round-time-thumb-display:hover {
@@ -223,6 +234,76 @@ const FireSliderStyles = () => {
         width: 100%;
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
         cursor: pointer; /* Make track clickable */
+      }
+      
+      /* Time markers/ticks - with exact step positions */
+      .round-time-track::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 4px;
+        height: 10px;
+        /* Add markers at each step value position */
+        background-image: 
+          /* 30s */
+          linear-gradient(to bottom, rgba(255, 180, 100, 0.7), rgba(255, 180, 100, 0.7)),
+          /* 60s */
+          linear-gradient(to bottom, rgba(255, 180, 100, 0.7), rgba(255, 180, 100, 0.7)),
+          /* 120s (2m) */
+          linear-gradient(to bottom, rgba(255, 180, 100, 0.7), rgba(255, 180, 100, 0.7));
+        background-position: 
+          calc(1/13 * 100% + 0%) 0,  /* 30s = 2nd element (index 1) of 14 steps */
+          calc(6/13 * 100% + 0%) 0,  /* 60s = 7th element (index 6) of 14 steps */
+          calc(10/13 * 100% + 0%) 0; /* 120s = 11th element (index 10) of 14 steps */
+        background-size: 
+          2px 6px,  /* 30s */
+          2px 8px,  /* 60s */
+          2px 8px;  /* 120s */
+        background-repeat: no-repeat;
+        pointer-events: none;
+      }
+      
+      /* Tick labels with exact positioning */
+      .round-time-track::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 16px;
+        height: 14px;
+        font-size: 10px;
+        font-weight: 600;
+        pointer-events: none;
+      }
+      
+      /* Individual tick labels with exact positioning */
+      .round-time-track .tick-30s,
+      .round-time-track .tick-60s,
+      .round-time-track .tick-120s {
+        position: absolute;
+        top: 16px;
+        transform: translateX(-50%);
+        font-size: 10px;
+        color: rgba(255, 180, 100, 0.7);
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        white-space: nowrap;
+      }
+      
+      .round-time-track .tick-30s {
+        left: calc(1/13 * 100% + 0%);
+        content: "30s";
+      }
+      
+      .round-time-track .tick-60s {
+        left: calc(6/13 * 100% + 0%);
+        content: "1m";
+      }
+      
+      .round-time-track .tick-120s {
+        left: calc(10/13 * 100% + 0%);
+        content: "2m";
       }
       
       .round-time-track-fill {

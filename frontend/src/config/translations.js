@@ -13,6 +13,7 @@ const translations = {
     roundDuration: "Round Duration",
     roundTime: "Round Time",
     roundDurationValue: "{{value}}s",
+    adjust: "adjust",
     
     // Control buttons
     nextItem: "Next Item",
@@ -74,6 +75,7 @@ const translations = {
     roundDuration: "Czas Rundy",
     roundTime: "Czas Rundy",
     roundDurationValue: "{{value}}s",
+    adjust: "reguluj",
     
     // Control buttons
     nextItem: "Następny Element",

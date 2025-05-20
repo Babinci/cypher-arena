@@ -325,13 +325,14 @@ export const TimerControls = ({
               width: '180px',
               marginTop: '6px',
             }}>
-            {/* Small label above slider */}
+            {/* Simple label above slider */}
             <span className="round-time-label" style={{
               position: 'absolute',
               top: '-20px',
               left: '0',
               width: '100%',
               textAlign: 'center',
+              cursor: 'pointer',
             }}>
               {t('roundTime')}
             </span>
@@ -345,9 +346,14 @@ export const TimerControls = ({
               alignItems: 'center',
               paddingTop: '6px',
             }}>
-              {/* Simple track for visual indication only */}
+              {/* Track with markers */}
               <div style={{ position: 'relative', width: '100%', height: '20px' }}>
-                <div className="round-time-track"></div>
+                <div className="round-time-track">
+                  {/* Adding tick labels as span elements for proper positioning */}
+                  <span className="tick-30s">30s</span>
+                  <span className="tick-60s">1m</span>
+                  <span className="tick-120s">2m</span>
+                </div>
                 
                 {/* Custom track fill */}
                 <div 
