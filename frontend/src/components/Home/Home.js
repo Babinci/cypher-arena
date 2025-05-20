@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import UserTracker from '../UserManagement/UserTracker';
 import useTranslation from '../../config/useTranslation';
 import '../../cypher-theme.css';
+import styled from 'styled-components';
 
 function Home() {
   const navigate = useNavigate();
@@ -105,10 +106,25 @@ function Home() {
                 border: '1px solid #555555',
                 color: 'white',
                 letterSpacing: '0.05em',
-                position: 'relative'
+                position: 'relative',
+                marginRight: '10px'
               }}
             >
               {t('giveFeedback')}
+            </button>
+            
+            <button 
+              onClick={() => navigate('/settings')} 
+              className="feedback-btn"
+              style={{
+                background: 'transparent',
+                border: '1px solid #555555',
+                color: 'white',
+                letterSpacing: '0.05em',
+                position: 'relative'
+              }}
+            >
+              {t('settings')}
             </button>
           </div>
         </div>

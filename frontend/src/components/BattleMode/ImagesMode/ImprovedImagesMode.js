@@ -6,7 +6,6 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import apiConfig from '../../../config/apiConfig';
 import useTranslation from '../../../config/useTranslation';
-import ImagePreloader from './ImagePreloader';
 import theme from '../../../config/theme';
 import ErrorBoundary from '../../SharedUI/ErrorBoundary';
 import ErrorMessage from '../../SharedUI/ErrorMessage';
@@ -190,7 +189,6 @@ function ImprovedImagesMode() {
   const BUFFER_SIZE = 100;
   const [images, setImages] = useState([]);
   const [nextPage, setNextPage] = useState(null);
-  const [imagesPreloaded, setImagesPreloaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const imgRef = useRef(null);
@@ -243,7 +241,6 @@ function ImprovedImagesMode() {
         return newImages.slice(Math.max(newImages.length - BUFFER_SIZE, 0));
       });
       setNextPage(data.next);
-      setImagesPreloaded(false);
       
       // Show success toast for reset operations
       if (reset) {
@@ -500,14 +497,6 @@ function ImprovedImagesMode() {
                     <div>{t('loadingImages')}</div>
                   </LoadingOverlay>
                 )}
-                
-                <ImagePreloader
-                  images={images}
-                  onProgress={(progress) => {
-                    if (progress === 1) setImagesPreloaded(true);
-                  }}
-                  fetchManyImages={fetchManyImages}
-                />
               </ImageContainer>
               {renderControlButtons()}
             </>
