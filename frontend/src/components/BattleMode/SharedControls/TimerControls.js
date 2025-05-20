@@ -313,6 +313,10 @@ export const TimerControls = ({
           letterSpacing: '1px',
           marginTop: '0px',
           marginBottom: '4px', // Add spacing below timer
+          // Make timer extra bold and visible for collapsed state
+          fontWeight: '800',
+          textShadow: '0 0 15px rgba(255, 120, 60, 0.7), 0 2px 5px rgba(0, 0, 0, 0.8)',
+          color: '#FFD480',
         },
         intervalBadge: {
           padding: '6px 10px',
@@ -449,6 +453,34 @@ export const TimerControls = ({
         />
       )}
       
+      {/* Mobile-only scroll indicator */}
+      {getScreenSize() === 'xs' && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '60px', // Position just above the collapsed timer
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '40px',
+            height: '8px',
+            background: 'rgba(255, 120, 60, 0.5)',
+            borderRadius: '4px',
+            zIndex: 501,
+            opacity: 0.7,
+            animation: 'pulseUp 2s infinite ease-in-out',
+          }}
+        />
+      )}
+      <style>
+        {`
+          @keyframes pulseUp {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+            50% { transform: translateX(-50%) scale(1.2); opacity: 0.8; }
+            100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+          }
+        `}
+      </style>
+      
       {/* Main timer panel - Full Width Fixed at Bottom */}
       <div
         className="timer-panel"
@@ -460,15 +492,38 @@ export const TimerControls = ({
           width: '100%',
           borderTop: '1px solid #FF784C',
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
-          padding: styles.timerPanel.padding,
+          padding: getScreenSize() === 'xs' ? '24px 12px 15px' : styles.timerPanel.padding,
+          paddingTop: getScreenSize() === 'xs' ? '24px' : undefined, // Extra top padding for handle
           zIndex: 500,
           opacity: isFullScreen ? 0 : 1,
           transition: 'opacity 0.3s ease',
           background: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
           pointerEvents: isFullScreen ? 'none' : 'auto',
-          maxHeight: getScreenSize() === 'xs' ? '50vh' : 'auto', // Max height for mobile
+          // Mobile view positioning and scrolling
+          maxHeight: getScreenSize() === 'xs' ? '80vh' : 'auto', // Max height for mobile (80% of screen)
+          height: getScreenSize() === 'xs' ? 'auto' : 'auto', // Auto height based on content
           overflowY: getScreenSize() === 'xs' ? 'auto' : 'visible', // Enable scrolling on small screens
           overscrollBehavior: 'contain', // Prevent scroll chaining
+          // Ensure visible portion is at most 20% of viewport height initially
+          transform: getScreenSize() === 'xs' ? 'translateY(calc(80% - 65px))' : 'none',
+          transitionProperty: 'transform, opacity',
+          transitionDuration: '0.3s',
+          transitionTimingFunction: 'ease-out',
+          // Rounded corners for mobile view
+          borderTopLeftRadius: getScreenSize() === 'xs' ? '16px' : '0',
+          borderTopRightRadius: getScreenSize() === 'xs' ? '16px' : '0',
+        }}
+        // Mobile-specific behavior: reveal full panel on tap/click
+        onClick={(e) => {
+          if (getScreenSize() === 'xs' && e.target === e.currentTarget) {
+            e.currentTarget.style.transform = 'translateY(0)';
+          }
+        }}
+        // Reset panel position on touch start inside the panel area
+        onTouchStart={(e) => {
+          if (getScreenSize() === 'xs' && e.target === e.currentTarget) {
+            e.currentTarget.style.transform = 'translateY(0)';
+          }
         }}
         onMouseEnter={(e) => {
           if (isFullScreen) {
@@ -484,6 +539,75 @@ export const TimerControls = ({
           }
         }}
       >
+        {/* Drag handle for mobile */}
+        {getScreenSize() === 'xs' && (
+          <div 
+            style={{
+              position: 'absolute',
+              top: '8px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '40px',
+              height: '4px',
+              backgroundColor: 'rgba(255, 120, 60, 0.5)',
+              borderRadius: '2px',
+              cursor: 'grab',
+            }}
+            onTouchStart={(e) => {
+              const panel = e.currentTarget.parentElement;
+              if (panel) {
+                const startY = e.touches[0].clientY;
+                const startTransform = panel.style.transform;
+                
+                // Get current translation value
+                let currentTranslateY = 0;
+                if (startTransform.includes('translateY')) {
+                  const match = startTransform.match(/translateY\((.*?)\)/);
+                  if (match && match[1]) {
+                    if (match[1] === '0px' || match[1] === '0') {
+                      currentTranslateY = 0;
+                    } else {
+                      // We have a complex calc expression, so we're in collapsed state
+                      currentTranslateY = window.innerHeight * 0.8 - 65;
+                    }
+                  }
+                }
+                
+                const handleTouchMove = (e) => {
+                  const currentY = e.touches[0].clientY;
+                  const deltaY = currentY - startY;
+                  
+                  // Calculate new position, constrained between 0 and 80% - 65px
+                  const maxTranslateY = window.innerHeight * 0.8 - 65;
+                  const newTranslateY = Math.max(0, Math.min(maxTranslateY, currentTranslateY + deltaY));
+                  
+                  panel.style.transform = `translateY(${newTranslateY}px)`;
+                };
+                
+                const handleTouchEnd = () => {
+                  // Snap to either fully open or fully collapsed
+                  const rect = panel.getBoundingClientRect();
+                  const currentHeight = window.innerHeight - rect.top;
+                  const totalHeight = panel.scrollHeight;
+                  
+                  // If showing more than 40% of content, snap open, otherwise snap closed
+                  if (currentHeight > totalHeight * 0.4) {
+                    panel.style.transform = 'translateY(0)';
+                  } else {
+                    panel.style.transform = 'translateY(calc(80% - 65px))';
+                  }
+                  
+                  document.removeEventListener('touchmove', handleTouchMove);
+                  document.removeEventListener('touchend', handleTouchEnd);
+                };
+                
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+                document.addEventListener('touchend', handleTouchEnd);
+              }
+            }}
+          />
+        )}
+        
         {/* Timer display - Main timer centered with interval and round time as "badges" */}
         <div 
           className="timer-display"
