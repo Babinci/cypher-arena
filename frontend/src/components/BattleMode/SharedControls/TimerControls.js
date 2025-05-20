@@ -1,5 +1,5 @@
 // components/SharedControls/TimerControls.js
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import useTranslation from '../../../config/useTranslation';
 import FireSliderStyles from './FireSliderStyles';
 import '../../../cypher-theme.css';
@@ -23,8 +23,8 @@ export const TimerControls = ({
   // Get translation function
   const { t } = useTranslation();
   
-  // Slider active state
-  const [isRoundSliderActive, setIsRoundSliderActive] = useState(false);
+  // Slider active state - not currently used but kept for future functionality
+  const [, setIsRoundSliderActive] = useState(false);
   
   // Function to log UI positions
   const logUIPositions = () => {

@@ -32,7 +32,8 @@ const SectionTitle = styled.h3`
   margin-bottom: 15px;
 `;
 
-const SettingsButton = styled.button`
+// Not currently used but kept for future implementation
+/* const SettingsButton = styled.button`
   background-color: ${theme.colors.accentPrimary};
   color: white;
   border: none;
@@ -55,7 +56,7 @@ const SettingsButton = styled.button`
     background-color: #555;
     cursor: not-allowed;
   }
-`;
+`; */
 
 function Settings() {
   const { t } = useTranslation();

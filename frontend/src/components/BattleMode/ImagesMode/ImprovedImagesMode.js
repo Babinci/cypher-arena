@@ -18,7 +18,6 @@ import {
   fetchWithErrorHandling
 } from '../../../utils/errors';
 import {
-  getImage,
   fetchAndCacheImage,
   clearOldImages
 } from './improvedIndexedDBUtils';
@@ -283,7 +282,8 @@ function ImprovedImagesMode() {
     }
   }, [makeRequest, t]);
 
-  const fetchManyImages = useCallback(async () => {
+  // This function is commented out as it's currently not used directly in this component
+  /* const fetchManyImages = useCallback(async () => {
     let allImages = [];
     let url = `${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=100`;
     
@@ -299,7 +299,7 @@ function ImprovedImagesMode() {
       console.error('Error fetching many images:', error);
       throw error;
     }
-  }, []);
+  }, []); */
 
   // Custom reset handler that combines timer reset with image reset
   const handleResetRound = useCallback(() => {

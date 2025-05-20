@@ -126,7 +126,7 @@ const ErrorMessage = ({
       }, timeout);
       return () => clearTimeout(timer);
     }
-  }, [timeout]);
+  }, [timeout, handleClose]);
 
   if (!isVisible) return null;
 

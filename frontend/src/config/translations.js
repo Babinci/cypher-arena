@@ -51,7 +51,7 @@ const translations = {
     feedbackError: "An error occurred. Please try again later.",
     
     // Settings page
-    settings: "Settings",
+    settingsPage: "Settings",
     imageSettings: "Image Settings",
     imagePreloadDescription: "Preload images to improve performance during battle mode. This can use a significant amount of storage space.",
     preloadImages: "Preload Images",
@@ -111,7 +111,7 @@ const translations = {
     feedbackError: "Wystąpił błąd. Spróbuj ponownie później.",
     
     // Settings page
-    settings: "Ustawienia",
+    settingsPage: "Ustawienia",
     imageSettings: "Ustawienia Obrazów",
     imagePreloadDescription: "Wstępnie załaduj obrazy, aby poprawić wydajność podczas bitwy. Może to wykorzystać znaczną ilość miejsca na urządzeniu.",
     preloadImages: "Załaduj Obrazy",

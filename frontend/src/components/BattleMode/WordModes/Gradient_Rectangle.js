@@ -1,13 +1,10 @@
 // Draws an animated gradient rectangle on the given canvas context
 // Params: ctx (CanvasRenderingContext2D), options: { x, y, width, height, borderRadius, time }
 export function drawGradientRectangle(ctx, { x, y, width, height, borderRadius, time }) {
-  // Create gradient with changing color stops based on time
-  const baseColorStop = time % 1; // Between 0 and 1
-  
   // Define our Spotify-inspired color palette
   const bgDeep = '#121212';     // Spotify deep background
   const bgLight = '#282828';    // Spotify lighter background
-  const accentColor = '#1DB954'; // Spotify green accent
+  // const accentColor = '#1DB954'; // Spotify green accent - using direct color values instead
   
   // Create gradient that shifts over time - use radial gradient for more dramatic effect
   const gradient = ctx.createRadialGradient(

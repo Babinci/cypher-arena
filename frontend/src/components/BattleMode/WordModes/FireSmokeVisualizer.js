@@ -369,7 +369,6 @@ export class FireSmokeParticleSystem {
         
         // Core color shifts based on particle evolution path, age, and special types
         let coreColor, midColor, outerColor;
-        let alphaMultiplier = 0.5;
         
         // Adjust alpha for position - particles at the top are more transparent
         const heightFactor = 1.0 - Math.max(0, Math.min(1, (this.height - particle.y) / this.height));
@@ -470,7 +469,7 @@ export class FireSmokeParticleSystem {
 export function renderFireSmokeText(ctx, { currentWord, rectangle, isMobileView }) {
   // Reset any filters before drawing text
   ctx.filter = 'none';
-  const { x, y, width, height, centerX, centerY } = rectangle;
+  const { width, height, centerX, centerY } = rectangle;
   
   ctx.save();
   

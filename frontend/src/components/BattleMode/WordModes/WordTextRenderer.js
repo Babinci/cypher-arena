@@ -1,6 +1,6 @@
 // WordTextRenderer.js - Fixed version with proper bounds
 export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
-  const { x, y, width, height, centerX, centerY } = rectangle;
+  const { width, height, centerX, centerY } = rectangle;
 
   ctx.save();
   

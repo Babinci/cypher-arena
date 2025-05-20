@@ -4,7 +4,8 @@ const ImagePreloader = ({ images, onProgress, fetchManyImages }) => {
   const [isPreloading, setIsPreloading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isPreloaded, setIsPreloaded] = useState(false);  // Add this line
+  // isPreloaded tracks when images are fully loaded
+  const [, setIsPreloaded] = useState(false);
   const containerRef = useRef(null);
 
   const preloadImages = useCallback(async (imageSet) => {

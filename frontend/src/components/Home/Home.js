@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import UserTracker from '../UserManagement/UserTracker';
 import useTranslation from '../../config/useTranslation';
 import '../../cypher-theme.css';
-import styled from 'styled-components';
 
 function Home() {
   const navigate = useNavigate();
-  const { language, setLanguage, languages, t } = useTranslation();
+  const { language, setLanguage, t } = useTranslation();
   
   useEffect(() => {
     // Add animated background on component mount

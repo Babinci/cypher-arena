@@ -115,7 +115,7 @@ const ToastNotification = ({
       
       return () => clearTimeout(timer);
     }
-  }, [duration]);
+  }, [duration, handleClose]);
   
   return (
     <Toast type={type} isClosing={isClosing}>

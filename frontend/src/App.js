@@ -25,7 +25,8 @@ import Settings from './components/Settings/Settings';
 import { useState, useEffect } from 'react';
 
 function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  // Track font loading to ensure proper rendering
+  const [, setFontsLoaded] = useState(false);
 
   useEffect(() => {
     // Check if fonts API is available

@@ -13,7 +13,8 @@ function ImagesMode() {
   const BUFFER_SIZE = 100;
   const [images, setImages] = useState([]);
   const [nextPage, setNextPage] = useState(null);
-  const [imagesPreloaded, setImagesPreloaded] = useState(false);
+  // Track when images are preloaded for performance optimization
+  const [, setImagesPreloaded] = useState(false);
   const { t } = useTranslation();
 
   // Initialize timer control with image-specific configuration
