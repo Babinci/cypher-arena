@@ -19,8 +19,9 @@ const TimerPanel = styled.div`
   box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.7);
   padding: ${props => theme.dimensions.timer.padding};
   z-index: ${props => theme.zIndices.timerPanel};
-  opacity: ${props => props.isFullScreen ? 0.2 : 1};
+  opacity: ${props => props.isFullScreen ? 0 : 1};
   transition: opacity ${props => theme.animation.medium} ${props => theme.animation.easing.default};
+  pointer-events: ${props => props.isFullScreen ? 'none' : 'auto'};
 `;
 
 const TimerDisplay = styled.div`
@@ -198,11 +199,44 @@ export const StyledTimerControls = ({
       {/* Custom Slider Styles */}
       <style>{SliderStyles}</style>
       
+      {/* Hover detection area - only visible in fullscreen mode */}
+      {isFullScreen && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '15px',
+            width: '100%',
+            zIndex: 499,
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            const timerPanel = document.querySelector('[class^="StyledTimerControls__TimerPanel"]');
+            if (timerPanel) {
+              timerPanel.style.opacity = '1';
+              timerPanel.style.pointerEvents = 'auto';
+            }
+          }}
+        />
+      )}
+      
       {/* Main timer panel - Full Width Fixed at Bottom */}
       <TimerPanel 
         isFullScreen={isFullScreen}
-        onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
-        onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0.2')}
+        onMouseEnter={(e) => {
+          if (isFullScreen) {
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.pointerEvents = 'auto';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (isFullScreen) {
+            e.currentTarget.style.opacity = '0';
+            e.currentTarget.style.pointerEvents = 'none';
+          }
+        }}
       >
         {/* Timer display - Main timer centered with interval and round time as "badges" */}
         <TimerDisplay>

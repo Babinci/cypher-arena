@@ -116,6 +116,30 @@ export const TimerControls = ({
     <>
       {/* Custom Fire Slider Styles */}
       <FireSliderStyles />
+      
+      {/* Hover detection area - only visible in fullscreen mode */}
+      {isFullScreen && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '15px',
+            width: '100%',
+            zIndex: 499,
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            const timerPanel = document.querySelector('.timer-panel');
+            if (timerPanel) {
+              timerPanel.style.opacity = '1';
+              timerPanel.style.pointerEvents = 'auto';
+            }
+          }}
+        />
+      )}
+      
       {/* Main timer panel - Full Width Fixed at Bottom */}
       <div
         className="timer-panel"
@@ -129,12 +153,23 @@ export const TimerControls = ({
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
           padding: '20px',
           zIndex: 500,
-          opacity: isFullScreen ? 0.2 : 1,
+          opacity: isFullScreen ? 0 : 1,
           transition: 'opacity 0.3s ease',
           background: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
+          pointerEvents: isFullScreen ? 'none' : 'auto',
         }}
-        onMouseEnter={(e) => isFullScreen && (e.currentTarget.style.opacity = '1')}
-        onMouseLeave={(e) => isFullScreen && (e.currentTarget.style.opacity = '0.2')}
+        onMouseEnter={(e) => {
+          if (isFullScreen) {
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.pointerEvents = 'auto';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (isFullScreen) {
+            e.currentTarget.style.opacity = '0';
+            e.currentTarget.style.pointerEvents = 'none';
+          }
+        }}
       >
         {/* Timer display - Main timer centered with interval and round time as "badges" */}
         <div 
