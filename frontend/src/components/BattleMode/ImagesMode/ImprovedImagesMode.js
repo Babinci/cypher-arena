@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { FullScreen } from 'react-full-screen';
 import styled from 'styled-components';
 import { useTimerControl } from '../SharedControls/useTimerControl';
-import { StyledTimerControls } from '../SharedControls/StyledTimerControls';
+import { TimerControls } from '../SharedControls/TimerControls';
 import apiConfig from '../../../config/apiConfig';
 import useTranslation from '../../../config/useTranslation';
 import ImagePreloader from './ImagePreloader';
@@ -32,6 +32,8 @@ const ImagesModeContainer = styled.div`
   height: 100vh;
   background-color: ${props => props.isFullScreen ? '#000' : 'transparent'};
   overflow: hidden;
+  /* Remove padding since we're using positioning */
+  position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -42,7 +44,9 @@ const ImageContainer = styled.div`
   flex: 1;
   min-height: 0;
   position: relative;
-  margin-bottom: -10px;
+  /* Add bottom margin to create space for the timer panel */
+  margin-bottom: 180px;
+  height: calc(100vh - 180px);
 `;
 
 const DisplayImage = styled.img`
@@ -118,8 +122,11 @@ const ControlButton = styled.button`
 `;
 
 const TimerSection = styled.div`
-  flex-shrink: 0;
-  margin-top: -10px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
 `;
 
 const FallbackMessage = styled.div`
@@ -373,6 +380,42 @@ function ImprovedImagesMode() {
         })
         .finally(() => {
           setIsLoading(false);
+          
+          // Add logging to check image position
+          setTimeout(() => {
+            const imageContainer = document.querySelector('div[data-testid="image-container"]');
+            const imageElement = imgRef.current;
+            const timerPanel = document.querySelector('.timer-panel');
+            
+            console.log("=== IMAGE POSITION LOGGING ===");
+            console.log("Window height:", window.innerHeight);
+            
+            if (imageContainer) {
+              const imageContainerRect = imageContainer.getBoundingClientRect();
+              console.log("Image container bottom border:", imageContainerRect.bottom);
+            } else {
+              console.log("Image container not found");
+            }
+            
+            if (imageElement) {
+              const imageRect = imageElement.getBoundingClientRect();
+              console.log("Image bottom border:", imageRect.bottom);
+            } else {
+              console.log("Image element not found");
+            }
+            
+            if (timerPanel) {
+              const timerRect = timerPanel.getBoundingClientRect();
+              console.log("Timer panel top border:", timerRect.top);
+              
+              if (imageElement) {
+                const imageRect = imageElement.getBoundingClientRect();
+                console.log("Gap between image and timer:", timerRect.top - imageRect.bottom);
+              }
+            } else {
+              console.log("Timer panel not found");
+            }
+          }, 2000);
         });
     }
   }, [currentIndex, images, displayImage]);
@@ -438,7 +481,7 @@ function ImprovedImagesMode() {
         <ImagesModeContainer isFullScreen={isFullScreen}>
           {!isControlWindow && (
             <>
-              <ImageContainer>
+              <ImageContainer data-testid="image-container">
                 {error && <ImageFetchError />}
                 
                 {images.length > 0 ? (
@@ -470,7 +513,7 @@ function ImprovedImagesMode() {
             </>
           )}
           <TimerSection>
-            <StyledTimerControls
+            <TimerControls
               timer={timer}
               roundTimer={roundTimer}
               changeInterval={changeInterval}
