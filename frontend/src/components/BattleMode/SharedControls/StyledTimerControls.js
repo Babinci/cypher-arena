@@ -283,52 +283,109 @@ export const StyledTimerControls = ({
             {timer}
           </MainTimer>
 
-          {/* Round Time with Line Slider */}
-          <RoundTimeSliderControl>
-            {/* Round Time Display */}
-            <RoundTimeDisplay className="roundtime-badge">
-              <RoundTimeLabel>
-                {t('roundTime')}
-              </RoundTimeLabel>
-              <RoundTimeValue>
-                {roundDuration === Infinity ? '∞' : `${roundTimer}s`}
-              </RoundTimeValue>
-            </RoundTimeDisplay>
+          {/* Unified Round Time Slider */}
+          <RoundTimeSliderControl style={{ width: '180px', marginTop: '6px' }}>
+            {/* Small label above slider */}
+            <RoundTimeLabel className="round-time-label" style={{
+              position: 'absolute',
+              top: '-20px',
+              left: '0',
+              width: '100%',
+              textAlign: 'center',
+            }}>
+              {t('roundTime')}
+            </RoundTimeLabel>
             
-            {/* Line Slider Container */}
-            <SliderContainer>
-              {/* Custom Native Slider */}
-              <input
-                type="range"
-                min="10"
-                max="300"
-                value={roundDuration === Infinity ? 300 : roundDuration}
-                onChange={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-                onInput={(e) => handleRoundDurationChange(parseInt(e.target.value))}
-                onMouseDown={() => setIsRoundSliderActive(true)}
-                onMouseUp={() => setIsRoundSliderActive(false)}
-                onTouchStart={() => setIsRoundSliderActive(true)}
-                onTouchEnd={() => setIsRoundSliderActive(false)}
-                aria-label={t('roundDuration')}
-                style={{
-                  '--value': `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
-                  // Override focus styles inline for this specific element
-                  '--focus-color': 'rgba(255, 140, 70, 0.5)',
-                  'outline-color': 'rgba(255, 140, 70, 0.8)',
+            {/* Slider Container with Time Display */}
+            <SliderContainer style={{ width: '100%', height: '46px', paddingTop: '6px' }}>
+              {/* Background track */}
+              <div className="round-time-track"></div>
+              
+              {/* Interactive Track for Dragging */}
+              <div
+                className="round-time-interactive-track"
+                ref={(el) => {
+                  if (el) {
+                    // Store track element for dragging calculations
+                    el._trackEl = el;
+                    
+                    // Setup mouse and touch events for manual dragging
+                    const updateFromPointer = (clientX) => {
+                      const rect = el.getBoundingClientRect();
+                      const x = clientX - rect.left;
+                      const ratio = Math.min(Math.max(x / rect.width, 0), 1);
+                      const newValue = Math.round(10 + ratio * 290);
+                      handleRoundDurationChange(newValue);
+                    };
+                    
+                    // Mouse events
+                    el.onmousedown = (e) => {
+                      setIsRoundSliderActive(true);
+                      updateFromPointer(e.clientX);
+                      
+                      const handleMouseMove = (e) => updateFromPointer(e.clientX);
+                      const handleMouseUp = () => {
+                        setIsRoundSliderActive(false);
+                        document.removeEventListener('mousemove', handleMouseMove);
+                        document.removeEventListener('mouseup', handleMouseUp);
+                      };
+                      
+                      document.addEventListener('mousemove', handleMouseMove);
+                      document.addEventListener('mouseup', handleMouseUp);
+                    };
+                    
+                    // Touch events
+                    el.ontouchstart = (e) => {
+                      setIsRoundSliderActive(true);
+                      updateFromPointer(e.touches[0].clientX);
+                      
+                      const handleTouchMove = (e) => updateFromPointer(e.touches[0].clientX);
+                      const handleTouchEnd = () => {
+                        setIsRoundSliderActive(false);
+                        document.removeEventListener('touchmove', handleTouchMove);
+                        document.removeEventListener('touchend', handleTouchEnd);
+                      };
+                      
+                      document.addEventListener('touchmove', handleTouchMove);
+                      document.addEventListener('touchend', handleTouchEnd);
+                    };
+                  }
                 }}
-                className="fire-slider"
+                style={{
+                  position: 'absolute',
+                  width: '100%',
+                  height: '30px',
+                  zIndex: 4,
+                  cursor: 'pointer',
+                }}
               />
               
-              {/* Infinity button at the end */}
-              <button
-                className={`infinity-button ${roundDuration === Infinity ? 'active' : 'inactive'}`}
-                onClick={() => {
-                  handleRoundDurationChange(Infinity);
-                  setIsRoundSliderActive(false);
+              {/* Custom track fill */}
+              <div 
+                className="round-time-track-fill"
+                style={{
+                  width: `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
+                  zIndex: 1,
+                }}
+              ></div>
+              
+              {/* Time Display on Thumb */}
+              <div 
+                className="round-time-thumb-display"
+                style={{
+                  left: `calc(${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}% - 25px)`,
+                  top: '-18px',
+                  cursor: 'grab',
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.cursor = 'grabbing';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.cursor = 'grab';
                 }}
               >
-                ∞
-              </button>
+                {roundDuration === Infinity ? '∞' : roundTimer}
+              </div>
             </SliderContainer>
           </RoundTimeSliderControl>
         </TimerDisplay>

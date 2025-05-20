@@ -173,6 +173,94 @@ const FireSliderStyles = () => {
         border-color: rgba(255, 140, 60, 0.5) !important;
       }
       
+      /* Round Time Slider Thumb Display */
+      .round-time-thumb-display {
+        position: absolute;
+        width: 44px;
+        height: 28px;
+        background: linear-gradient(to bottom, rgba(255, 200, 80, 0.95), rgba(200, 120, 40, 0.95));
+        color: #fff;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        font-size: 18px;
+        z-index: 3;
+        font-family: var(--font-display);
+        transition: left 0.15s cubic-bezier(0.23, 1, 0.32, 1), transform 0.1s ease;
+        border: 1px solid rgba(255, 220, 160, 0.3);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        cursor: grab;
+      }
+      
+      /* Pointer below box */
+      .round-time-thumb-display:after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid rgba(200, 120, 40, 0.95);
+      }
+      
+      .round-time-thumb-display:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      }
+      
+      .round-time-thumb-display:active {
+        cursor: grabbing;
+        transform: scale(0.98);
+      }
+      
+      /* Round Time Track Styling */
+      .round-time-track {
+        position: absolute;
+        height: 12px;
+        background: rgba(30, 15, 5, 0.6);
+        border-radius: 6px;
+        width: 100%;
+        border: 1px solid rgba(80, 40, 10, 0.5);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      
+      .round-time-track-fill {
+        position: absolute;
+        height: 10px;
+        top: 1px;
+        left: 1px;
+        background: linear-gradient(to right, rgba(255, 180, 60, 0.9), rgba(240, 140, 40, 0.85));
+        border-radius: 5px;
+        transition: width 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 0 0 10px rgba(255, 180, 60, 0.4);
+      }
+      
+      /* Interactive styling */
+      .round-time-interactive-track {
+        cursor: pointer;
+      }
+      
+      .round-time-interactive-track:hover + .round-time-track-fill {
+        background: linear-gradient(to right, rgba(255, 200, 80, 0.95), rgba(255, 160, 60, 0.9));
+        box-shadow: 0 0 15px rgba(255, 200, 80, 0.5);
+      }
+      
+      /* Round Time Label Styling */
+      .round-time-label {
+        font-size: 12px;
+        color: rgba(255, 200, 120, 0.85) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      
       /* Very specific override for the round time slider to ensure no green focus effects */
       .round-time-slider-control input[type="range"]:focus,
       input.fire-slider:focus,
