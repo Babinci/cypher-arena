@@ -5,7 +5,7 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import { drawGradientRectangle } from './Gradient_Rectangle';
 import { renderWordText } from './WordTextRenderer';
-import { drawFireSmokeBackground, FireSmokeParticleSystem, renderFireSmokeText } from './FireSmokeVisualizer';
+import { renderFireSmokeText } from './FireSmokeVisualizer';
 // import { renderWordText } from './WordTextRendererDebug'; // Using debug version
 // import { renderWordText } from './WordTextRendererClean'; // Using clean version
 // import { renderWordText } from './WordTextRendererLarge'; // Using large version
@@ -19,7 +19,6 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
-  const particleSystemRef = useRef(null);
   // const [fontLoaded, setFontLoaded] = useState(false); // Removed for debugging
   const { t } = useTranslation();
 
@@ -75,15 +74,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode
     }
   }, [currentIndex, words]);
   
-  // Initialize particle system when switching to fire mode
-  useEffect(() => {
-    if (visualMode === 'fire') {
-      const canvas = canvasRef.current;
-      if (canvas && !particleSystemRef.current) {
-        particleSystemRef.current = new FireSmokeParticleSystem(canvas.width, canvas.height);
-      }
-    }
-  }, [visualMode]);
+  // Particle system has been removed to improve performance while keeping styling
 
   // Removed font loading effect for debugging
 
@@ -107,24 +98,30 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode
     maxHeight = Math.min(availableHeight * 0.85, 900);
     
     const centerX = availableWidth / 2;
+    const centerY = availableHeight / 2;
     const time = Date.now() / 15000; // Time for animations
     
     // Choose visualization based on mode
     if (visualMode === 'fire') {
-      // Initialize particle system if needed
-      if (!particleSystemRef.current) {
-        particleSystemRef.current = new FireSmokeParticleSystem(width, height);
-      }
+      // Clear the canvas with dark background
+      ctx.fillStyle = '#0A0A0A';
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       
-      // Draw fire/smoke background
-      drawFireSmokeBackground(ctx, {
-        x: 0,
-        y: 0,
-        width: width,
-        height: height,
-        time: time,
-        particleSystem: particleSystemRef.current
-      });
+      // Create glow effect across the screen (kept from drawFireSmokeBackground)
+      const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height));
+      const glowIntensity = Math.sin(time * 2) * 0.1 + 0.15;
+      
+      glowGradient.addColorStop(0, `rgba(255, 120, 60, ${glowIntensity * 0.7})`);
+      glowGradient.addColorStop(0.2, `rgba(255, 80, 30, ${glowIntensity * 0.5})`);
+      glowGradient.addColorStop(0.4, `rgba(200, 50, 20, ${glowIntensity * 0.3})`);
+      glowGradient.addColorStop(0.7, `rgba(100, 30, 10, ${glowIntensity * 0.1})`);
+      glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = glowGradient;
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.restore();
       
       // Render text with fire effect
       if (currentWord) {
@@ -202,10 +199,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       
-      // Update particle system dimensions if in fire mode
-      if (visualMode === 'fire' && particleSystemRef.current) {
-        particleSystemRef.current.updateDimensions(canvas.width, canvas.height);
-      }
+      // Particle system has been removed to improve performance
       
       requestAnimationFrame(() => draw());
     };
