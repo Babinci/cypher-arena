@@ -1,5 +1,5 @@
 // components/SharedUI/ErrorMessage.js
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import theme from '../../config/theme';
 
@@ -110,13 +110,13 @@ const ErrorMessage = ({
   const [isVisible, setIsVisible] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsClosing(true);
     setTimeout(() => {
       setIsVisible(false);
       if (onClose) onClose();
     }, 300);
-  };
+  }, [onClose]);
 
   // Set up automatic timeout if specified
   React.useEffect(() => {

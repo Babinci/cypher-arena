@@ -1,5 +1,5 @@
 // components/SharedUI/ToastNotification.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import theme from '../../config/theme';
 
@@ -100,12 +100,12 @@ const ToastNotification = ({
 }) => {
   const [isClosing, setIsClosing] = useState(false);
   
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsClosing(true);
     setTimeout(() => {
       if (onClose) onClose(id);
     }, 300); // Wait for animation to complete
-  };
+  }, [onClose, id]);
   
   useEffect(() => {
     if (duration) {

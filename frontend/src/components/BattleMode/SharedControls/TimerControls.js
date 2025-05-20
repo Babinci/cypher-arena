@@ -399,9 +399,8 @@ export const TimerControls = ({
                       e.preventDefault(); // Prevent text selection
                       setIsRoundSliderActive(true);
                       
-                      // Capture starting point for drag
-                      const startX = e.clientX;
-                      const startLeft = parseFloat(el.style.left || '0');
+                      // Update position from current pointer position
+                      // No need to track startX/startLeft as we calculate position directly
                       
                       // Update cursor style
                       el.style.cursor = 'grabbing';
