@@ -11,6 +11,7 @@ const translations = {
     timer: "Timer",
     interval: "Interval",
     roundDuration: "Round Duration",
+    roundTime: "Round Time",
     roundDurationValue: "{{value}}s",
     
     // Control buttons
@@ -71,6 +72,7 @@ const translations = {
     timer: "Stoper",
     interval: "Interwał",
     roundDuration: "Czas Rundy",
+    roundTime: "Czas Rundy",
     roundDurationValue: "{{value}}s",
     
     // Control buttons

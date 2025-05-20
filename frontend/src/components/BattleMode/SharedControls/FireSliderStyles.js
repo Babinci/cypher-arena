@@ -177,38 +177,27 @@ const FireSliderStyles = () => {
       .round-time-thumb-display {
         position: absolute;
         width: 40px;
-        height: 26px;
+        height: 22px;
         background: linear-gradient(to bottom, #F8A932, #DD7D1B);
         color: #fff;
         font-weight: bold;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 4px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-        font-size: 18px;
+        border-radius: 2px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        font-size: 16px;
         z-index: 10; /* Higher z-index to ensure it's always clickable */
         font-family: var(--font-display);
         transition: transform 0.1s ease; /* Only animate transform for better dragging */
-        border: 1px solid rgba(255, 220, 160, 0.4);
+        border: 1px solid rgba(255, 220, 160, 0.2);
         text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         cursor: grab;
         user-select: none; /* Prevent text selection */
         touch-action: none; /* Better touch handling */
-      }
-      
-      /* Pointer below box */
-      .round-time-thumb-display:after {
-        content: '';
-        position: absolute;
-        bottom: -6px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 6px solid #DD7D1B;
+        /* Remove pointer and let the thumb sit directly on the track line */
+        top: -11px; /* Position thumb centered on the track */
+        margin-top: 0; /* Reset any margins */
       }
       
       .round-time-thumb-display:hover {
@@ -226,19 +215,23 @@ const FireSliderStyles = () => {
       /* Round Time Track Styling - Simplified with one track */
       .round-time-track {
         position: absolute;
-        height: 8px;
+        height: 4px;
+        top: 50%;
+        margin-top: -2px; /* Center the track vertically */
         background: rgba(40, 20, 10, 0.6);
-        border-radius: 4px;
+        border-radius: 2px;
         width: 100%;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3);
         cursor: pointer; /* Make track clickable */
       }
       
       .round-time-track-fill {
         position: absolute;
-        height: 8px;
+        height: 4px;
+        top: 50%;
+        margin-top: -2px; /* Center the track fill vertically */
         background: linear-gradient(to right, #F8A932, #DD7D1B);
-        border-radius: 4px;
+        border-radius: 2px;
         transition: width 0.1s ease-out;
         pointer-events: none; /* Allow clicks to pass through to track */
       }

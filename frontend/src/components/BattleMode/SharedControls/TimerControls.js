@@ -340,21 +340,23 @@ export const TimerControls = ({
             <div style={{
               position: 'relative',
               width: '100%',
-              height: '46px',
+              height: '60px',
               display: 'flex',
               alignItems: 'center',
               paddingTop: '6px',
             }}>
               {/* Simple track for visual indication only */}
-              <div className="round-time-track"></div>
-              
-              {/* Custom track fill */}
-              <div 
-                className="round-time-track-fill"
-                style={{
-                  width: `${getRoundDurationPercentage(roundDuration)}%`,
-                }}
-              ></div>
+              <div style={{ position: 'relative', width: '100%', height: '20px' }}>
+                <div className="round-time-track"></div>
+                
+                {/* Custom track fill */}
+                <div 
+                  className="round-time-track-fill"
+                  style={{
+                    width: `${getRoundDurationPercentage(roundDuration)}%`,
+                  }}
+                ></div>
+              </div>
               
               {/* Draggable Thumb Display */}
               <div 
@@ -454,12 +456,24 @@ export const TimerControls = ({
                       trackEl.onclick = (e) => {
                         updateFromPointer(e.clientX);
                       };
+                      
+                      // Add additional click area around the track
+                      const container = el.parentElement;
+                      if (container) {
+                        // Clicking anywhere in the container will update the position
+                        container.onclick = (e) => {
+                          // Only handle clicks that weren't on the thumb itself
+                          if (e.target !== el) {
+                            updateFromPointer(e.clientX);
+                          }
+                        };
+                      }
                     }
                   }
                 }}
                 style={{
                   left: `calc(${getRoundDurationPercentage(roundDuration)}% - 20px)`,
-                  top: '-18px',
+                  top: '0',
                   cursor: 'grab',
                 }}
               >
