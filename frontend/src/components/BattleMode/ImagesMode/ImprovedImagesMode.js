@@ -282,24 +282,7 @@ function ImprovedImagesMode() {
     }
   }, [makeRequest, t]);
 
-  // This function is commented out as it's currently not used directly in this component
-  /* const fetchManyImages = useCallback(async () => {
-    let allImages = [];
-    let url = `${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=100`;
-    
-    try {
-      for (let i = 0; i < 20; i++) {
-        const data = await fetchWithErrorHandling(url);
-        allImages = [...allImages, ...data.results];
-        url = data.next;
-        if (!url) break;
-      }
-      return allImages;
-    } catch (error) {
-      console.error('Error fetching many images:', error);
-      throw error;
-    }
-  }, []); */
+  // fetchManyImages function removed - now handled in Settings component
 
   // Custom reset handler that combines timer reset with image reset
   const handleResetRound = useCallback(() => {

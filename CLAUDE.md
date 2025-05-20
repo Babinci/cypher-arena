@@ -140,6 +140,7 @@ The project uses a configuration file (`config.json`) for deployment settings. T
 ## Memories
 
 - When making frontend changes, user has launched frontend server and handles running that from terminal
+- user runs server commands like npm start, claude is asking to run server commands
 - Keep in mind memory-bank patterns for frontend development
 - opt for smallest needed changes that you are sure to work
 - the simpler the better- small incremental changes can accomplish best changes
