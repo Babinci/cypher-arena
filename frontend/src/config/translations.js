@@ -64,7 +64,7 @@ const translations = {
   },
   pl: {
     // Control panel related
-    openControlPanel: "Otwórz Panel Sterowania",
+    openControlPanel: "Timer w Nowym Oknie",
     enterFullScreen: "Full Ekran",
     back: "Wróć",
     
