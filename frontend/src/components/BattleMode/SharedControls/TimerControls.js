@@ -26,6 +26,37 @@ export const TimerControls = ({
   // Slider active state - not currently used but kept for future functionality
   const [, setIsRoundSliderActive] = useState(false);
   
+  // Define step values for the round duration slider
+  const stepValues = [20, 30, 35, 40, 45, 50, 60, 70, 80, 90, 120, 150, 180, Infinity];
+  
+  // Helper function to convert duration to percentage position
+  const getRoundDurationPercentage = (duration) => {
+    if (duration === Infinity) return 100;
+    
+    // Find the index of this duration in our steps, or the nearest one
+    const exactIndex = stepValues.indexOf(duration);
+    if (exactIndex !== -1) {
+      // If the value is exactly one of our steps, use its position
+      return (exactIndex / (stepValues.length - 1)) * 100;
+    }
+    
+    // If it's between steps (shouldn't happen with our implementation), find nearest
+    // This is a fallback for any unexpected values
+    let nearestIndex = 0;
+    let minDiff = Math.abs(stepValues[0] - duration);
+    
+    for (let i = 1; i < stepValues.length; i++) {
+      if (stepValues[i] === Infinity) continue;
+      const diff = Math.abs(stepValues[i] - duration);
+      if (diff < minDiff) {
+        minDiff = diff;
+        nearestIndex = i;
+      }
+    }
+    
+    return (nearestIndex / (stepValues.length - 1)) * 100;
+  };
+  
   // Function to log UI positions
   const logUIPositions = () => {
     // Get timer panel element to calculate positions
@@ -321,7 +352,7 @@ export const TimerControls = ({
               <div 
                 className="round-time-track-fill"
                 style={{
-                  width: `${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}%`,
+                  width: `${getRoundDurationPercentage(roundDuration)}%`,
                 }}
               ></div>
               
@@ -336,20 +367,28 @@ export const TimerControls = ({
                       return el.parentElement.querySelector('.round-time-track');
                     };
                     
-                    // Calculate and set slider value from pointer position
+                    // Define the specific step values 
+                    const stepValues = [20, 30, 35, 40, 45, 50, 60, 70, 80, 90, 120, 150, 180, Infinity];
+                    
+                    // Calculate and set slider value from pointer position to nearest step value
                     const updateFromPointer = (clientX) => {
                       const trackEl = getTrackElement();
                       if (!trackEl) return;
                       
                       const rect = trackEl.getBoundingClientRect();
-                      const thumbWidth = el.offsetWidth;
                       
-                      // Calculate x position relative to track, accounting for thumb width
+                      // Calculate x position relative to track
                       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
                       const ratio = x / rect.width;
                       
-                      // Update the slider value (10-300 range)
-                      const newValue = Math.round(10 + ratio * 290);
+                      // Map the ratio to the index in the step values array
+                      const index = Math.min(
+                        Math.floor(ratio * stepValues.length), 
+                        stepValues.length - 1
+                      );
+                      
+                      // Set the new value from our predefined steps
+                      const newValue = stepValues[index];
                       handleRoundDurationChange(newValue);
                     };
                     
@@ -419,7 +458,7 @@ export const TimerControls = ({
                   }
                 }}
                 style={{
-                  left: `calc(${(roundDuration === Infinity ? 100 : (roundDuration - 10) / 290 * 100)}% - 20px)`,
+                  left: `calc(${getRoundDurationPercentage(roundDuration)}% - 20px)`,
                   top: '-18px',
                   cursor: 'grab',
                 }}
