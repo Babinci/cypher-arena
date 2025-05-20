@@ -202,21 +202,41 @@ export const StyledTimerControls = ({
       {/* Hover detection area - only visible in fullscreen mode */}
       {isFullScreen && (
         <div
+          className="timer-hover-area"
           style={{
             position: 'fixed',
             bottom: 0,
             left: 0,
             right: 0,
-            height: '15px',
+            height: '100px', // Larger hover area for better detection
             width: '100%',
             zIndex: 499,
-            cursor: 'pointer',
+            cursor: 'default',
+            backgroundColor: 'transparent',
           }}
           onMouseEnter={(e) => {
             const timerPanel = document.querySelector('[class^="StyledTimerControls__TimerPanel"]');
             if (timerPanel) {
               timerPanel.style.opacity = '1';
               timerPanel.style.pointerEvents = 'auto';
+            }
+          }}
+          onMouseMove={(e) => {
+            // Also respond to mouse movement in the hover area
+            const timerPanel = document.querySelector('[class^="StyledTimerControls__TimerPanel"]');
+            if (timerPanel && e.clientY > window.innerHeight - 120) {
+              timerPanel.style.opacity = '1';
+              timerPanel.style.pointerEvents = 'auto';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (isFullScreen) {
+              // Hide timer if mouse goes above the detection area
+              const timerPanel = document.querySelector('[class^="StyledTimerControls__TimerPanel"]');
+              if (timerPanel) {
+                timerPanel.style.opacity = '0';
+                timerPanel.style.pointerEvents = 'none';
+              }
             }
           }}
         />
@@ -233,6 +253,7 @@ export const StyledTimerControls = ({
         }}
         onMouseLeave={(e) => {
           if (isFullScreen) {
+            // Immediately hide the timer when mouse leaves
             e.currentTarget.style.opacity = '0';
             e.currentTarget.style.pointerEvents = 'none';
           }
