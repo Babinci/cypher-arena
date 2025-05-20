@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import useTranslation from '../../../config/useTranslation';
 import FireSliderStyles from './FireSliderStyles';
+import theme from '../../../config/theme';
 import '../../../cypher-theme.css';
 import '../../../fire-theme.css';
 
@@ -143,10 +144,267 @@ export const TimerControls = ({
     }, 1000); // Log after 1 second to make sure everything is rendered
   }, []);
 
+  // Helper to get screen size category
+  const getScreenSize = () => {
+    const width = window.innerWidth;
+    if (width <= parseInt(theme.breakpoints.xs, 10)) return 'xs';
+    if (width <= parseInt(theme.breakpoints.sm, 10)) return 'sm';
+    if (width <= parseInt(theme.breakpoints.md, 10)) return 'md';
+    return 'lg';
+  };
+
+  // Determine responsive styles based on screen size
+  const getResponsiveStyles = () => {
+    const screenSize = getScreenSize();
+    
+    // Default styles (lg screens)
+    let styles = {
+      timerPanel: {
+        padding: '20px',
+      },
+      timerDisplay: {
+        height: '88px',
+        marginBottom: '15px',
+        gap: '30px',
+      },
+      mainTimer: {
+        fontSize: '53px',
+        letterSpacing: '2px',
+      },
+      intervalBadge: {
+        padding: '10px 14px',
+        height: '48px',
+        fontSize: '14px',
+        gap: '8px',
+      },
+      intervalButton: {
+        width: '26px',
+        height: '26px',
+        fontSize: '14px',
+      },
+      intervalSpan: {
+        minWidth: '80px',
+      },
+      roundTimeSlider: {
+        width: '180px',
+      },
+      roundTimeLabel: {
+        top: '-20px',
+        fontSize: '12px',
+      },
+      buttonContainer: {
+        width: '70%',
+        flexDirection: 'row',
+        gap: '8px',
+      },
+      button: {
+        padding: '8px 16px',
+        fontSize: '13px',
+      },
+      tickLabels: {
+        visible: true,
+      },
+      thumbDisplay: {
+        width: '44px',
+        height: '28px',
+        fontSize: '16px',
+      }
+    };
+    
+    // Medium screens (md) adjustments
+    if (screenSize === 'md') {
+      styles = {
+        ...styles,
+        timerPanel: {
+          padding: '16px 15px',
+        },
+        timerDisplay: {
+          height: '80px',
+          marginBottom: '12px',
+          gap: '20px',
+        },
+        mainTimer: {
+          fontSize: '46px',
+          letterSpacing: '1px',
+        },
+        roundTimeSlider: {
+          width: '160px',
+        },
+        buttonContainer: {
+          width: '85%',
+          gap: '6px',
+        },
+        button: {
+          padding: '7px 12px',
+          fontSize: '12px',
+        },
+      };
+    }
+    
+    // Small screens (sm) adjustments
+    if (screenSize === 'sm') {
+      styles = {
+        ...styles,
+        timerPanel: {
+          padding: '14px 10px',
+        },
+        timerDisplay: {
+          height: '70px',
+          marginBottom: '10px',
+          gap: '15px',
+        },
+        mainTimer: {
+          fontSize: '40px',
+          letterSpacing: '0px',
+        },
+        intervalBadge: {
+          padding: '7px 10px',
+          height: '40px',
+          fontSize: '12px',
+          gap: '6px',
+        },
+        intervalButton: {
+          width: '24px',
+          height: '24px',
+          fontSize: '12px',
+        },
+        intervalSpan: {
+          minWidth: '70px',
+        },
+        roundTimeSlider: {
+          width: '130px',
+        },
+        roundTimeLabel: {
+          top: '-16px',
+          fontSize: '10px',
+        },
+        buttonContainer: {
+          width: '90%',
+          gap: '5px',
+        },
+        button: {
+          padding: '6px 10px',
+          fontSize: '11px',
+        },
+        thumbDisplay: {
+          width: '40px',
+          height: '26px',
+          fontSize: '14px',
+        }
+      };
+    }
+    
+    // Extra small screens (xs) adjustments
+    if (screenSize === 'xs') {
+      styles = {
+        ...styles,
+        timerPanel: {
+          padding: '16px 12px 12px', // Increased padding for better spacing
+        },
+        timerDisplay: {
+          height: 'auto', // Auto height to accommodate content
+          marginBottom: '14px', // Increased bottom margin for spacing
+          gap: '14px', // Increased gap between items
+          flexDirection: 'column',
+          alignItems: 'center',
+        },
+        mainTimer: {
+          fontSize: '42px', // Larger timer for better visibility
+          letterSpacing: '1px',
+          marginTop: '0px',
+          marginBottom: '4px', // Add spacing below timer
+        },
+        intervalBadge: {
+          padding: '6px 10px',
+          height: '36px', // Taller for better touch targets
+          fontSize: '12px',
+          gap: '6px',
+          position: 'relative',
+          top: '0', // No need to offset anymore with column layout
+          width: '90%', // Wider to use more horizontal space
+          maxWidth: '300px',
+          margin: '0 auto',
+          justifyContent: 'center', // Center contents
+        },
+        intervalButton: {
+          width: '26px', // Larger buttons for touch
+          height: '26px',
+          fontSize: '12px',
+        },
+        intervalSpan: {
+          minWidth: '70px',
+          fontSize: '13px', // Slightly larger text
+        },
+        roundTimeSlider: {
+          width: '90%', // Use most of the width
+          maxWidth: '300px',
+          marginTop: '4px',
+          marginBottom: '8px', // Add margin below slider
+          padding: '10px 0', // Add padding for larger touch area
+        },
+        roundTimeLabel: {
+          top: '-12px',
+          fontSize: '11px',
+          textAlign: 'center',
+          width: '100%',
+        },
+        buttonContainer: {
+          width: '90%', // Use most of the screen width 
+          flexDirection: 'column',
+          gap: '8px', // More space between buttons
+          margin: '4px auto 0', // Add top margin
+        },
+        button: {
+          padding: '10px 12px', // Larger padding for better touch targets
+          fontSize: '13px', // Larger text for visibility
+          minHeight: '38px', // Taller buttons for touch
+          borderRadius: '24px', // Rounder buttons
+        },
+        tickLabels: {
+          visible: false, // Hide tick labels on smallest screens
+        },
+        thumbDisplay: {
+          width: '44px', // Larger thumb for touch
+          height: '30px',
+          fontSize: '14px',
+        }
+      };
+    }
+    
+    return styles;
+  };
+  
+  // Get responsive styles
+  const styles = getResponsiveStyles();
+
   return (
     <>
       {/* Custom Fire Slider Styles */}
       <FireSliderStyles />
+      
+      {/* Responsive styling for round-time-track elements */}
+      <style>
+        {`
+          @media (max-width: ${theme.breakpoints.xs}) {
+            .round-time-track .tick-30s,
+            .round-time-track .tick-60s,
+            .round-time-track .tick-120s {
+              font-size: 8px;
+            }
+            
+            .round-time-thumb-display {
+              width: ${styles.thumbDisplay.width};
+              height: ${styles.thumbDisplay.height};
+              font-size: ${styles.thumbDisplay.fontSize};
+            }
+            
+            .round-time-thumb-display::before {
+              bottom: -12px;
+              font-size: 10px;
+            }
+          }
+        `}
+      </style>
       
       {/* Hover detection area - only visible in fullscreen mode */}
       {isFullScreen && (
@@ -202,12 +460,15 @@ export const TimerControls = ({
           width: '100%',
           borderTop: '1px solid #FF784C',
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
-          padding: '20px',
+          padding: styles.timerPanel.padding,
           zIndex: 500,
           opacity: isFullScreen ? 0 : 1,
           transition: 'opacity 0.3s ease',
           background: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
           pointerEvents: isFullScreen ? 'none' : 'auto',
+          maxHeight: getScreenSize() === 'xs' ? '50vh' : 'auto', // Max height for mobile
+          overflowY: getScreenSize() === 'xs' ? 'auto' : 'visible', // Enable scrolling on small screens
+          overscrollBehavior: 'contain', // Prevent scroll chaining
         }}
         onMouseEnter={(e) => {
           if (isFullScreen) {
@@ -227,30 +488,36 @@ export const TimerControls = ({
         <div 
           className="timer-display"
           style={{
-          position: 'relative',
-          height: '88px',
-          marginBottom: '15px',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '30px',
-        }}>
+            position: 'relative',
+            height: styles.timerDisplay.height,
+            marginBottom: styles.timerDisplay.marginBottom,
+            display: 'flex',
+            flexDirection: getScreenSize() === 'xs' ? 'column' : 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: styles.timerDisplay.gap,
+          }}>
           {/* Interval with integrated controls */}
           <div 
             className="interval-badge"
             style={{
-              padding: '10px 14px',
+              padding: styles.intervalBadge.padding,
               background: 'linear-gradient(135deg, rgba(255, 120, 60, 0.15), rgba(255, 80, 30, 0.1))',
               border: '1px solid rgba(255, 120, 60, 0.4)',
               borderRadius: '25px',
-              fontSize: '14px',
+              fontSize: styles.intervalBadge.fontSize,
               color: 'rgba(255, 220, 160, 0.9)',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
+              justifyContent: getScreenSize() === 'xs' ? 'center' : 'flex-start',
+              gap: styles.intervalBadge.gap,
               boxShadow: '0 2px 8px rgba(255, 120, 60, 0.2)',
-              height: '48px',
+              height: styles.intervalBadge.height,
+              width: getScreenSize() === 'xs' ? styles.intervalBadge.width || 'auto' : 'auto',
+              maxWidth: getScreenSize() === 'xs' ? styles.intervalBadge.maxWidth || 'none' : 'none',
+              margin: getScreenSize() === 'xs' ? '0 auto' : 'initial',
+              position: 'relative',
+              top: styles.intervalBadge.top || '0',
             }}>
             <button
               onClick={() => handleIntervalChange(Math.max(10, changeInterval - 5))}
@@ -259,13 +526,13 @@ export const TimerControls = ({
                 color: 'rgba(255, 180, 100, 0.8)',
                 border: '1px solid rgba(255, 120, 60, 0.3)',
                 borderRadius: '50%',
-                width: '26px',
-                height: '26px',
+                width: styles.intervalButton.width,
+                height: styles.intervalButton.height,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                fontSize: '14px',
+                fontSize: styles.intervalButton.fontSize,
                 fontWeight: 'bold',
                 transition: 'all 0.2s ease',
               }}
@@ -274,7 +541,7 @@ export const TimerControls = ({
             >
               -
             </button>
-            <span style={{ minWidth: '80px', textAlign: 'center' }}>
+            <span style={{ minWidth: styles.intervalSpan.minWidth, textAlign: 'center' }}>
               {t('interval')}: {changeInterval}s
             </span>
             <button
@@ -284,13 +551,13 @@ export const TimerControls = ({
                 color: 'rgba(255, 180, 100, 0.8)',
                 border: '1px solid rgba(255, 120, 60, 0.3)',
                 borderRadius: '50%',
-                width: '26px',
-                height: '26px',
+                width: styles.intervalButton.width,
+                height: styles.intervalButton.height,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
-                fontSize: '14px',
+                fontSize: styles.intervalButton.fontSize,
                 fontWeight: 'bold',
                 transition: 'all 0.2s ease',
               }}
@@ -303,14 +570,15 @@ export const TimerControls = ({
 
           {/* Main Timer centered */}
           <div style={{
-            fontSize: '53px',
+            fontSize: styles.mainTimer.fontSize,
             fontWeight: 'bold',
             fontFamily: 'var(--font-display)',
             color: isActive ? 'rgba(255, 200, 100, 1)' : 'rgba(255, 150, 80, 0.9)',
             textAlign: 'center',
             textShadow: isActive ? '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)' : '0 2px 4px rgba(0, 0, 0, 0.7)',
-            letterSpacing: '2px',
+            letterSpacing: styles.mainTimer.letterSpacing,
             lineHeight: '1.2',
+            ...(getScreenSize() === 'xs' && { marginTop: '-6px', order: -1 }),
           }}>
             {timer}
           </div>
@@ -322,17 +590,27 @@ export const TimerControls = ({
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
-              width: '180px',
-              marginTop: '6px',
+              width: styles.roundTimeSlider.width,
+              marginTop: styles.roundTimeSlider.marginTop || '6px',
+              marginBottom: styles.roundTimeSlider.marginBottom || '0',
+              padding: styles.roundTimeSlider.padding || '0',
+              maxWidth: getScreenSize() === 'xs' ? styles.roundTimeSlider.maxWidth || '240px' : 'none',
+              ...(getScreenSize() === 'xs' && {
+                background: 'rgba(40, 20, 10, 0.3)',
+                borderRadius: '20px',
+                border: '1px solid rgba(255, 120, 60, 0.15)',
+                boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)'
+              }),
             }}>
             {/* Simple label above slider */}
             <span className="round-time-label" style={{
               position: 'absolute',
-              top: '-20px',
+              top: styles.roundTimeLabel.top,
               left: '0',
               width: '100%',
               textAlign: 'center',
               cursor: 'pointer',
+              fontSize: styles.roundTimeLabel.fontSize,
             }}>
               {t('roundTime')}
             </span>
@@ -341,18 +619,23 @@ export const TimerControls = ({
             <div style={{
               position: 'relative',
               width: '100%',
-              height: '60px',
+              height: getScreenSize() === 'xs' ? '60px' : '60px', // Same height for all screen sizes for consistency
               display: 'flex',
               alignItems: 'center',
-              paddingTop: '6px',
+              paddingTop: getScreenSize() === 'xs' ? '10px' : '6px', // More padding for xs screens
+              paddingBottom: getScreenSize() === 'xs' ? '10px' : '0', // Add bottom padding for xs
             }}>
               {/* Track with markers */}
               <div style={{ position: 'relative', width: '100%', height: '20px' }}>
                 <div className="round-time-track">
                   {/* Adding tick labels as span elements for proper positioning */}
-                  <span className="tick-30s">30s</span>
-                  <span className="tick-60s">1m</span>
-                  <span className="tick-120s">2m</span>
+                  {styles.tickLabels.visible !== false && (
+                    <>
+                      <span className="tick-30s">30s</span>
+                      <span className="tick-60s">1m</span>
+                      <span className="tick-120s">2m</span>
+                    </>
+                  )}
                 </div>
                 
                 {/* Custom track fill */}
@@ -429,29 +712,63 @@ export const TimerControls = ({
                       document.addEventListener('mouseup', handleMouseUp);
                     };
                     
-                    // Touch event handlers
+                    // Enhanced touch event handlers for better mobile experience
                     el.ontouchstart = (e) => {
-                      e.preventDefault(); // Prevent scrolling
+                      // Don't prevent default scrolling on xs screens with scrollable container
+                      if (getScreenSize() !== 'xs') {
+                        e.preventDefault();
+                      }
+                      e.stopPropagation(); // Prevent event bubbling
+                      
                       setIsRoundSliderActive(true);
                       
-                      // Update cursor style
+                      // Update visual feedback
                       el.classList.add('dragging');
                       
-                      // Create touch move handler
+                      // Track initial position for better touch handling
+                      const touchStartX = e.touches[0].clientX;
+                      const startValue = roundDuration;
+                      
+                      // Create enhanced touch move handler with better precision
                       const handleTouchMove = (e) => {
+                        e.stopPropagation();
+                        
+                        // On scrollable containers, prevent default only during active dragging
+                        if (getScreenSize() === 'xs') {
+                          e.preventDefault();
+                        }
+                        
+                        // Update pointer position for the slider
                         updateFromPointer(e.touches[0].clientX);
+                        
+                        // Provide visual feedback during touch
+                        el.style.transform = 'scale(0.96)';
+                        
+                        // Ensure timer panel doesn't scroll during dragging
+                        const timerPanel = document.querySelector('.timer-panel');
+                        if (timerPanel) {
+                          timerPanel.style.overflowY = 'hidden';
+                        }
                       };
                       
-                      // Create touch end handler
+                      // Enhanced touch end handler
                       const handleTouchEnd = () => {
                         setIsRoundSliderActive(false);
                         el.classList.remove('dragging');
-                        document.removeEventListener('touchmove', handleTouchMove);
+                        el.style.transform = '';
+                        
+                        // Re-enable scrolling on the timer panel
+                        const timerPanel = document.querySelector('.timer-panel');
+                        if (timerPanel) {
+                          timerPanel.style.overflowY = getScreenSize() === 'xs' ? 'auto' : 'visible';
+                        }
+                        
+                        document.removeEventListener('touchmove', handleTouchMove, { passive: false });
                         document.removeEventListener('touchend', handleTouchEnd);
                       };
                       
-                      // Add global event listeners
-                      document.addEventListener('touchmove', handleTouchMove);
+                      // Add global event listeners with passive: false to allow preventDefault
+                      document.addEventListener('touchmove', handleTouchMove, { passive: false });
                       document.addEventListener('touchend', handleTouchEnd);
                     };
                     
@@ -492,17 +809,18 @@ export const TimerControls = ({
         <div 
           className="timer-buttons"
           style={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          justifyContent: 'center',
-          gap: '8px',
-          width: '70%',
-          margin: '0 auto',
-        }}>
+            display: 'flex',
+            flexDirection: getScreenSize() === 'xs' ? 'column' : 'row',
+            flexWrap: 'nowrap',
+            justifyContent: 'center',
+            gap: styles.buttonContainer.gap,
+            width: styles.buttonContainer.width,
+            margin: '0 auto',
+          }}>
           <button 
             onClick={toggleActive}
             style={{
-              padding: '8px 16px',
+              padding: styles.button.padding,
               background: isActive ? 
                 'linear-gradient(135deg, rgba(255, 60, 60, 0.8), rgba(200, 40, 40, 0.7))' : 
                 'linear-gradient(135deg, rgba(255, 120, 60, 0.8), rgba(255, 80, 30, 0.7))',
@@ -511,12 +829,13 @@ export const TimerControls = ({
               borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
-              fontSize: '13px',
+              fontSize: styles.button.fontSize,
               fontWeight: '600',
               flex: '1',
               textShadow: '0 1px 3px rgba(0, 0, 0, 0.7)',
               transition: 'all 0.2s ease',
               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
+              minHeight: styles.button.minHeight,
             }}
           >
             {isActive ? t('pause') : t('resume')}
@@ -525,18 +844,19 @@ export const TimerControls = ({
           <button 
             onClick={getNextItem}
             style={{
-              padding: '8px 16px',
+              padding: styles.button.padding,
               background: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(30, 30, 30, 0.7))',
               color: 'rgba(255, 180, 100, 0.9)',
               border: '1px solid rgba(255, 120, 60, 0.3)',
               borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
-              fontSize: '13px',
+              fontSize: styles.button.fontSize,
               fontWeight: '600',
               flex: '1',
               transition: 'all 0.2s ease',
               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
+              minHeight: styles.button.minHeight,
             }}
           >
             {t('nextItem')}
@@ -545,18 +865,19 @@ export const TimerControls = ({
           <button 
             onClick={handleResetRound}
             style={{
-              padding: '8px 16px',
+              padding: styles.button.padding,
               background: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(30, 30, 30, 0.7))',
               color: 'rgba(255, 180, 100, 0.9)',
               border: '1px solid rgba(255, 120, 60, 0.3)',
               borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
-              fontSize: '13px',
+              fontSize: styles.button.fontSize,
               fontWeight: '600',
               flex: '1',
               transition: 'all 0.2s ease',
               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.4)',
+              minHeight: styles.button.minHeight,
             }}
           >
             {t('resetRound')}

@@ -209,7 +209,6 @@ const FireSliderStyles = () => {
         color: rgba(255, 180, 100, 0.9);
         text-shadow: 0 1px 1px rgba(0,0,0,0.6);
       }
-      }
       
       .round-time-thumb-display:hover {
         transform: scale(1.05);
@@ -343,6 +342,140 @@ const FireSliderStyles = () => {
         outline-color: rgba(255, 140, 70, 0.8) !important;
         box-shadow: 0 0 0 2px rgba(255, 140, 70, 0.3) !important;
         border-color: rgba(255, 140, 70, 0.5) !important;
+      }
+      
+      /* Responsive styles for different screen sizes */
+      @media (max-width: ${theme.breakpoints.md}) {
+        /* Medium devices (641px-768px) */
+        .round-time-track .tick-30s,
+        .round-time-track .tick-60s,
+        .round-time-track .tick-120s {
+          font-size: 9px;
+        }
+        
+        .round-time-thumb-display {
+          width: 40px;
+          height: 26px;
+          font-size: 14px;
+        }
+        
+        .round-time-thumb-display::before {
+          bottom: -14px;
+          font-size: 11px;
+        }
+        
+        .round-time-label {
+          font-size: 11px;
+        }
+      }
+      
+      @media (max-width: ${theme.breakpoints.sm}) {
+        /* Small devices (481px-640px) */
+        .round-time-track .tick-30s,
+        .round-time-track .tick-60s,
+        .round-time-track .tick-120s {
+          font-size: 9px;
+        }
+        
+        .round-time-thumb-display {
+          width: 38px;
+          height: 25px;
+          font-size: 13px;
+        }
+        
+        .round-time-thumb-display::before {
+          bottom: -13px;
+          font-size: 10px;
+        }
+        
+        /* Make the ticks smaller on small devices */
+        .round-time-track::before {
+          background-size: 
+            1px 5px,  /* 30s */
+            1px 6px,  /* 60s */
+            1px 6px;  /* 120s */
+        }
+      }
+      
+      @media (max-width: ${theme.breakpoints.xs}) {
+        /* Extra small devices (320px-480px) */
+        .round-time-track .tick-30s,
+        .round-time-track .tick-60s,
+        .round-time-track .tick-120s {
+          font-size: 8px;
+          top: 13px; /* Move labels up slightly */
+        }
+        
+        .round-time-thumb-display {
+          width: 44px; /* Increased touch target size */
+          height: 30px; /* Increased touch target size */
+          font-size: 14px;
+          top: -15px; /* Adjust position for visibility */
+          border-radius: 6px;
+          /* Make the thumb visually clearer */
+          box-shadow: 0 3px 8px rgba(0,0,0,0.6), 0 0 10px rgba(255, 140, 60, 0.6);
+        }
+        
+        .round-time-thumb-display::before {
+          content: "⇄";
+          bottom: -14px;
+          font-size: 10px;
+        }
+        
+        /* Make the track and ticks more visible */
+        .round-time-track {
+          height: 6px; /* Thicker track for visibility and touch */
+          margin-top: -3px;
+        }
+        
+        .round-time-track-fill {
+          height: 6px; /* Match track height */
+          margin-top: -3px;
+        }
+        
+        .round-time-track::before {
+          background-size: 
+            2px 5px,  /* 30s */
+            2px 6px,  /* 60s */
+            2px 6px;  /* 120s */
+          top: 5px;
+        }
+        
+        /* Create an invisible but larger touch target */
+        .round-time-thumb-display::after {
+          content: "";
+          position: absolute;
+          top: -10px;
+          left: -10px;
+          right: -10px;
+          bottom: -10px;
+          z-index: -1;
+        }
+        
+        /* Better positioning for portrait mobile views */
+        .timer-buttons > button {
+          min-height: 38px; /* Increased touch target */
+          padding-top: 8px !important;
+          padding-bottom: 8px !important;
+        }
+        
+        /* Add visual pulse to indicate interactivity */
+        @keyframes thumbPulse {
+          0% { box-shadow: 0 3px 8px rgba(0,0,0,0.6), 0 0 10px rgba(255, 140, 60, 0.6); }
+          50% { box-shadow: 0 3px 8px rgba(0,0,0,0.6), 0 0 15px rgba(255, 180, 100, 0.8); }
+          100% { box-shadow: 0 3px 8px rgba(0,0,0,0.6), 0 0 10px rgba(255, 140, 60, 0.6); }
+        }
+        
+        .round-time-slider-control:active .round-time-thumb-display,
+        .round-time-thumb-display:active {
+          animation: none !important;
+          transform: scale(0.96);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 10px rgba(255, 150, 70, 0.7) !important;
+        }
+        
+        .round-time-thumb-display {
+          animation: thumbPulse 2s infinite ease-in-out;
+        }
       }
     `}</style>
   );
