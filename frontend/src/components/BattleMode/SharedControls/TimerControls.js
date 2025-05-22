@@ -479,7 +479,7 @@ export const TimerControls = ({
             justifyContent: 'center',
             gap: '20px',
             transition: 'all 0.3s ease',
-            transform: 'translateY(60px)', // Show only top half
+            transform: 'translateY(40px)', // Show more of the timer content
           }}
         >
           {/* Expand arrow */}
@@ -535,6 +535,7 @@ export const TimerControls = ({
             textShadow: isActive ? '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)' : '0 2px 4px rgba(0, 0, 0, 0.7)',
             letterSpacing: '1px',
             lineHeight: '1.0',
+            marginTop: '-20px', // Move timer up to be more visible in collapsed state
           }}>
             {timer}
           </div>
