@@ -24,8 +24,20 @@ export const TimerControls = ({
   // Get translation function
   const { t } = useTranslation();
   
+  // Helper to get screen size category
+  const getScreenSize = () => {
+    const width = window.innerWidth;
+    if (width <= parseInt(theme.breakpoints.xs, 10)) return 'xs';
+    if (width <= parseInt(theme.breakpoints.sm, 10)) return 'sm';
+    if (width <= parseInt(theme.breakpoints.md, 10)) return 'md';
+    return 'lg';
+  };
+  
   // Slider active state - not currently used but kept for future functionality
   const [, setIsRoundSliderActive] = useState(false);
+  
+  // Track collapsed state for mobile
+  const [isMobileCollapsed, setIsMobileCollapsed] = useState(getScreenSize() === 'xs');
   
   // Define step values for the round duration slider
   const stepValues = [20, 30, 35, 40, 45, 50, 60, 70, 80, 90, 120, 150, 180, Infinity];
@@ -143,15 +155,6 @@ export const TimerControls = ({
       logUIPositions();
     }, 1000); // Log after 1 second to make sure everything is rendered
   }, []);
-
-  // Helper to get screen size category
-  const getScreenSize = () => {
-    const width = window.innerWidth;
-    if (width <= parseInt(theme.breakpoints.xs, 10)) return 'xs';
-    if (width <= parseInt(theme.breakpoints.sm, 10)) return 'sm';
-    if (width <= parseInt(theme.breakpoints.md, 10)) return 'md';
-    return 'lg';
-  };
 
   // Determine responsive styles based on screen size
   const getResponsiveStyles = () => {
@@ -303,8 +306,8 @@ export const TimerControls = ({
         },
         timerDisplay: {
           height: 'auto', // Auto height to accommodate content
-          marginBottom: '14px', // Increased bottom margin for spacing
-          gap: '14px', // Increased gap between items
+          marginBottom: '8px', // Reduced bottom margin
+          gap: '8px', // Reduced gap between items
           flexDirection: 'column',
           alignItems: 'center',
         },
@@ -312,7 +315,7 @@ export const TimerControls = ({
           fontSize: '42px', // Larger timer for better visibility
           letterSpacing: '1px',
           marginTop: '0px',
-          marginBottom: '4px', // Add spacing below timer
+          marginBottom: '0px', // No spacing below timer
           // Make timer extra bold and visible for collapsed state
           fontWeight: '800',
           textShadow: '0 0 15px rgba(255, 120, 60, 0.7), 0 2px 5px rgba(0, 0, 0, 0.8)',
@@ -453,34 +456,91 @@ export const TimerControls = ({
         />
       )}
       
-      {/* Mobile-only scroll indicator */}
-      {getScreenSize() === 'xs' && (
+      
+      {/* Mobile collapsed timer - minimal view */}
+      {getScreenSize() === 'xs' && isMobileCollapsed && (
         <div
+          className="mobile-collapsed-timer"
           style={{
             position: 'fixed',
-            bottom: '60px', // Position just above the collapsed timer
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '40px',
-            height: '8px',
-            background: 'rgba(255, 120, 60, 0.5)',
-            borderRadius: '4px',
-            zIndex: 501,
-            opacity: 0.7,
-            animation: 'pulseUp 2s infinite ease-in-out',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: '100%',
+            height: '120px',
+            background: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
+            borderTop: '1px solid #FF784C',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
+            zIndex: 500,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '20px',
+            transition: 'all 0.3s ease',
+            transform: 'translateY(60px)', // Show only top half
           }}
-        />
+        >
+          {/* Expand arrow */}
+          <div 
+            style={{
+              position: 'absolute',
+              top: '8px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '50px',
+              height: '24px',
+              backgroundColor: 'rgba(255, 120, 60, 0.2)',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid rgba(255, 120, 60, 0.3)',
+              transition: 'background-color 0.2s ease',
+            }}
+            onClick={() => setIsMobileCollapsed(false)}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+              e.currentTarget.style.backgroundColor = 'rgba(255, 120, 60, 0.4)';
+            }}
+            onTouchEnd={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 120, 60, 0.2)';
+            }}
+          >
+            <svg 
+              width="16" 
+              height="10" 
+              viewBox="0 0 16 10" 
+              fill="none"
+            >
+              <path 
+                d="M2 8L8 2L14 8" 
+                stroke="rgba(255, 180, 120, 0.8)" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          
+          {/* Timer number only */}
+          <div style={{
+            fontSize: '42px',
+            fontWeight: '800',
+            fontFamily: 'var(--font-display)',
+            color: isActive ? 'rgba(255, 200, 100, 1)' : 'rgba(255, 150, 80, 0.9)',
+            textAlign: 'center',
+            textShadow: isActive ? '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)' : '0 2px 4px rgba(0, 0, 0, 0.7)',
+            letterSpacing: '1px',
+            lineHeight: '1.0',
+          }}>
+            {timer}
+          </div>
+        </div>
       )}
-      <style>
-        {`
-          @keyframes pulseUp {
-            0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
-            50% { transform: translateX(-50%) scale(1.2); opacity: 0.8; }
-            100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
-          }
-        `}
-      </style>
-      
+
       {/* Main timer panel - Full Width Fixed at Bottom */}
       <div
         className="timer-panel"
@@ -493,37 +553,27 @@ export const TimerControls = ({
           borderTop: '1px solid #FF784C',
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.7)',
           padding: getScreenSize() === 'xs' ? '24px 12px 15px' : styles.timerPanel.padding,
-          paddingTop: getScreenSize() === 'xs' ? '24px' : undefined, // Extra top padding for handle
+          paddingTop: getScreenSize() === 'xs' ? '36px' : undefined, // Extra top padding for handle
           zIndex: 500,
           opacity: isFullScreen ? 0 : 1,
           transition: 'opacity 0.3s ease',
           background: 'linear-gradient(to bottom, rgba(40, 20, 10, 0.9), rgba(30, 15, 8, 0.95))',
           pointerEvents: isFullScreen ? 'none' : 'auto',
+          // Hide main panel when mobile is collapsed
+          display: getScreenSize() === 'xs' && isMobileCollapsed ? 'none' : 'block',
           // Mobile view positioning and scrolling
           maxHeight: getScreenSize() === 'xs' ? '80vh' : 'auto', // Max height for mobile (80% of screen)
           height: getScreenSize() === 'xs' ? 'auto' : 'auto', // Auto height based on content
           overflowY: getScreenSize() === 'xs' ? 'auto' : 'visible', // Enable scrolling on small screens
           overscrollBehavior: 'contain', // Prevent scroll chaining
-          // Ensure visible portion is at most 20% of viewport height initially
-          transform: getScreenSize() === 'xs' ? 'translateY(calc(80% - 65px))' : 'none',
-          transitionProperty: 'transform, opacity',
+          // No transform needed since we're using separate collapsed view
+          transform: 'none',
+          transitionProperty: 'opacity',
           transitionDuration: '0.3s',
           transitionTimingFunction: 'ease-out',
           // Rounded corners for mobile view
           borderTopLeftRadius: getScreenSize() === 'xs' ? '16px' : '0',
           borderTopRightRadius: getScreenSize() === 'xs' ? '16px' : '0',
-        }}
-        // Mobile-specific behavior: reveal full panel on tap/click
-        onClick={(e) => {
-          if (getScreenSize() === 'xs' && e.target === e.currentTarget) {
-            e.currentTarget.style.transform = 'translateY(0)';
-          }
-        }}
-        // Reset panel position on touch start inside the panel area
-        onTouchStart={(e) => {
-          if (getScreenSize() === 'xs' && e.target === e.currentTarget) {
-            e.currentTarget.style.transform = 'translateY(0)';
-          }
         }}
         onMouseEnter={(e) => {
           if (isFullScreen) {
@@ -539,73 +589,55 @@ export const TimerControls = ({
           }
         }}
       >
-        {/* Drag handle for mobile */}
-        {getScreenSize() === 'xs' && (
+        {/* Simple arrow toggle for mobile - only show in expanded state */}
+        {getScreenSize() === 'xs' && !isMobileCollapsed && (
           <div 
             style={{
               position: 'absolute',
               top: '8px',
               left: '50%',
               transform: 'translateX(-50%)',
-              width: '40px',
-              height: '4px',
-              backgroundColor: 'rgba(255, 120, 60, 0.5)',
-              borderRadius: '2px',
-              cursor: 'grab',
+              width: '60px',
+              height: '30px',
+              backgroundColor: 'rgba(255, 120, 60, 0.3)',
+              borderRadius: '15px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '2px solid rgba(255, 120, 60, 0.5)',
+              transition: 'background-color 0.2s ease',
+              zIndex: 501,
             }}
+            onClick={() => setIsMobileCollapsed(true)}
             onTouchStart={(e) => {
-              const panel = e.currentTarget.parentElement;
-              if (panel) {
-                const startY = e.touches[0].clientY;
-                const startTransform = panel.style.transform;
-                
-                // Get current translation value
-                let currentTranslateY = 0;
-                if (startTransform.includes('translateY')) {
-                  const match = startTransform.match(/translateY\((.*?)\)/);
-                  if (match && match[1]) {
-                    if (match[1] === '0px' || match[1] === '0') {
-                      currentTranslateY = 0;
-                    } else {
-                      // We have a complex calc expression, so we're in collapsed state
-                      currentTranslateY = window.innerHeight * 0.8 - 65;
-                    }
-                  }
-                }
-                
-                const handleTouchMove = (e) => {
-                  const currentY = e.touches[0].clientY;
-                  const deltaY = currentY - startY;
-                  
-                  // Calculate new position, constrained between 0 and 80% - 65px
-                  const maxTranslateY = window.innerHeight * 0.8 - 65;
-                  const newTranslateY = Math.max(0, Math.min(maxTranslateY, currentTranslateY + deltaY));
-                  
-                  panel.style.transform = `translateY(${newTranslateY}px)`;
-                };
-                
-                const handleTouchEnd = () => {
-                  // Snap to either fully open or fully collapsed
-                  const rect = panel.getBoundingClientRect();
-                  const currentHeight = window.innerHeight - rect.top;
-                  const totalHeight = panel.scrollHeight;
-                  
-                  // If showing more than 40% of content, snap open, otherwise snap closed
-                  if (currentHeight > totalHeight * 0.4) {
-                    panel.style.transform = 'translateY(0)';
-                  } else {
-                    panel.style.transform = 'translateY(calc(80% - 65px))';
-                  }
-                  
-                  document.removeEventListener('touchmove', handleTouchMove);
-                  document.removeEventListener('touchend', handleTouchEnd);
-                };
-                
-                document.addEventListener('touchmove', handleTouchMove, { passive: false });
-                document.addEventListener('touchend', handleTouchEnd);
-              }
+              e.stopPropagation();
+              e.currentTarget.style.backgroundColor = 'rgba(255, 120, 60, 0.4)';
             }}
-          />
+            onTouchEnd={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 120, 60, 0.2)';
+            }}
+          >
+            <svg 
+              width="16" 
+              height="10" 
+              viewBox="0 0 16 10" 
+              fill="none" 
+              style={{
+                // Point down when expanded (to collapse)
+                transform: 'rotateX(0deg)',
+                transition: 'transform 0.2s ease',
+              }}
+            >
+              <path 
+                d="M2 2L8 8L14 2" 
+                stroke="rgba(255, 180, 120, 0.8)" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         )}
         
         {/* Timer display - Main timer centered with interval and round time as "badges" */}
@@ -621,7 +653,7 @@ export const TimerControls = ({
             justifyContent: 'center',
             gap: styles.timerDisplay.gap,
           }}>
-          {/* Interval with integrated controls */}
+          {/* Interval with integrated controls - hidden in collapsed mobile view */}
           <div 
             className="interval-badge"
             style={{
@@ -701,13 +733,13 @@ export const TimerControls = ({
             textAlign: 'center',
             textShadow: isActive ? '0 0 15px rgba(255, 120, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7)' : '0 2px 4px rgba(0, 0, 0, 0.7)',
             letterSpacing: styles.mainTimer.letterSpacing,
-            lineHeight: '1.2',
-            ...(getScreenSize() === 'xs' && { marginTop: '-6px', order: -1 }),
+            lineHeight: '1.0',
+            ...(getScreenSize() === 'xs' && { marginTop: '-6px', marginBottom: '0px', order: -1 }),
           }}>
             {timer}
           </div>
 
-          {/* Unified Round Time Slider */}
+          {/* Unified Round Time Slider - hidden in collapsed mobile view */}
           <div 
             className="round-time-slider-control"
             style={{
@@ -929,7 +961,7 @@ export const TimerControls = ({
           </div>
         </div>
         
-        {/* Control buttons - fire-themed */}
+        {/* Control buttons - fire-themed - hidden in collapsed mobile view */}
         <div 
           className="timer-buttons"
           style={{
