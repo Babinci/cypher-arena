@@ -36,9 +36,13 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
       return baseSize;
     };
     
+    // Calculate font size based on the longer item to ensure visual balance
+    const item1TestSize = getScaledFontSize(item1, itemFontSize);
+    const item2TestSize = getScaledFontSize(item2, itemFontSize);
+    const balancedFontSize = Math.min(item1TestSize, item2TestSize);
+    
     // Draw first item
-    const item1FontSize = getScaledFontSize(item1, itemFontSize);
-    ctx.font = `700 ${item1FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.font = `700 ${balancedFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(item1, centerX, centerY - spacing);
@@ -50,9 +54,8 @@ export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
     ctx.fillStyle = '#1AAE4D'; // Slightly dimmer green (10% less bright)
     ctx.fillText("VS", centerX, centerY);
     
-    // Draw second item
-    const item2FontSize = getScaledFontSize(item2, itemFontSize);
-    ctx.font = `700 ${item2FontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
+    // Draw second item  
+    ctx.font = `700 ${balancedFontSize}px Montserrat, -apple-system, BlinkMacSystemFont, sans-serif`;
     
     ctx.fillStyle = '#E6E6E6'; // 10% dimmer than white
     ctx.fillText(item2, centerX, centerY + spacing);
