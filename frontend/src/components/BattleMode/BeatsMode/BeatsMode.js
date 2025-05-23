@@ -73,13 +73,29 @@ const BeatsMode = () => {
               rel="noopener noreferrer"
               style={{
                 display: 'inline-block',
-                backgroundColor: '#1DB954', // Spotify green
-                color: 'white',
-                padding: '10px 20px',
-                borderRadius: '30px',
+                background: 'linear-gradient(to bottom, rgba(255, 100, 50, 0.8), rgba(200, 80, 30, 0.9))',
+                color: '#FFEFB0',
+                padding: '12px 25px',
+                borderRadius: '25px',
                 textDecoration: 'none',
                 fontWeight: 'bold',
-                marginTop: '15px'
+                marginTop: '15px',
+                border: '1px solid #FF784C',
+                boxShadow: '0 2px 8px rgba(255, 120, 60, 0.3)',
+                transition: 'all 0.3s ease',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                fontFamily: '"Oswald", "Oswald Fallback", "Impact", sans-serif'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 4px 12px rgba(255, 140, 60, 0.5)';
+                e.target.style.background = 'linear-gradient(to bottom, rgba(255, 120, 60, 0.8), rgba(200, 80, 30, 0.9))';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 2px 8px rgba(255, 120, 60, 0.3)';
+                e.target.style.background = 'linear-gradient(to bottom, rgba(255, 100, 50, 0.8), rgba(200, 80, 30, 0.9))';
               }}
             >
               {t('openInSpotify') || 'Open in Spotify'} ↗
