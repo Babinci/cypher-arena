@@ -112,7 +112,7 @@ function Home() {
               {t('giveFeedback')}
             </button>
             
-            <button 
+            {/* <button 
               onClick={() => navigate('/settings')} 
               className="feedback-btn"
               style={{
@@ -124,7 +124,7 @@ function Home() {
               }}
             >
               {t('settings')}
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

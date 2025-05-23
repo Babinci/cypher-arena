@@ -20,7 +20,7 @@ import Account from './components/Account/Account';
 import BattleJudging from './components/BattleJudging/BattleJudging';
 import OrganizeBattle from './components/OrganizeBattle/OrganizeBattle';
 import ContrastingMode from './components/BattleMode/WordModes/ContrastingMode';
-import Settings from './components/Settings/Settings';
+// import Settings from './components/Settings/Settings';
 // import SecondWindow from './components/BattleMode/TopicMode/SecondWindow';
 import { useState, useEffect } from 'react';
 
@@ -72,7 +72,7 @@ function App() {
           <Route path="/battle-judging" element={<BattleJudging />} />
           <Route path="/organize-battle" element={<OrganizeBattle />} />
           <Route path="/contrasting-mode" element={<ContrastingMode />} />
-          <Route path="/settings" element={<Settings />} />
+          {/* <Route path="/settings" element={<Settings />} /> */}
           {/* Debug routes removed */}
           {/* <Route path="/second-window" element={<SecondWindow />} /> */}
           <Route path="/image-mode-improved" element={<ImprovedImagesMode />} />
