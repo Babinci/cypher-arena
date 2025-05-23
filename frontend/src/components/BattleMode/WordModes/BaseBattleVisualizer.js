@@ -5,13 +5,21 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import { drawGradientRectangle } from './Gradient_Rectangle';
 import { renderWordText } from './WordTextRenderer';
+import { renderFireSmokeText } from './FireSmokeVisualizer';
+// import { renderWordText } from './WordTextRendererDebug'; // Using debug version
+// import { renderWordText } from './WordTextRendererClean'; // Using clean version
+// import { renderWordText } from './WordTextRendererLarge'; // Using large version
+// import { renderWordText } from './WordTextRendererFixed'; // Using fixed version
 import useTranslation from '../../../config/useTranslation';
+import '../../../fire-theme.css';
+// Temporarily removed font imports for debugging
 
-const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
+const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig, visualMode = 'rectangle' }) => {
   const [words, setWords] = useState([]);
   const [currentWord, setCurrentWord] = useState('');
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+  // const [fontLoaded, setFontLoaded] = useState(false); // Removed for debugging
   const { t } = useTranslation();
 
   const {
@@ -65,6 +73,10 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       setCurrentWord(words[currentIndex]);
     }
   }, [currentIndex, words]);
+  
+  // Particle system has been removed to improve performance while keeping styling
+
+  // Removed font loading effect for debugging
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -74,70 +86,110 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const { width, height } = canvas;
   
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = '#1a1a1a';
-    ctx.fillRect(0, 0, width, height);
     
     const availableWidth = width;
     const availableHeight = height;
-    const topPadding = 20;
     const isMobileView = availableWidth <= 768;
     
     let maxWidth, maxHeight;
     
-    if (isMobileView) {
-      maxWidth = availableWidth * 0.9;
-    } else {
-      maxWidth = Math.min(availableWidth * 0.75, 800);
-    }
-    
-    maxHeight = availableHeight - (topPadding * 2);
-    maxHeight = Math.max(20, maxHeight);
-    
-    const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
+    // Set dimensions for text area
+    maxWidth = Math.min(availableWidth * 0.9, 1200);  
+    maxHeight = Math.min(availableHeight * 0.85, 900);
     
     const centerX = availableWidth / 2;
+    const centerY = availableHeight / 2;
+    const time = Date.now() / 15000; // Time for animations
     
-    const time = Date.now() / 15000;
-    const pulseSize = Math.sin(time * 2) * 5;
-    const animatedWidth = maxWidth + pulseSize;
-    let animatedHeight = maxHeight + pulseSize;
-
-    let animatedY = topPadding;
-    animatedHeight = Math.min(animatedHeight, maxHeight);
-    animatedY = Math.max(topPadding, animatedY);
-    
-    const finalCenterY = animatedY + animatedHeight / 2;
-    
-    const animatedX = centerX - animatedWidth / 2;
-
-    // Use the new rectangle drawing function
-    drawGradientRectangle(ctx, {
-      x: animatedX,
-      y: animatedY,
-      width: animatedWidth,
-      height: animatedHeight,
-      borderRadius,
-      time
-    });
-
-    // --- WORD WRAPPING LOGIC MOVED TO WordTextRenderer.js ---
-    renderWordText(ctx, {
-      currentWord,
-      rectangle: {
+    // Choose visualization based on mode
+    if (visualMode === 'fire') {
+      // Clear the canvas with dark background
+      ctx.fillStyle = '#0A0A0A';
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      
+      // Create glow effect across the screen (kept from drawFireSmokeBackground)
+      const glowGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(width, height));
+      const glowIntensity = Math.sin(time * 2) * 0.1 + 0.15;
+      
+      glowGradient.addColorStop(0, `rgba(255, 120, 60, ${glowIntensity * 0.7})`);
+      glowGradient.addColorStop(0.2, `rgba(255, 80, 30, ${glowIntensity * 0.5})`);
+      glowGradient.addColorStop(0.4, `rgba(200, 50, 20, ${glowIntensity * 0.3})`);
+      glowGradient.addColorStop(0.7, `rgba(100, 30, 10, ${glowIntensity * 0.1})`);
+      glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = glowGradient;
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.restore();
+      
+      // Render text with fire effect
+      if (currentWord) {
+        renderFireSmokeText(ctx, {
+          currentWord,
+          rectangle: {
+            x: centerX - maxWidth / 2,
+            y: (height - maxHeight) / 2,
+            width: maxWidth,
+            height: maxHeight,
+            centerX: centerX,
+            centerY: height / 2
+          },
+          isMobileView: isMobileView
+        });
+      }
+    } else {
+      // Default rectangle mode
+      // Fill with solid black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+      
+      const borderRadius = Math.min(maxWidth, maxHeight) * 0.15;
+      
+      // Subtle pulse animation
+      const pulseSize = Math.sin(time * 2) * 5;
+      const animatedWidth = maxWidth + pulseSize;
+      let animatedHeight = maxHeight + pulseSize;
+      
+      // Position rectangle
+      const topPadding = 15;
+      let animatedY = topPadding;
+      animatedHeight = Math.min(animatedHeight, maxHeight);
+      animatedY = Math.max(topPadding, animatedY);
+      
+      const finalCenterY = animatedY + animatedHeight / 2;
+      const animatedX = centerX - animatedWidth / 2;
+      
+      // Draw gradient rectangle
+      drawGradientRectangle(ctx, {
         x: animatedX,
         y: animatedY,
         width: animatedWidth,
         height: animatedHeight,
-        centerX,
-        centerY: finalCenterY
-      },
-      isMobileView,
-      styleConfig
-    });
-    // --- END WORD WRAPPING LOGIC ---
+        borderRadius,
+        time: time
+      });
+      
+      // Render text on rectangle
+      if (currentWord) {
+        renderWordText(ctx, {
+          currentWord,
+          rectangle: {
+            x: animatedX,
+            y: animatedY,
+            width: animatedWidth,
+            height: animatedHeight,
+            centerX: centerX,
+            centerY: finalCenterY
+          },
+          isMobileView: width < 768
+        });
+      }
+    }
 
     animationRef.current = requestAnimationFrame(() => draw());
-  }, [currentWord, styleConfig, isFullScreen]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWord, styleConfig, visualMode]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -146,6 +198,9 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      
+      // Particle system has been removed to improve performance
+      
       requestAnimationFrame(() => draw());
     };
 
@@ -156,7 +211,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
       cancelAnimationFrame(animationRef.current);
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [draw, isControlWindow, isFullScreen]);
+  }, [draw, isControlWindow, isFullScreen, visualMode]);
 
   const renderControlButtons = () => (
     <div
@@ -164,7 +219,7 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         position: 'fixed',
         top: 10,
         right: 10,
-        zIndex: 1000,
+        zIndex: 500,
         transition: 'opacity 0.3s ease-in-out',
         opacity: isFullScreen ? 0 : 1,
       }}
@@ -177,12 +232,17 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
           marginBottom: '10px',
           display: 'block',
           padding: '10px',
-          backgroundColor: '#4CAF50',
+          backgroundColor: '#333333',
           color: 'white',
           border: 'none',
-          borderRadius: '5px',
+          borderRadius: '4px',
           cursor: 'pointer',
-          width: '100%'
+          width: '100%',
+          fontFamily: 'var(--font-display)',
+          textTransform: 'uppercase',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          position: 'relative'
         }}
       >
         {t('openControlPanel')}
@@ -192,12 +252,17 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         style={{
           display: 'block',
           padding: '10px',
-          backgroundColor: '#4CAF50',
+          backgroundColor: '#333333',
           color: 'white',
           border: 'none',
-          borderRadius: '5px',
+          borderRadius: '4px',
           cursor: 'pointer',
-          width: '100%'
+          width: '100%',
+          fontFamily: 'var(--font-display)',
+          textTransform: 'uppercase',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          position: 'relative'
         }}
       >
         {isFullScreen ? t('exitFullScreen') : t('enterFullScreen')}
@@ -213,7 +278,8 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        backgroundColor: '#1a1a1a'
+        backgroundColor: 'var(--bg-deep)', // Use theme variable
+        fontFamily: 'var(--font-display)' // Use theme font
       }}>
         {!isControlWindow && (
           <>
@@ -230,33 +296,30 @@ const BaseBattleVisualizer = ({ endpoint, fetchFunction, styleConfig }) => {
                   top: 0, 
                   left: 0,
                   width: '100%',
-                  height: '100%'
+                  height: '100%',
+                  zIndex: 10 // Add explicit z-index to ensure it's below the back button but above background
                 }} 
               />
             </div>
             {renderControlButtons()}
           </>
         )}
-        <div 
-          style={{ 
-            flexShrink: 0
-          }}
-        >
-          <TimerControls
-            timer={timer}
-            roundTimer={roundTimer}
-            changeInterval={changeInterval}
-            roundDuration={roundDuration}
-            isActive={isActive}
-            handleRoundDurationChange={handleRoundDurationChange}
-            getNextItem={getNextItem}
-            handleIntervalChange={handleIntervalChange}
-            toggleActive={toggleActive}
-            handleResetRound={handleResetRound}
-            isControlWindow={isControlWindow}
-            isFullScreen={isFullScreen}
-          />
-        </div>
+        
+        {/* Timer controls now float above content instead of being in flex layout */}
+        <TimerControls
+          timer={timer}
+          roundTimer={roundTimer}
+          changeInterval={changeInterval}
+          roundDuration={roundDuration}
+          isActive={isActive}
+          handleRoundDurationChange={handleRoundDurationChange}
+          getNextItem={getNextItem}
+          handleIntervalChange={handleIntervalChange}
+          toggleActive={toggleActive}
+          handleResetRound={handleResetRound}
+          isControlWindow={isControlWindow}
+          isFullScreen={isFullScreen}
+        />
       </div>
     </FullScreen>
   );

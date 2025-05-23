@@ -1,0 +1,174 @@
+// WordTextRenderer.js
+// Rewritten to fit text properly in rectangle
+
+/**
+ * Word text renderer that follows screen display requirements
+ */
+export function renderWordText(ctx, { currentWord, rectangle, isMobileView }) {
+  const { x, y, width, height, centerX, centerY } = rectangle;
+
+  // DEBUGGING: Add comprehensive logging
+  const debug = {
+    canvasWidth: ctx.canvas.width,
+    canvasHeight: ctx.canvas.height,
+    rectangleBounds: { x, y, width, height },
+    center: { centerX, centerY },
+    currentWord,
+    isMobileView
+  };
+  
+  console.log('=== WORD RENDERER DEBUG START ===');
+  console.log('Canvas dimensions:', debug.canvasWidth, 'x', debug.canvasHeight);
+  console.log('Rectangle:', debug.rectangleBounds);
+  console.log('Center point:', debug.center);
+  console.log('Current word:', currentWord);
+  
+  // TESTING: Use simple Arial font first
+  // const fontFamily = '"Oswald", "Arial Black", "Impact", sans-serif';
+  const fontFamily = 'Arial'; // Simplified for testing
+  
+  // TESTING: Use fixed sizes first
+  const baseFontSize = 100; // Fixed large size for testing
+  const scaledFontSize = baseFontSize;
+  
+  console.log('Font settings:', { fontFamily, baseFontSize, scaledFontSize });
+  
+  // Draw debug background
+  ctx.save();
+  ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
+  ctx.fillRect(x, y, width, height);
+  console.log('Drew red debug background');
+  
+  // Draw center crosshair
+  ctx.strokeStyle = 'yellow';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(centerX - 50, centerY);
+  ctx.lineTo(centerX + 50, centerY);
+  ctx.moveTo(centerX, centerY - 50);
+  ctx.lineTo(centerX, centerY + 50);
+  ctx.stroke();
+  console.log('Drew center crosshair');
+  
+  // Setup text properties
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  // Handle contrast mode (with VS)
+  if (currentWord && currentWord.includes('###VS###')) {
+    const [item1, item2] = currentWord.split('###VS###').map(item => item.trim());
+    
+    // Calculate sizes for contrast mode
+    const itemFontSize = scaledFontSize;
+    const vsFontSize = itemFontSize * 1.2; // Slightly larger VS
+    
+    // Position calculations for 3-element layout
+    const totalHeight = height * 0.8; // Use 80% of height
+    const itemSpace = totalHeight / 3; // Divide into 3 equal parts
+    
+    // Draw first item (top third)
+    ctx.save();
+    ctx.font = `bold ${itemFontSize}px ${fontFamily}`;
+    
+    // Measure text to truncate if needed
+    const maxTextWidth = width * 0.9; // 90% of container width
+    let item1Text = fitTextToWidth(ctx, item1, maxTextWidth);
+    
+    // Draw thicker outline for first item
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = itemFontSize * 0.15; // Increased from 0.1 for better visibility
+    ctx.lineJoin = 'round';
+    ctx.strokeText(item1Text, centerX, centerY - itemSpace);
+    
+    // Draw white fill text with green glow
+    ctx.shadowColor = 'rgba(29, 185, 84, 0.4)';
+    ctx.shadowBlur = itemFontSize * 0.2;
+    ctx.fillStyle = 'white';
+    ctx.fillText(item1Text, centerX, centerY - itemSpace);
+    ctx.restore();
+    
+    // Draw VS text (middle third)
+    ctx.save();
+    ctx.font = `bold ${vsFontSize}px ${fontFamily}`;
+    
+    // Thicker outline for VS
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = vsFontSize * 0.15; // Increased from 0.1
+    ctx.strokeText("VS", centerX, centerY);
+    
+    // Spotify green fill for VS with glow
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+    ctx.shadowBlur = vsFontSize * 0.2;
+    ctx.fillStyle = '#1DB954'; // Spotify green
+    ctx.fillText("VS", centerX, centerY);
+    ctx.restore();
+    
+    // Draw second item (bottom third)
+    ctx.save();
+    ctx.font = `bold ${itemFontSize}px ${fontFamily}`;
+    
+    // Measure text to truncate if needed
+    let item2Text = fitTextToWidth(ctx, item2, maxTextWidth);
+    
+    // Draw thicker outline for second item
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = itemFontSize * 0.15; // Increased from 0.1
+    ctx.lineJoin = 'round';
+    ctx.strokeText(item2Text, centerX, centerY + itemSpace);
+    
+    // Draw white fill text with green glow
+    ctx.shadowColor = 'rgba(29, 185, 84, 0.4)';
+    ctx.shadowBlur = itemFontSize * 0.2;
+    ctx.fillStyle = 'white';
+    ctx.fillText(item2Text, centerX, centerY + itemSpace);
+    ctx.restore();
+  } 
+  // Regular word mode
+  else if (currentWord) {
+    console.log('Drawing word:', currentWord);
+    
+    // SIMPLE TEST: Just draw text in white
+    ctx.fillStyle = 'white';
+    ctx.font = '80px Arial';
+    ctx.fillText(currentWord, centerX, centerY);
+    console.log('Drew word in white at:', centerX, centerY);
+    
+    // TESTING: Draw the same text in different colors to ensure visibility
+    ctx.fillStyle = 'yellow';
+    ctx.font = '60px Arial';
+    ctx.fillText(currentWord, centerX, centerY + 100);
+    console.log('Drew word in yellow below');
+    
+    // TESTING: Draw with stroke
+    ctx.strokeStyle = 'cyan';
+    ctx.lineWidth = 3;
+    ctx.font = '100px Arial';
+    ctx.strokeText('TEST', centerX, centerY - 100);
+    ctx.fillStyle = 'magenta';
+    ctx.fillText('TEST', centerX, centerY - 100);
+    console.log('Drew TEST above in magenta with cyan stroke');
+    
+    // DEBUG: End of word rendering
+  }
+}
+
+// Helper function to make text fit within width
+function fitTextToWidth(ctx, text, maxWidth) {
+  const width = ctx.measureText(text).width;
+  
+  // If text fits, return it unchanged
+  if (width <= maxWidth) {
+    return text;
+  }
+  
+  // Text is too long, truncate with ellipsis
+  let truncated = text;
+  let ellipsis = '...';
+  
+  // Binary search to find maximum text that fits with ellipsis
+  while (ctx.measureText(truncated + ellipsis).width > maxWidth && truncated.length > 1) {
+    truncated = truncated.slice(0, -1);
+  }
+  
+  return truncated + ellipsis;
+}

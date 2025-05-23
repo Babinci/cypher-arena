@@ -5,14 +5,13 @@ import { useTimerControl } from '../SharedControls/useTimerControl';
 import { TimerControls } from '../SharedControls/TimerControls';
 import apiConfig from '../../../config/apiConfig';
 import useTranslation from '../../../config/useTranslation';
-import ImagePreloader from './ImagePreloader';
 import { getImage } from './indexedDBUtils';
+import '../../../fire-theme.css';
 
 function ImagesMode() {
   const BUFFER_SIZE = 100;
   const [images, setImages] = useState([]);
   const [nextPage, setNextPage] = useState(null);
-  const [imagesPreloaded, setImagesPreloaded] = useState(false);
   const { t } = useTranslation();
 
   // Initialize timer control with image-specific configuration
@@ -58,29 +57,11 @@ function ImagesMode() {
         });
         setNextPage(data.next);
         console.log(`Next page URL: ${data.next}`);
-        setImagesPreloaded(false);
       })
       .catch(error => console.error('Error fetching images:', error));
   }, []);
 
-  const fetchManyImages = useCallback(async () => {
-    let allImages = [];
-    let url = `${apiConfig.baseUrl}${apiConfig.endpoints.getImages}?page_size=100`;
-    
-    for (let i = 0; i < 20; i++) {
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        allImages = [...allImages, ...data.results];
-        url = data.next;
-        if (!url) break;
-      } catch (error) {
-        console.error('Error fetching many images:', error);
-        break;
-      }
-    }
-    return allImages;
-  }, []);
+  // fetchManyImages function removed - now handled in Settings component
 
   // Custom reset handler that combines timer reset with image reset
   const handleResetRound = useCallback(() => {
@@ -127,7 +108,7 @@ function ImagesMode() {
         position: 'fixed',
         top: 10,
         right: 10,
-        zIndex: 1000,
+        zIndex: 500,
         transition: 'opacity 0.3s ease-in-out',
         opacity: isFullScreen ? 0 : 1,
       }}
@@ -207,13 +188,6 @@ function ImagesMode() {
               ) : (
                 <p>No images loaded</p>
               )}
-              <ImagePreloader
-                images={images}
-                onProgress={(progress) => {
-                  if (progress === 1) setImagesPreloaded(true);
-                }}
-                fetchManyImages={fetchManyImages}
-              />
             </div>
             {renderControlButtons()}
           </>

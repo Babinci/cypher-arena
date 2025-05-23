@@ -1,0 +1,53 @@
+/* fonts.css - Local font loading for canvas compatibility */
+
+/* Ensure Oswald is loaded with proper font-display */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=block');
+
+/* Add Montserrat as Spotify-like alternative (Circular is proprietary) */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=block');
+
+/* Force font loading with a hidden element */
+.font-loader {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  visibility: hidden;
+  font-family: 'Oswald', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+}
+
+.font-loader::before {
+  content: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+}
+
+.font-loader::after {
+  content: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  font-family: 'Oswald', sans-serif; 
+  font-weight: 700;
+}
+
+/* Montserrat font loader for Spotify-like text */
+.montserrat-loader {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  visibility: hidden;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+}
+
+.montserrat-loader::before {
+  content: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+
+.montserrat-loader::after {
+  content: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  font-family: 'Montserrat', sans-serif; 
+  font-weight: 800;
+}

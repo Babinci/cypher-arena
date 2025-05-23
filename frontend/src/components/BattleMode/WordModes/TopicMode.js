@@ -19,6 +19,7 @@ function TopicMode() {
     <BaseBattleVisualizer
       endpoint={`${apiConfig.baseUrl}${apiConfig.endpoints.getTopic}`}
       fetchFunction={fetchAndPrepareData}
+      visualMode="fire"
       // Use default styleConfig, or provide one if needed
       // styleConfig={{ fontSizeFactor: 1.3 }} // Removed, let renderer handle size fully
     />

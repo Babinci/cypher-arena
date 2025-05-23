@@ -155,6 +155,9 @@ const useTimerStore = create()(
                   });
                 }
                 break;
+              default:
+                console.log(`Unhandled message type: ${type}`);
+                break;
               case 'CONTROL_ACTION':
                 if (!isControlWindow) {
                   const { actionType, value } = payload;
@@ -194,6 +197,9 @@ const useTimerStore = create()(
                         currentIndex: (get().currentIndex + 1) % get().itemCount,
                         timer: get().changeInterval
                       });
+                      break;
+                    default:
+                      console.log(`Unhandled action type: ${actionType}`);
                       break;
                   }
                   broadcastState();

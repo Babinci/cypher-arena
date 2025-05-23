@@ -1,15 +1,17 @@
 # Active Context: Cypher Arena
 
 ## Current Work Focus
--- placement of word circle words
-   - brainstorming circle
-   - browser tab icon and cypher arena text
+1. **UI Improvements**
+   - Placement of word circle words
+   - Brainstorming circle
+   - Browser tab icon and cypher arena text
    - ✅ Complete UI internationalization (English and Polish)
-   - server bitwer connection
-      - youtubers judges bitwer battles statistics
-   - users types (judge, player, freestyle peace, battle organizer)
-      - personalization
-      - default round time infinity in practice modes with round duration more ux visible
+   - ✅ Unified Oswald font implementation across all battle modes
+   - Server bitwer connection
+      - Youtubers judges bitwer battles statistics
+   - Users types (judge, player, freestyle peace, battle organizer)
+      - Personalization
+      - Default round time infinity in practice modes with round duration more UX visible
    ### Challenges
    - Server migration is complete for now. Future plans include:
      - Backend on Gunicorn
@@ -28,10 +30,12 @@
    - Refine timer UX for a smoother experience during battles.
    - ✅ Implemented multilingual support system with translations for all UI elements
    - ✅ Added language switcher on main page with Polish as default
+   - ✅ Enhanced battle mode visualization with consistent Oswald font
    
    ### Challenges
    - Continue expanding translations for any new features added to the application.
    - Ensure consistent language usage across all components.
+   - Maintain consistent rendering across different browsers and devices.
 
 ## Next Steps
 - Finalize server migration and deploy the live application.
