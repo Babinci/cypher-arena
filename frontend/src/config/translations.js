@@ -33,6 +33,7 @@ const translations = {
     giveFeedback: "Give Feedback!",
     settings: "Settings",
     beats: "Beats",
+    organizeBattle: "Organize Battle",
     spotifyLoginNote: "Note: You'll need to allow third-party cookies in your browser settings and be logged into Spotify to play full tracks. Otherwise, only 30-second previews will be available.",
     openInSpotify: "Open in Spotify",
 
@@ -95,6 +96,7 @@ const translations = {
     giveFeedback: "Daj Feedback!",
     settings: "Ustawienia",
     beats: "Beaty",
+    organizeBattle: "Organizuj Bitwę",
     spotifyLoginNote: "Uwaga: Aby odtwarzać pełne utwory, musisz zezwolić na pliki cookie stron trzecich w ustawieniach przeglądarki i być zalogowanym do Spotify. W przeciwnym razie dostępne będą tylko 30-sekundowe fragmenty.",
     openInSpotify: "Otwórz w Spotify",
 

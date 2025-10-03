@@ -96,6 +96,21 @@ function Home() {
             </button>
           </div>
 
+          <div className="organize-section" style={{ marginTop: '30px', marginBottom: '20px' }}>
+            <button 
+              onClick={() => navigate('/organize-battle')} 
+              className="battle-mode-btn"
+              style={{
+                background: 'linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%)',
+                border: 'none',
+                fontSize: '18px',
+                padding: '15px 30px'
+              }}
+            >
+              {t('organizeBattle')}
+            </button>
+          </div>
+
           <div className="feedback-section">
             <button 
               onClick={() => navigate('/report-feedback')} 
