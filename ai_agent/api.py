@@ -1,3 +1,6 @@
+API_BASE_URL = "https://backend.cypher-arena.com/"
+
+
 example_payload = {
   "news_sources": [
     {
