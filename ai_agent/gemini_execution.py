@@ -6,6 +6,7 @@ import sys
 import argparse
 from datetime import date
 from typing import Optional, Dict, List
+from unicodedata import category
 
 # Mapping of news categories to their respective prompt files
 CATEGORY_PROMPT_MAPPING: Dict[str, str] = {
@@ -24,7 +25,7 @@ def list_all_categories() -> List[str]:
     """Return list of all available categories"""
     return list(CATEGORY_PROMPT_MAPPING.keys())
 
-def execute_gemini_prompt(category: str, news_date: str) -> bool:
+def execute_gemini_prompt(news_category: str, news_date: str) -> bool:
     """
     Execute Gemini CLI with prompt for specified category and date
 
@@ -35,9 +36,9 @@ def execute_gemini_prompt(category: str, news_date: str) -> bool:
     Returns:
         True if execution successful, False otherwise
     """
-    prompt_file = get_prompt_file(category)
+    prompt_file = get_prompt_file(news_category)
     if not prompt_file:
-        print(f"Error: Category '{category}' not found")
+        print(f"Error: Category '{news_category}' not found")
         return False
 
     try:
