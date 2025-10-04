@@ -6,7 +6,6 @@ import sys
 import argparse
 from datetime import date
 from typing import Optional, Dict, List
-from unicodedata import category
 
 # Mapping of news categories to their respective prompt files
 CATEGORY_PROMPT_MAPPING: Dict[str, str] = {
@@ -25,7 +24,7 @@ def list_all_categories() -> List[str]:
     """Return list of all available categories"""
     return list(CATEGORY_PROMPT_MAPPING.keys())
 
-def execute_gemini_prompt(news_category: str, news_date: str) -> bool:
+def execute_gemini_prompt(news_category: str, news_date: str) -> Optional[str]:
     """
     Execute Gemini CLI with prompt for specified category and date
 
@@ -34,12 +33,12 @@ def execute_gemini_prompt(news_category: str, news_date: str) -> bool:
         news_date: Date in YYYY-MM-DD format
 
     Returns:
-        True if execution successful, False otherwise
+        Gemini CLI response content if successful, None otherwise
     """
     prompt_file = get_prompt_file(news_category)
     if not prompt_file:
         print(f"Error: Category '{news_category}' not found")
-        return False
+        return None
 
     try:
         # Read the prompt template
@@ -54,7 +53,7 @@ def execute_gemini_prompt(news_category: str, news_date: str) -> bool:
         prompt = prompt_content.replace("{{news_date}}", news_date) + "\n\n" + general_rules
 
         # Execute gemini CLI
-        print(f"Executing Gemini CLI for category: {category}, date: {news_date}")
+        print(f"Executing Gemini CLI for category: {news_category}, date: {news_date}")
         print("-" * 50)
 
         result = subprocess.run(
@@ -67,17 +66,17 @@ def execute_gemini_prompt(news_category: str, news_date: str) -> bool:
         if result.returncode == 0:
             print("Gemini CLI Output:")
             print(result.stdout)
-            return True
+            return result.stdout
         else:
             print(f"Error executing Gemini CLI: {result.stderr}")
-            return False
+            return None
 
     except FileNotFoundError:
         print("Error: Gemini CLI not found. Make sure 'gemini' command is available.")
-        return False
+        return None
     except Exception as e:
         print(f"Error: {e}")
-        return False
+        return None
 
 def main():
     """Main function with CLI argument parsing"""
@@ -101,8 +100,8 @@ def main():
         print("Error: Invalid date format. Use YYYY-MM-DD")
         sys.exit(1)
 
-    success = execute_gemini_prompt(args.category, args.date)
-    if not success:
+    response = execute_gemini_prompt(args.category, args.date)
+    if not response:
         sys.exit(1)
 
 if __name__ == "__main__":
