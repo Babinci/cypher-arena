@@ -66,7 +66,7 @@ def send_news_to_api(content: str, news_date: str, news_category: str, api_key: 
     # Set headers
     headers = {
         'Content-Type': 'application/json',
-        'HTTP_X_AGENT_TOKEN': api_key
+        'X-AGENT-TOKEN': api_key
     }
 
     # Send POST request to API
@@ -81,6 +81,66 @@ def send_news_to_api(content: str, news_date: str, news_category: str, api_key: 
         return True
     except requests.exceptions.RequestException as e:
         print(f"Error sending request to API: {e}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response status: {e.response.status_code}")
+            print(f"Response text: {e.response.text}")
+        return False
+
+
+def is_created(news_date: str, news_source: str, api_key: str = None) -> bool:
+    """
+    Check if news source already exists for the given date and category
+
+    Args:
+        news_date: Date in YYYY-MM-DD format
+        news_source: News category/source name
+        api_key: API key (uses environment variable if not provided)
+
+    Returns:
+        True if exists, False otherwise
+    """
+    if not api_key:
+        api_key = AI_AGENT_SECRET_KEY
+
+    if not api_key:
+        print("Error: No API key provided")
+        return False
+
+    # Set headers
+    headers = {
+        'Content-Type': 'application/json',
+        'X-AGENT-TOKEN': api_key
+    }
+
+    # Send GET request to API
+    url = f"{API_BASE_URL}words/gemini-agent/news-sources/"
+    print(f"Sending GET request to: {url}")
+
+    try:
+        response = requests.get(url, headers=headers, params={
+            'news_date': news_date,
+            'news_source': news_source
+        })
+        response.raise_for_status()
+
+        # Parse response to check if news source exists
+        data = response.json()
+
+        # Check if any items match the criteria
+        if isinstance(data, list):
+            return any(item.get('news_date') == news_date and
+                      item.get('news_source') == news_source
+                      for item in data)
+        elif isinstance(data, dict) and 'results' in data:
+            return any(item.get('news_date') == news_date and
+                      item.get('news_source') == news_source
+                      for item in data['results'])
+        else:
+            # If response is a simple boolean or exists indicator
+            return bool(data)
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error checking if news exists: {e}")
         if hasattr(e, 'response') and e.response is not None:
             print(f"Response status: {e.response.status_code}")
             print(f"Response text: {e.response.text}")
