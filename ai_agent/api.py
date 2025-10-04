@@ -31,33 +31,24 @@ def extract_content_from_esej_tags(response: str) -> Optional[str]:
     return None
 
 
-def create_news_send_to_api(news_date: str, news_category: str) -> bool:
+def send_news_to_api(content: str, news_date: str, news_category: str, api_key: str = None) -> bool:
     """
-    Execute Gemini CLI prompt and send the result to the API
+    Send news content to the API
 
     Args:
+        content: News content to send
         news_date: Date in YYYY-MM-DD format
-        news_category: News category from available categories
+        news_category: News category
+        api_key: API key (uses environment variable if not provided)
 
     Returns:
         True if successful, False otherwise
     """
-    if not AI_AGENT_SECRET_KEY:
-        print("Error: AI_AGENT_SECRET_KEY not found in environment variables")
-        return False
+    if not api_key:
+        api_key = AI_AGENT_SECRET_KEY
 
-    # Execute Gemini CLI prompt
-    print(f"Getting news for category: {news_category}, date: {news_date}")
-    gemini_response = execute_gemini_prompt(news_category, news_date)
-
-    if not gemini_response:
-        print("Error: Failed to get response from Gemini CLI")
-        return False
-
-    # Extract content from <esej> tags
-    content = extract_content_from_esej_tags(gemini_response)
-    if not content:
-        print("Error: No content found in <esej> tags")
+    if not api_key:
+        print("Error: No API key provided")
         return False
 
     # Prepare API payload
@@ -75,7 +66,7 @@ def create_news_send_to_api(news_date: str, news_category: str) -> bool:
     # Set headers
     headers = {
         'Content-Type': 'application/json',
-        'HTTP_X_AGENT_TOKEN': AI_AGENT_SECRET_KEY
+        'HTTP_X_AGENT_TOKEN': api_key
     }
 
     # Send POST request to API
@@ -94,3 +85,32 @@ def create_news_send_to_api(news_date: str, news_category: str) -> bool:
             print(f"Response status: {e.response.status_code}")
             print(f"Response text: {e.response.text}")
         return False
+
+
+def create_news_send_to_api(news_date: str, news_category: str) -> bool:
+    """
+    Execute Gemini CLI prompt and send the result to the API
+
+    Args:
+        news_date: Date in YYYY-MM-DD format
+        news_category: News category from available categories
+
+    Returns:
+        True if successful, False otherwise
+    """
+    # Execute Gemini CLI prompt
+    print(f"Getting news for category: {news_category}, date: {news_date}")
+    gemini_response = execute_gemini_prompt(news_category, news_date)
+
+    if not gemini_response:
+        print("Error: Failed to get response from Gemini CLI")
+        return False
+
+    # Extract content from <esej> tags
+    content = extract_content_from_esej_tags(gemini_response)
+    if not content:
+        print("Error: No content found in <esej> tags")
+        return False
+
+    # Send to API
+    return send_news_to_api(content, news_date, news_category)
