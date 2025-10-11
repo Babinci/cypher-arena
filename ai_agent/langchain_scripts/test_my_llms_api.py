@@ -54,7 +54,7 @@ result_glm_air = time_llm_invoke(llm_glm_air.invoke)("What is the capital of Pol
 print(result_glm_air.content)
 
 llm_openrouter=ChatOpenAI(
-    model="meta-llama/llama-3.3-70b-instruct:free",
+    model="meta-llama/llama-4-maverick:free",
     openai_api_key=OPEN_ROUTER_API_KEY,
     openai_api_base="https://openrouter.ai/api/v1"
 )
