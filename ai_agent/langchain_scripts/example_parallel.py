@@ -1,4 +1,4 @@
-from test_my_llms_api import llm
+from config import llm
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
 from IPython.display import Image, display
