@@ -63,9 +63,9 @@ chain = workflow.compile()
 
 # Show workflow and save as PNG
 png_data = chain.get_graph().draw_mermaid_png()
-with open("workflow_graph.png", "wb") as f:
+with open("sequential_workflow_graph.png", "wb") as f:
     f.write(png_data)
-print("Workflow graph saved as workflow_graph.png")
+print("Sequential workflow graph saved as sequential_workflow_graph.png")
 display(Image(png_data))
 
 # # Invoke

@@ -63,8 +63,12 @@ parallel_builder.add_edge("call_llm_3", "aggregator")
 parallel_builder.add_edge("aggregator", END)
 parallel_workflow = parallel_builder.compile()
 
-# Show workflow
-display(Image(parallel_workflow.get_graph().draw_mermaid_png()))
+# Show workflow and save as PNG
+png_data = parallel_workflow.get_graph().draw_mermaid_png()
+with open("parallel_workflow_graph.png", "wb") as f:
+    f.write(png_data)
+print("Parallel workflow graph saved as parallel_workflow_graph.png")
+display(Image(png_data))
 
 # Invoke
 # state = parallel_workflow.invoke({"topic": "cats"})
