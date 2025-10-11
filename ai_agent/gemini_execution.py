@@ -9,11 +9,11 @@ from typing import Optional, Dict, List
 
 # Mapping of news categories to their respective prompt files
 CATEGORY_PROMPT_MAPPING: Dict[str, str] = {
-    "polish_rap": "prompts/polish-rap-news.md",
-    "polish_showbiz_freakfights": "prompts/polish-showbiz-freakfights.md",
-    "polish_general": "prompts/polish-general-news.md",
-    "world_news": "prompts/world-news.md",
-    "culture_subculture": "prompts/culture-subculture-news.md"
+    "polish_rap": "prompts/news_fetching/polish-rap-news.md",
+    "polish_showbiz_freakfights": "prompts/news_fetching/polish-showbiz-freakfights.md",
+    "polish_general": "prompts/news_fetching/polish-general-news.md",
+    "world_news": "prompts/news_fetching/world-news.md",
+    "culture_subculture": "prompts/news_fetching/culture-subculture-news.md"
 }
 
 def get_prompt_file(category: str) -> Optional[str]:
@@ -46,7 +46,7 @@ def execute_gemini_prompt(news_category: str, news_date: str) -> Optional[str]:
             prompt_content = f.read()
 
         # Read general rules
-        with open('prompts/general_rules', 'r', encoding='utf-8') as f:
+        with open('prompts/news_fetching/general_rules', 'r', encoding='utf-8') as f:
             general_rules = f.read()
 
         # Replace the date variable and append general rules
