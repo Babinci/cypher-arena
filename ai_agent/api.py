@@ -1,3 +1,4 @@
+from openai import api_key
 import requests
 import re
 import os
@@ -174,3 +175,30 @@ def create_news_send_to_api(news_date: str, news_category: str) -> bool:
 
     # Send to API
     return send_news_to_api(content, news_date, news_category)
+
+
+
+def get_news(start_date: str, end_date: str, news_type: str) -> bool:
+    """Get news from backend for llm agent
+    Example use:
+    news = get_news("2024-11-08", "2023-10-05", "polish_rap")
+    if news:
+    """
+    url = f"{API_BASE_URL}/words/agent/news/"
+    headers = {
+        'Content-Type': 'application/json',
+        'X-AGENT-TOKEN': api_key
+    }
+    payload = {
+        "start_time": start_date,
+        "end_time": end_date,
+        "news_type": news_type
+    }
+
+    try:
+        response =  requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.HTTPError as e:
+        print(f"Error fetching news: {e}")
+        return False
