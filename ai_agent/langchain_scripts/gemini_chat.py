@@ -2,6 +2,20 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 import os
 from langchain_openai import ChatOpenAI
+import time
+from functools import wraps
+
+def time_llm_invoke(func):
+    """Decorator to measure LLM invocation time"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"[TIMING] {func.__name__ if hasattr(func, '__name__') else 'LLM invoke'} took {duration:.2f} seconds")
+        return result
+    return wrapper
 
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
@@ -11,7 +25,7 @@ OPEN_ROUTER_API_KEY = os.getenv("OPEN_ROUTER_API_KEY")
 llm = ChatGoogleGenerativeAI(model="models/gemini-flash-lite-latest", google_api_key=GOOGLE_API_KEY)
 
 print('Invoking Gemini LLM...')
-result_gemini = llm.invoke("What is the capital of France? Answer in one word.")
+result_gemini = time_llm_invoke(llm.invoke)("What is the capital of France? Answer in one word.")
 print(result_gemini.content)
 
 
@@ -24,7 +38,7 @@ llm_glm = ChatOpenAI(
 )
 
 print('Invoking GLM 4.6  LLM...')
-result_glm = llm_glm.invoke("What is the capital of Italy? Answer in one word.")
+result_glm = time_llm_invoke(llm_glm.invoke)("What is the capital of Italy? Answer in one word.")
 print(result_glm.content)
 
 llm_glm_air = ChatOpenAI(
@@ -36,7 +50,7 @@ llm_glm_air = ChatOpenAI(
 
 
 print('Invoking GLM air LLM...')
-result_glm_air = llm_glm_air.invoke("What is the capital of Poland? Answer in one word.")
+result_glm_air = time_llm_invoke(llm_glm_air.invoke)("What is the capital of Poland? Answer in one word.")
 print(result_glm_air.content)
 
 llm_openrouter=ChatOpenAI(
@@ -46,6 +60,6 @@ llm_openrouter=ChatOpenAI(
 )
 
 print('Invoking OpenRouter LLM...')
-result_openrouter = llm_openrouter.invoke("What is the capital of Germany? Answer in one word.")
+result_openrouter = time_llm_invoke(llm_openrouter.invoke)("What is the capital of Germany? Answer in one word.")
 print(result_openrouter.content)
 
