@@ -1,5 +1,5 @@
-from config import llm, llm_glm, llm_glm_air, llm_openrouter
-from test_utils import time_llm_invoke, country_prompt_generator
+from ..config import llm, llm_glm, llm_glm_air, llm_openrouter
+from .test_utils import time_llm_invoke, country_prompt_generator
 
 if __name__ == "__main__":
     prompts = country_prompt_generator()

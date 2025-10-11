@@ -1,8 +1,8 @@
 import asyncio
 import time
 from functools import wraps
-from config import llm_glm_air
-from test_utils import country_prompt_generator
+from ..config import llm_glm_air
+from .test_utils import country_prompt_generator
 import argparse
 
 

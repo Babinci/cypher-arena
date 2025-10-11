@@ -178,27 +178,42 @@ def create_news_send_to_api(news_date: str, news_category: str) -> bool:
 
 
 
-def get_news(start_date: str, end_date: str, news_type: str) -> bool:
+def get_news(news_date: str, news_source: str) -> bool:
     """Get news from backend for llm agent
+
     Example use:
-    news = get_news("2024-11-08", "2023-10-05", "polish_rap")
+    # Date in YYYY-MM-DD format
+    news = get_news("2025-08-11", "polish_rap")
     if news:
+        return news
+
+    Args:
+        news_date: Date in YYYY-MM-DD format (e.g., "2025-08-11")
+        news_source: News source/category (e.g., "polish_rap")
+
+    Returns:
+        JSON response with news data or False if error
     """
-    url = f"{API_BASE_URL}/words/agent/news/"
+    url = f"{API_BASE_URL}words/gemini-agent/news-sources/"
     headers = {
         'Content-Type': 'application/json',
-        'X-AGENT-TOKEN': api_key
+        'X-AGENT-TOKEN': AI_AGENT_SECRET_KEY
     }
-    payload = {
-        "start_time": start_date,
-        "end_time": end_date,
-        "news_type": news_type
+
+    # Query parameters
+    params = {
+        "news_date": news_date,
+        "news_source": news_source
     }
 
     try:
-        response =  requests.post(url, json=payload, headers=headers)
+        # Use GET request with query parameters
+        response = requests.get(url, params=params, headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.HTTPError as e:
+        print(f"Error fetching news: {e}")
+        return False
+    except requests.exceptions.RequestException as e:
         print(f"Error fetching news: {e}")
         return False
